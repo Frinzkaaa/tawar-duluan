@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   // plain password
+  role      String   @default("masyarakat")
+  createdAt DateTime @default(now())
+  bids      Bid[]
+}
+
+enum Kategori {
+  SEMUA
+  RAMAI
+  SEGERA
+  BARU
+  DIBAWAH100
+}
+
+model Produk {
+  id          String   @id @default(cuid())
+  nama_barang String
+  tanggal     DateTime
+  harga_awal  Int
+  deskripsi   String
+  image_url   String?  // Optional image URL for product photos
+  // Car-specific fields
+  merk_mobil      String?  // Car brand (Toyota, Honda, etc.)
+  tipe_mobil      String?  // Car type/series (Avanza, Civic, etc.)
+  transmisi       String?  // Transmission: "Matic" or "Manual"
+  jumlah_seat     Int?     // Number of seats
+  tahun           Int?     // Year of manufacture
+  kilometer       Int?     // Mileage
+
+  kategori    Kategori @default(SEMUA)
+  
+  createdAt   DateTime @default(now())
+  bids        Bid[]
+}
+
+model Bid {
+  id         String   @id @default(cuid())
+  userId     String
+  produkId   String
+  bidAmount  Int
+  status     String   @default("pending") // pending, approved, rejected
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  produk     Produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
+}
