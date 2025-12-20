@@ -12,9 +12,8 @@ Berikut adalah tampilan antarmuka dari aplikasi Tawar Duluan.
 | :--- | :--- |
 | **Landing Page** <br> Tampilan utama yang menyambut pengguna dengan fitur unggulan. | ![Landing Page](public/readme/user-db.png) |
 | **Halaman Jelajahi** <br> Katalog mobil dengan fitur pencarian dan filter lengkap. | ![Halaman Jelajahi](public/readme/page-jelajahi.png) |
-
 | **Detail Mobil & Bidding** <br> Informasi lengkap mobil dan formulir penawaran. | ![Detail Mobil](public/readme/card-car.png) |
-| **Dashboard User** <br> Halaman profil dan riwayat lelang pengguna. | ![Dashboard User](public/readme/admin-db.png) |
+| **Dashboard Admin** <br> Halaman dashboard admin untuk mengelola data mobil dan lelang. | ![Dashboard Admin](public/readme/admin-db.png) |
 
 ---
 
