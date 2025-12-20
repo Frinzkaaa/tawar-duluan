@@ -39,7 +39,7 @@ export default function FeaturedCars() {
 
             <div className="flex justify-center items-center mb-2 mt-5">
               <Image
-                src="/public/images/7.png"
+                src="/images/5.png"
                 alt="Toyota Yaris"
                 width={250}
                 height={150}
@@ -53,13 +53,10 @@ export default function FeaturedCars() {
               Harga Awal Lelang:<br />
               <span className="font-bold text-lg">Rp 175.000.000</span>
             </div>
-            <button className="bg-[#D8FF4B] font-thin px-7 py-2 rounded-full shadow hover:bg-[#c0e63e] transition text-lg border border-black">
-              Detail
-            </button>
           </div>
         </div>
+        
 
-        {/* Card 2 — tinggal copy kalau mobil berbeda */}
         <div className="bg-[#DDDDDD]/50 rounded-3xl p-6 shadow-lg flex flex-col justify-between h-[420px] w-full max-w-[340px] mx-auto">
           <div>
             <div className="flex justify-between items-center mb-2">
@@ -88,7 +85,7 @@ export default function FeaturedCars() {
 
             <div className="flex justify-center items-center mb-2 mt-5">
               <Image
-                src="/images/products/7.png"
+                src="/images/8.png"
                 alt="Toyota Yaris"
                 width={250}
                 height={150}
@@ -102,9 +99,6 @@ export default function FeaturedCars() {
               Harga Awal Lelang:<br />
               <span className="font-bold text-lg">Rp 175.000.000</span>
             </div>
-            <button className="bg-[#D8FF4B] font-thin px-7 py-2 rounded-full shadow hover:bg-[#c0e63e] transition text-lg border border-black">
-              Detail
-            </button>
           </div>
         </div>
       </div>

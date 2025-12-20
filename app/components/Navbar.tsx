@@ -9,6 +9,13 @@ export default function Navbar() {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [user, setUser] = useState<{ name: string } | null>(null);
 
+  // Handler untuk logout
+  const handleLogout = async () => {
+    await fetch('/api/logout', { method: 'POST' });
+    setUser(null);
+    window.location.href = '/login';
+  };
+
   useEffect(() => {
     fetch('/api/me')
       .then(res => res.ok ? res.json() : null)
@@ -82,7 +89,15 @@ export default function Navbar() {
       {/* USER GREETING or DAFTAR BUTTON (DESKTOP) */}
       <div className="hidden md:inline-block">
         {user ? (
-          <span className="text-white font-semibold px-6">Hi, {user.name}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-white font-semibold px-6">Hi, {user.name}</span>
+            <button
+              onClick={handleLogout}
+              className="text-white border border-white rounded-full px-4 py-1 hover:bg-white hover:text-[#0138C9] transition"
+            >
+              Logout
+            </button>
+          </div>
         ) : (
           <Link href="/register" className="text-white border border-white rounded-full px-6 py-1 hover:bg-white hover:text-[#0138C9] transition">
             Daftar
@@ -151,10 +166,18 @@ export default function Navbar() {
               )}
             </li>
 
-            {/* USER GREETING or DAFTAR/MASUK (MOBILE) */}
+            {/* USER GREETING or DAFTAR/MASUK/LOGOUT (MOBILE) */}
             <li className="p-4">
               {user ? (
-                <span className="block text-center bg-white/10 text-white font-bold rounded-full py-2">Hi, {user.name}</span>
+                <div className="flex flex-col gap-2">
+                  <span className="block text-center bg-white/10 text-white font-bold rounded-full py-2">Hi, {user.name}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-center bg-white text-[#0138C9] font-bold rounded-full py-2 mt-2"
+                  >
+                    Logout
+                  </button>
+                </div>
               ) : (
                 <Link href="/register" className="block text-center bg-white text-[#0138C9] font-bold rounded-full py-2">
                   Daftar / Masuk
