@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 // Komponen Banner Status Lelang
 function LelangStatusBanner() {
   const [status, setStatus] = useState<'buka' | 'tutup' | null>(null);
@@ -219,7 +219,7 @@ function ProductCard({ product, onBid, isLoved, onToggleLove }: {
   );
 }
 
-export default function JelajahiPage() {
+function JelajahiContent() {
   // Watchlist state
   const [watchlist, setWatchlist] = useState<string[]>([]);
 
@@ -577,7 +577,12 @@ export default function JelajahiPage() {
             >
               {getProductsByCategory('sedang-ramai').map((product) => (
                 <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
-                  <ProductCard product={product} onBid={submitBid} />
+                  <ProductCard
+                    product={product}
+                    onBid={submitBid}
+                    isLoved={watchlist.includes(product.id)}
+                    onToggleLove={handleToggleLove}
+                  />
                 </div>
               ))}
             </div>
@@ -621,7 +626,12 @@ export default function JelajahiPage() {
             >
               {getProductsByCategory('segera-berakhir').map((product) => (
                 <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
-                  <ProductCard product={product} onBid={submitBid} />
+                  <ProductCard
+                    product={product}
+                    onBid={submitBid}
+                    isLoved={watchlist.includes(product.id)}
+                    onToggleLove={handleToggleLove}
+                  />
                 </div>
               ))}
             </div>
@@ -665,7 +675,12 @@ export default function JelajahiPage() {
             >
               {getProductsByCategory('dibawah-100-juta').map((product) => (
                 <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
-                  <ProductCard product={product} onBid={submitBid} />
+                  <ProductCard
+                    product={product}
+                    onBid={submitBid}
+                    isLoved={watchlist.includes(product.id)}
+                    onToggleLove={handleToggleLove}
+                  />
                 </div>
               ))}
             </div>
@@ -709,7 +724,12 @@ export default function JelajahiPage() {
             >
               {getProductsByCategory('baru-masuk').map((product) => (
                 <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
-                  <ProductCard product={product} onBid={submitBid} />
+                  <ProductCard
+                    product={product}
+                    onBid={submitBid}
+                    isLoved={watchlist.includes(product.id)}
+                    onToggleLove={handleToggleLove}
+                  />
                 </div>
               ))}
             </div>
@@ -719,6 +739,19 @@ export default function JelajahiPage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function JelajahiPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-600 font-medium">Memuat halaman...</p>
+      </div>
+    </div>}>
+      <JelajahiContent />
+    </Suspense>
   );
 }
 

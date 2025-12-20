@@ -5,6 +5,8 @@ model Watchlist {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   produk    Produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, produkId])
 }
 
 model Setting {

@@ -7020,6 +7020,7 @@ export namespace Prisma {
 
   export type WatchlistWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    userId_produkId?: WatchlistUserIdProdukIdCompoundUniqueInput
     AND?: WatchlistWhereInput | WatchlistWhereInput[]
     OR?: WatchlistWhereInput[]
     NOT?: WatchlistWhereInput | WatchlistWhereInput[]
@@ -7028,7 +7029,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Watchlist"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     produk?: XOR<ProdukScalarRelationFilter, ProdukWhereInput>
-  }, "id">
+  }, "id" | "userId_produkId">
 
   export type WatchlistOrderByWithAggregationInput = {
     id?: SortOrder
@@ -7695,6 +7696,11 @@ export namespace Prisma {
   export type ProdukScalarRelationFilter = {
     is?: ProdukWhereInput
     isNot?: ProdukWhereInput
+  }
+
+  export type WatchlistUserIdProdukIdCompoundUniqueInput = {
+    userId: string
+    produkId: string
   }
 
   export type WatchlistCountOrderByAggregateInput = {

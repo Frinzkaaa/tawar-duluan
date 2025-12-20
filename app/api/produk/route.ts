@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
+import { Kategori } from "@/lib/generated";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -94,7 +95,7 @@ export async function POST(req: Request) {
         harga_awal,
         deskripsi,
         image_url: image_url || null,
-        kategori: kategori && kategori.trim() ? kategori : null,
+        kategori: kategori && kategori.trim() ? (kategori as Kategori) : undefined,
         merk_mobil: merk_mobil && merk_mobil.trim() ? merk_mobil : null,
         tipe_mobil: tipe_mobil && tipe_mobil.trim() ? tipe_mobil : null,
         transmisi: transmisi && transmisi.trim() ? transmisi : null,
