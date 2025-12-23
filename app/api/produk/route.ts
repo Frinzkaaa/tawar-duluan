@@ -97,10 +97,7 @@ export async function POST(req: Request) {
         deskripsi,
         image_url: image_url || null,
 
-        kategori:
-          kategori && kategori.trim() && KategoriEnum[kategori.trim() as keyof typeof KategoriEnum]
-            ? KategoriEnum[kategori.trim() as keyof typeof KategoriEnum]
-            : undefined,
+
         kategori: kategori && kategori.trim() ? (kategori as Kategori) : undefined,
         merk_mobil: merk_mobil && merk_mobil.trim() ? merk_mobil : null,
         tipe_mobil: tipe_mobil && tipe_mobil.trim() ? tipe_mobil : null,
