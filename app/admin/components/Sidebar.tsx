@@ -28,7 +28,7 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
 
     const handleLogout = async () => {
         try {
-            await signOut(auth);
+            await fetch("/api/logout", { method: "POST" });
             router.push('/login');
         } catch (error) {
             console.error("Gagal Logout dari Sidebar:", error);
@@ -76,7 +76,7 @@ export function Sidebar({ isOpen, toggleSidebar }: SidebarProps) {
 
                         return (
                             <Link key={item.name} href={item.href}
-                                className={`flex items-center px-4 py-2.5 text-[12px] font-bold rounded-xl transition duration-200 ease-in-out ${linkClass}`}
+                                className={`flex items-center px-4 py-2.5 text-[11px] font-bold rounded-xl transition duration-200 ease-in-out ${linkClass}`}
                                 onClick={toggleSidebar}>
                                 <Icon className="w-4 h-4 mr-3 opacity-70" />
                                 <span className="uppercase tracking-tight">{item.name}</span>

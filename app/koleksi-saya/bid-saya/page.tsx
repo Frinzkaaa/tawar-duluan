@@ -179,68 +179,68 @@ export default function MyBids() {
             {bids.map((bid) => (
               <div
                 key={bid.id}
-                className="group relative bg-white rounded-[32px] p-6 md:p-8 shadow-xl border border-gray-100 transition-all hover:shadow-2xl hover:translate-y-[-4px] duration-500 overflow-hidden"
+                className="group relative bg-white rounded-3xl p-4 md:p-5 shadow-lg border border-gray-100 transition-all hover:shadow-xl hover:translate-y-[-2px] duration-500 overflow-hidden"
               >
                 {/* Status Indicator Bar */}
-                <div className={`absolute left-0 top-0 bottom-0 w-2 ${bid.status === 'approved' ? 'bg-emerald-500' :
+                <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${bid.status === 'approved' ? 'bg-emerald-500' :
                   bid.status === 'rejected' ? 'bg-red-500' : 'bg-orange-400'
                   }`} />
 
-                <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-center">
+                <div className="flex flex-col lg:flex-row gap-5 items-start lg:items-center">
 
                   {/* Left: Image */}
-                  <div className="relative w-full lg:w-48 h-36 md:h-48 rounded-[24px] overflow-hidden shadow-xl border border-gray-100 shrink-0">
+                  <div className="relative w-full lg:w-36 h-28 md:h-32 rounded-2xl overflow-hidden shadow-md border border-gray-100 shrink-0">
                     <img
                       src={bid.produk.image_url || '/images/cars/placeholder.jpg'}
                       alt={bid.produk.nama_barang}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    <div className="absolute bottom-6 left-6 text-white">
-                      <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">ID UNIT</p>
-                      <p className="text-xs font-bold font-mono">#{bid.produk.id.slice(-8).toUpperCase()}</p>
+                    <div className="absolute bottom-3 left-3 text-white">
+                      <p className="text-[8px] font-black uppercase tracking-widest opacity-80 mb-0.5">ID UNIT</p>
+                      <p className="text-[10px] font-bold font-mono">#{bid.produk.id.slice(-8).toUpperCase()}</p>
                     </div>
                   </div>
 
                   {/* Center: Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${bid.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${bid.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
                         bid.status === 'rejected' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'
                         }`}>
                         {bid.status === 'approved' ? 'Sudah Disetujui' :
                           bid.status === 'rejected' ? 'Tawaran Gagal' : 'Menunggu Approval'}
                       </span>
-                      <span className="text-[10px] font-bold text-gray-400">•</span>
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                        <Clock className="w-3 h-3" />
+                      <span className="text-[9px] font-bold text-gray-400">•</span>
+                      <div className="flex items-center gap-1 text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+                        <Clock className="w-2.5 h-2.5" />
                         {new Date(bid.createdAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </div>
                     </div>
 
-                    <h2 className="text-xl md:text-2xl font-black text-gray-900 tracking-tighter mb-6 group-hover:text-blue-600 transition-colors">
+                    <h2 className="text-base md:text-lg font-black text-gray-900 tracking-tight mb-3 group-hover:text-blue-600 transition-colors">
                       {bid.produk.nama_barang}
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       <div>
-                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Tawaran Anda</p>
-                        <p className="text-xl font-black text-blue-600 tracking-tight">Rp {bid.bidAmount.toLocaleString('id-ID')}</p>
+                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Tawaran Anda</p>
+                        <p className="text-base font-black text-blue-600 tracking-tight">Rp {bid.bidAmount.toLocaleString('id-ID')}</p>
                       </div>
                       <div>
-                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Status Pemenang</p>
-                        <div className={`flex items-center gap-2 font-black text-base ${bid.status === 'approved' ? 'text-emerald-600' :
+                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Status Pemenang</p>
+                        <div className={`flex items-center gap-1.5 font-black text-xs ${bid.status === 'approved' ? 'text-emerald-600' :
                           bid.status === 'rejected' ? 'text-red-500' : 'text-orange-500'
                           }`}>
-                          {bid.status === 'approved' ? <Trophy className="w-4 h-4" /> :
-                            bid.status === 'rejected' ? <XCircle className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
+                          {bid.status === 'approved' ? <Trophy className="w-3 h-3" /> :
+                            bid.status === 'rejected' ? <XCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                           {bid.status === 'approved' ? 'MENANG' :
                             bid.status === 'rejected' ? 'KALAH' : 'DIPROSES'}
                         </div>
                       </div>
-                      <div>
-                        <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Status Pembayaran</p>
-                        <p className={`font-black text-base ${bid.paymentStatus === 'paid' ? 'text-emerald-500' : 'text-gray-400'}`}>
+                      <div className="hidden md:block">
+                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Status Pembayaran</p>
+                        <p className={`font-black text-xs ${bid.paymentStatus === 'paid' ? 'text-emerald-500' : 'text-gray-400'}`}>
                           {bid.paymentStatus === 'paid' ? 'LUNAS' : 'BELUM BAYAR'}
                         </p>
                       </div>
@@ -248,65 +248,65 @@ export default function MyBids() {
                   </div>
 
                   {/* Right: Actions */}
-                  <div className="w-full lg:w-60 shrink-0 flex flex-col gap-3">
+                  <div className="w-full lg:w-48 shrink-0 flex flex-col gap-2">
                     {bid.status === 'approved' && bid.paymentStatus === 'unpaid' && (
                       <button
                         onClick={() => startPayment(bid)}
-                        className="w-full bg-blue-600 hover:bg-black text-white font-black py-4 px-6 rounded-[20px] shadow-2xl shadow-blue-200 transition-all flex items-center justify-center gap-2.5 active:scale-95 text-sm"
+                        className="w-full bg-blue-600 hover:bg-black text-white font-black py-2.5 px-4 rounded-xl shadow-lg shadow-blue-200 transition-all flex items-center justify-center gap-2 active:scale-95 text-xs uppercase tracking-widest"
                       >
-                        <CreditCard className="w-5 h-5" />
+                        <CreditCard className="w-4 h-4" />
                         Bayar Sekarang
                       </button>
                     )}
 
                     {bid.status === 'approved' && bid.paymentStatus === 'paid' && (
-                      <div className="space-y-3 animate-in fade-in slide-in-from-right-4 duration-500">
-                        <div className="bg-emerald-50 text-emerald-700 p-4 rounded-[24px] border border-emerald-100 flex items-center gap-3">
-                          <CheckCircle2 className="w-8 h-8 shrink-0" />
+                      <div className="space-y-2 animate-in fade-in slide-in-from-right-4 duration-500">
+                        <div className="bg-emerald-50 text-emerald-700 p-2.5 rounded-xl border border-emerald-100 flex items-center gap-2">
+                          <CheckCircle2 className="w-6 h-6 shrink-0" />
                           <div>
-                            <p className="text-[9px] font-black uppercase tracking-widest mb-0.5">Berhasil</p>
-                            <p className="text-xs font-bold leading-tight">Unit ini milik Anda!</p>
+                            <p className="text-[8px] font-black uppercase tracking-widest mb-0.5">Berhasil</p>
+                            <p className="text-[10px] font-bold leading-tight">Unit ini milik Anda!</p>
                           </div>
                         </div>
 
                         {!pickupOption ? (
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-2 gap-2">
                             <button
                               onClick={() => setPickupOption('self')}
-                              className="flex flex-col items-center justify-center p-4 bg-gray-50 hover:bg-white hover:border-blue-600 border-2 border-transparent rounded-[24px] transition-all group/btn"
+                              className="flex flex-col items-center justify-center p-2.5 bg-gray-50 hover:bg-white hover:border-blue-600 border-2 border-transparent rounded-xl transition-all group/btn"
                             >
-                              <MapPin className="w-6 h-6 text-blue-600 mb-2 group-hover/btn:scale-110 transition-transform" />
-                              <span className="text-xs font-black uppercase tracking-widest">Self Pickup</span>
+                              <MapPin className="w-4 h-4 text-blue-600 mb-1 group-hover/btn:scale-110 transition-transform" />
+                              <span className="text-[9px] font-black uppercase tracking-widest">Pickup</span>
                             </button>
                             <button
                               onClick={() => setPickupOption('delivery')}
-                              className="flex flex-col items-center justify-center p-4 bg-gray-50 hover:bg-white hover:border-emerald-500 border-2 border-transparent rounded-[24px] transition-all group/btn"
+                              className="flex flex-col items-center justify-center p-2.5 bg-gray-50 hover:bg-white hover:border-emerald-500 border-2 border-transparent rounded-xl transition-all group/btn"
                             >
-                              <Truck className="w-6 h-6 text-emerald-500 mb-2 group-hover/btn:scale-110 transition-transform" />
-                              <span className="text-xs font-black uppercase tracking-widest">Delivery</span>
+                              <Truck className="w-4 h-4 text-emerald-500 mb-1 group-hover/btn:scale-110 transition-transform" />
+                              <span className="text-[9px] font-black uppercase tracking-widest">Delivery</span>
                             </button>
                           </div>
                         ) : pickupOption === 'self' ? (
-                          <div className="p-6 bg-blue-50 border border-blue-100 rounded-[32px] animate-in zoom-in-95 duration-300">
-                            <div className="flex items-center gap-2 text-blue-700 font-black text-[10px] uppercase tracking-widest mb-3">
-                              <MapPin className="w-4 h-4" />
-                              Lokasi Penjemputan
+                          <div className="p-3 bg-blue-50 border border-blue-100 rounded-2xl animate-in zoom-in-95 duration-300">
+                            <div className="flex items-center gap-1.5 text-blue-700 font-black text-[9px] uppercase tracking-widest mb-2">
+                              <MapPin className="w-3.5 h-3.5" />
+                              Lokasi
                             </div>
-                            <p className="text-sm font-bold text-gray-800 leading-relaxed mb-4">
-                              {bid.produk.lokasi_mobil || "Showroom TDI Central, Kawasan Industri Jababeka, Bekasi."}
+                            <p className="text-[10px] font-bold text-gray-800 leading-normal mb-3">
+                              {bid.produk.lokasi_mobil || "Showroom TDI Central, Bekasi."}
                             </p>
                             <button
                               onClick={() => setPickupOption(null)}
-                              className="text-[10px] font-black text-blue-600 hover:underline uppercase tracking-widest"
+                              className="text-[9px] font-black text-blue-600 hover:underline uppercase tracking-widest"
                             >
-                              Ganti Metode
+                              Ganti
                             </button>
                           </div>
                         ) : (
-                          <div className="p-6 bg-emerald-50 border border-emerald-100 rounded-[32px] animate-in zoom-in-95 duration-300">
-                            <div className="flex items-center gap-2 text-emerald-700 font-black text-[10px] uppercase tracking-widest mb-3">
-                              <Truck className="w-4 h-4" />
-                              Koordinasi Pengiriman
+                          <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-2xl animate-in zoom-in-95 duration-300">
+                            <div className="flex items-center gap-1.5 text-emerald-700 font-black text-[9px] uppercase tracking-widest mb-2">
+                              <Truck className="w-3.5 h-3.5" />
+                              Logistik
                             </div>
                             <button
                               onClick={() => {
@@ -314,16 +314,16 @@ export default function MyBids() {
                                 const msg = `Halo Admin Tawar Duluan, saya ingin koordinasi pengiriman untuk unit ${bid.produk.nama_barang} yang telah saya menangkan.`;
                                 window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
                               }}
-                              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-4 rounded-2xl flex items-center justify-center gap-2 text-xs transition-all shadow-lg shadow-emerald-200 mb-4"
+                              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-2.5 rounded-xl flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-widest transition-all shadow-md shadow-emerald-200 mb-3"
                             >
-                              <MessageCircle className="w-5 h-5" />
-                              Hubungi Logistik
+                              <MessageCircle className="w-4 h-4" />
+                              Hubungi
                             </button>
                             <button
                               onClick={() => setPickupOption(null)}
-                              className="w-full text-[10px] font-black text-emerald-600 hover:underline uppercase tracking-widest text-center"
+                              className="w-full text-[9px] font-black text-emerald-600 hover:underline uppercase tracking-widest text-center"
                             >
-                              Ganti Metode
+                              Ganti
                             </button>
                           </div>
                         )}
@@ -332,10 +332,10 @@ export default function MyBids() {
 
                     <Link
                       href={`/jelajahi/${bid.produk.id}`}
-                      className="w-full bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold py-4 px-6 rounded-[20px] transition-all flex items-center justify-center gap-2 text-sm"
+                      className="w-full bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-1.5 text-xs uppercase tracking-widest"
                     >
-                      Lihat Detail
-                      <ChevronRight className="w-4 h-4" />
+                      Detail
+                      <ChevronRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
                 </div>
