@@ -18,7 +18,7 @@ export function useAdminData() {
       setError(null);
 
       try {
-        const res = await fetch("/api/me");
+        const res = await fetch("/api/admin/me");
         if (!res.ok) throw new Error("Gagal mengambil data admin");
         const data = await res.json();
         setAdminData(data);

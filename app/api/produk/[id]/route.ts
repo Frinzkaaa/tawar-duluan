@@ -5,6 +5,38 @@ import { join } from "path";
 
 export const runtime = "nodejs";
 
+export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await context.params;
+    const produk = await prisma.produk.findUnique({
+      where: { id },
+      include: {
+        bids: {
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+      },
+    });
+
+    if (!produk) {
+      return NextResponse.json({ error: "Produk tidak ditemukan" }, { status: 404 });
+    }
+
+    return NextResponse.json(produk);
+  } catch (err: any) {
+    console.error("GET /api/produk/[id] error:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
 export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params; // ⬅️ WAJIB await
@@ -28,12 +60,20 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
     const kilometer_str = formData.get("kilometer") as string | null;
     const kilometer = kilometer_str ? parseInt(kilometer_str) : null;
 
-    console.log("PUT data:", { 
-      id, 
-      nama_barang, 
-      tanggal, 
-      harga_awal_str, 
-      harga_awal, 
+    // Advanced specs
+    const mesin = formData.get("mesin") as string | null;
+    const interior = formData.get("interior") as string | null;
+    const riwayat_servis = formData.get("riwayat_servis") as string | null;
+    const lokasi_mobil = formData.get("lokasi_mobil") as string | null;
+
+    const imagesFiles = formData.getAll("images") as File[];
+
+    console.log("PUT data:", {
+      id,
+      nama_barang,
+      tanggal,
+      harga_awal_str,
+      harga_awal,
       deskripsi,
       kategori,
       merk_mobil,
@@ -42,7 +82,7 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
       jumlah_seat,
       tahun,
       kilometer,
-      hasImage: !!image 
+      hasImage: !!image
     });
 
     if (!nama_barang || !tanggal || isNaN(harga_awal) || !deskripsi) {
@@ -61,28 +101,39 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
     }
 
     let image_url = undefined;
+    const uploadsDir = join(process.cwd(), "public", "uploads");
 
     if (image) {
-      // Create uploads directory if it doesn't exist
-      const uploadsDir = join(process.cwd(), "public", "uploads");
       try {
         await mkdir(uploadsDir, { recursive: true });
-      } catch (error) {
-        // Directory might already exist
-      }
+      } catch (error) { }
 
-      // Generate unique filename
       const parts = image.name.split(".");
       const fileExtension = parts.length > 1 ? parts.pop() : "jpg";
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExtension}`;
       const filePath = join(uploadsDir, fileName);
 
-      // Convert file to buffer and save
       const bytes = await image.arrayBuffer();
       const buffer = Buffer.from(bytes);
       await writeFile(filePath, buffer);
 
       image_url = `/uploads/${fileName}`;
+    }
+
+    // Handle multiple images
+    let additionalImages: string[] = [];
+    if (imagesFiles.length > 0) {
+      await mkdir(uploadsDir, { recursive: true });
+      for (const img of imagesFiles) {
+        if (img.size === 0) continue;
+        const parts = img.name.split(".");
+        const ext = parts.length > 1 ? parts.pop() : "jpg";
+        const fname = `${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
+        const fpath = join(uploadsDir, fname);
+        const bytes = await img.arrayBuffer();
+        await writeFile(fpath, Buffer.from(bytes));
+        additionalImages.push(`/uploads/${fname}`);
+      }
     }
 
     const updateData: any = {
@@ -97,10 +148,18 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
       jumlah_seat: jumlah_seat || null,
       tahun: tahun || null,
       kilometer: kilometer || null,
+      lokasi_mobil: lokasi_mobil || null,
+      mesin: mesin || null,
+      interior: interior || null,
+      riwayat_servis: riwayat_servis || null,
     };
 
     if (image_url !== undefined) {
       updateData.image_url = image_url;
+    }
+
+    if (additionalImages.length > 0) {
+      updateData.images = additionalImages;
     }
 
     console.log("About to update produk with data:", updateData);
@@ -130,3 +189,4 @@ export async function DELETE(req: Request, context: { params: Promise<{ id: stri
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+

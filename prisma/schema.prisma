@@ -1,18 +1,3 @@
-model Watchlist {
-  id        String   @id @default(cuid())
-  userId    String
-  produkId  String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  produk    Produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, produkId])
-}
-
-model Setting {
-  key   String @id
-  value String
-}
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/generated"
@@ -22,15 +7,96 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
+model Watchlist {
   id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String   // plain password
-  role      String   @default("masyarakat")
+  userId    String
+  produkId  String
   createdAt DateTime @default(now())
-  bids      Bid[]
-  watchlists Watchlist[]
+  produk    Produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, produkId])
+}
+
+model Setting {
+  key   String @id
+  value String
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  password      String
+  role          String         @default("masyarakat")
+  createdAt     DateTime       @default(now())
+  address       String?
+  phone         String?
+  bids          Bid[]
+  notifications Notification[]
+  transactions  Transaction[]
+  watchlists    Watchlist[]
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  userId    String
+  amount    Int
+  status    String   @default("pending")
+  type      String
+  snapToken String?
+  orderId   String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Produk {
+  id             String      @id @default(cuid())
+  nama_barang    String
+  tanggal        DateTime
+  harga_awal     Int
+  deskripsi      String
+  createdAt      DateTime    @default(now())
+  image_url      String?
+  jumlah_seat    Int?
+  kilometer      Int?
+  merk_mobil     String?
+  tahun          Int?
+  tipe_mobil     String?
+  transmisi      String?
+  images         String[]
+  interior       String?
+  mesin          String?
+  riwayat_servis String?
+  kategori       Kategori    @default(SEMUA)
+  lokasi_mobil   String?
+  bids           Bid[]
+  watchlists     Watchlist[]
+}
+
+model Bid {
+  id            String   @id @default(cuid())
+  userId        String
+  produkId      String
+  bidAmount     Int
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+  paymentStatus String   @default("unpaid")
+  produk        Produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Kategori {
@@ -39,36 +105,4 @@ enum Kategori {
   SEGERA
   BARU
   DIBAWAH100
-}
-
-model Produk {
-  id          String   @id @default(cuid())
-  nama_barang String
-  tanggal     DateTime
-  harga_awal  Int
-  deskripsi   String
-  image_url   String?  // Optional image URL for product photos
-  // Car-specific fields
-  merk_mobil      String?  // Car brand (Toyota, Honda, etc.)
-  tipe_mobil      String?  // Car type/series (Avanza, Civic, etc.)
-  transmisi       String?  // Transmission: "Matic" or "Manual"
-  jumlah_seat     Int?     // Number of seats
-  tahun           Int?     // Year of manufacture
-  kilometer       Int?     // Mileage
-
-  kategori    Kategori @default(SEMUA)
-  createdAt   DateTime @default(now())
-  bids        Bid[]
-  watchlists  Watchlist[]
-}
-
-model Bid {
-  id         String   @id @default(cuid())
-  userId     String
-  produkId   String
-  bidAmount  Int
-  status     String   @default("pending") // pending, approved, rejected
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  produk     Produk   @relation(fields: [produkId], references: [id], onDelete: Cascade)
 }

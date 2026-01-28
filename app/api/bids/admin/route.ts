@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 
 // Helper function to get current user from token
 async function getCurrentUser(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
+  const token = request.cookies.get("admin_token")?.value || request.cookies.get("token")?.value;
   if (!token) return null;
 
   try {

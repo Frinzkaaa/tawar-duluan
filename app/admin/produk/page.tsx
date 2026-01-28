@@ -75,8 +75,8 @@ export default function ProdukPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
-  const [touched, setTouched] = useState<{[key: string]: boolean}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({});
 
   const { adminData, loading } = useAdminData();
 
@@ -178,13 +178,13 @@ export default function ProdukPage() {
           body: formData,
         });
       }
-      
+
       if (!res.ok) {
         const errorData = await res.json();
         const errorMessage = errorData.error || res.statusText || "Gagal menyimpan produk";
         throw new Error(errorMessage);
       }
-      
+
       setForm({
         nama_barang: "",
         tanggal: "",
@@ -212,7 +212,7 @@ export default function ProdukPage() {
       console.error("Submit error:", err);
       setErrors({ submit: message });
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -282,7 +282,7 @@ export default function ProdukPage() {
   };
 
   const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
+    const newErrors: { [key: string]: string } = {};
 
     if (!form.nama_barang.trim()) {
       newErrors.nama_barang = "Nama produk wajib diisi";
@@ -330,7 +330,7 @@ export default function ProdukPage() {
   const handleBlur = (field: string) => {
     setTouched({ ...touched, [field]: true });
     // Validate on blur
-    const fieldErrors: {[key: string]: string} = {};
+    const fieldErrors: { [key: string]: string } = {};
 
     switch (field) {
       case 'nama_barang':
@@ -373,89 +373,90 @@ export default function ProdukPage() {
 
 
   return (
-    <main className="flex-1 p-6 min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white">
+    <main className="flex-1 p-4 lg:p-6 min-h-screen bg-[#0f172a] text-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6 pb-4">
-          <h1 className="text-3xl font-extrabold text-white flex items-center">
-            <div className="p-2.5 bg-blue-500/20 rounded-lg mr-3">
-              <Package className="w-8 h-8 text-blue-300" />
+        <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+          <h1 className="text-xl font-black text-white flex items-center gap-2 uppercase tracking-tighter">
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <Package className="w-5 h-5 text-blue-400" />
             </div>
             Daftar Produk Lelang
           </h1>
 
           <button
             onClick={() => { setModalOpen(true); setEditingId(null); }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white font-semibold rounded-lg shadow hover:from-indigo-600 hover:to-indigo-700 transition"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#0138C9] text-white text-[11px] font-black uppercase tracking-widest rounded-xl shadow-lg hover:bg-blue-700 transition-all active:scale-95"
           >
-            <Plus className="w-5 h-5" />
-            Tambah Produk
+            <Plus className="w-4 h-4" />
+            Tambah Unit
           </button>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-1.5 mb-5">
           <button
             onClick={() => setActiveFilter("semua")}
-            className={`px-4 py-2 rounded-lg font-medium ${
-              activeFilter === "semua" ? "bg-white/10 text-white" : "bg-white/6 text-white/80 hover:bg-white/10"
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeFilter === "semua" ? "bg-white text-blue-900" : "bg-white/5 text-white/60 hover:bg-white/10"
+              }`}
           >
-            Semua Produk
+            SEMUA
           </button>
 
           {kategoriList.map((kategori) => (
             <button
               key={kategori}
               onClick={() => setActiveFilter(kategori)}
-              className={`px-4 py-2 rounded-lg font-medium ${
-                activeFilter === kategori
-                  ? "bg-white/10 text-white"
-                  : "bg-white/6 text-white/80 hover:bg-white/10"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeFilter === kategori
+                  ? "bg-white text-blue-900"
+                  : "bg-white/5 text-white/60 hover:bg-white/10"
+                }`}
             >
               {formatKategori(kategori)}
             </button>
           ))}
-
         </div>
 
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/20">
+        <div className="bg-[#1e293b]/50 backdrop-blur-md rounded-2xl overflow-hidden border border-white/5 shadow-2xl">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="text-xs text-gray-300 uppercase tracking-wider">
-                  <th className="py-3 px-6 text-left">Nama Barang</th>
-                  <th className="py-3 px-6 text-left">Merk/Tipe</th>
-                  <th className="py-3 px-6 text-left">Transmisi</th>
-                  <th className="py-3 px-6 text-left">Seats</th>
-                  <th className="py-3 px-6 text-left">Tahun</th>
-                  <th className="py-3 px-6 text-left">Kilometer</th>
-                  <th className="py-3 px-6 text-left">Tanggal</th>
-                  <th className="py-3 px-6 text-left">Harga Awal</th>
-                  <th className="py-3 px-6 text-left">Kategori</th>
-                  <th className="py-3 px-6 text-left">Deskripsi</th>
-                  <th className="py-3 px-6 text-center">Aksi</th>
+                <tr className="bg-white/5 border-b border-white/5 font-black text-[9px] text-gray-400 uppercase tracking-[0.2em]">
+                  <th className="py-4 px-4">Nama Produk</th>
+                  <th className="py-4 px-4">Spesifikasi</th>
+                  <th className="py-4 px-4">Tahun</th>
+                  <th className="py-4 px-4">Kilometer</th>
+                  <th className="py-4 px-4">Lelang Selesai</th>
+                  <th className="py-4 px-4">Harga Awal</th>
+                  <th className="py-4 px-4 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-white/5">
                 {filteredProdukList.map((produk) => (
-                  <tr key={produk.id} className="border-t border-white/6 hover:bg-white/5 transition duration-150">
-                    <td className="py-4 px-6 text-sm font-medium text-white">{produk.nama_barang}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300">{`${produk.merk_mobil || ''} ${produk.tipe_mobil || ''}`.trim() || '-'}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300">{produk.transmisi || '-'}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300">{produk.jumlah_seat || '-'}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300">{produk.tahun || '-'}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300">{produk.kilometer ? `${produk.kilometer} km` : '-'}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300">{new Date(produk.tanggal).toLocaleDateString("id-ID")}</td>
-                    <td className="py-4 px-6 text-sm font-semibold text-green-300">{formatRupiah(produk.harga_awal)}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300">{produk.kategori || '-'}</td>
-                    <td className="py-4 px-6 text-sm text-gray-300 max-w-xs truncate">{produk.deskripsi}</td>
-                    <td className="py-4 px-6 whitespace-nowrap text-center space-x-2">
-                      <button onClick={() => handleEdit(produk)} className="text-white bg-yellow-500 hover:bg-yellow-600 font-medium py-1 px-3 rounded-full inline-flex items-center text-xs transition duration-150 shadow-sm" title="Edit Produk">
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button onClick={() => handleDelete(produk.id)} className="text-white bg-red-600 hover:bg-red-700 font-medium py-1 px-3 rounded-full inline-flex items-center text-xs transition duration-150 shadow-sm" title="Hapus Produk">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                  <tr key={produk.id} className="hover:bg-white/[0.02] transition-colors group">
+                    <td className="py-3 px-4">
+                      <p className="text-xs font-black text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight">{produk.nama_barang}</p>
+                      <p className="text-[9px] font-bold text-gray-500 mt-0.5 uppercase">{produk.kategori || 'Tanpa Kategori'}</p>
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="flex flex-col gap-0.5">
+                        <p className="text-[10px] font-bold text-gray-300 uppercase tracking-tight">{produk.merk_mobil || '-'} {produk.tipe_mobil || ''}</p>
+                        <p className="text-[9px] text-gray-500 uppercase">{produk.transmisi || '-'} • {produk.jumlah_seat || '-'} Kursi</p>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-xs font-bold text-gray-400">{produk.tahun || '-'}</td>
+                    <td className="py-3 px-4 text-xs font-bold text-gray-400">{produk.kilometer ? `${produk.kilometer.toLocaleString()} KM` : '-'}</td>
+                    <td className="py-3 px-4 text-xs font-bold text-gray-400">{new Date(produk.tanggal).toLocaleDateString("id-ID")}</td>
+                    <td className="py-3 px-4">
+                      <p className="text-xs font-black text-green-400 tracking-tight">{formatRupiah(produk.harga_awal)}</p>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <div className="flex items-center justify-center gap-1.5">
+                        <button onClick={() => handleEdit(produk)} className="p-1.5 bg-amber-500/10 text-amber-500 rounded-lg hover:bg-amber-500 hover:text-white transition-all shadow-sm">
+                          <Edit2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button onClick={() => handleDelete(produk.id)} className="p-1.5 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -481,7 +482,7 @@ export default function ProdukPage() {
                     </div>
                   </div>
                 )}
-                
+
                 {/* Product Information Section */}
                 <div className="space-y-6">
 
@@ -497,9 +498,8 @@ export default function ProdukPage() {
                       value={form.nama_barang ?? ""}
                       onChange={(e) => handleInputChange('nama_barang', e.target.value)}
                       onBlur={() => handleBlur('nama_barang')}
-                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 ${
-                        errors.nama_barang ? 'border-red-500' : 'border-white/10'
-                      }`}
+                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 ${errors.nama_barang ? 'border-red-500' : 'border-white/10'
+                        }`}
                       required
                     />
                     {errors.nama_barang && (
@@ -508,7 +508,7 @@ export default function ProdukPage() {
                         {errors.nama_barang}
                       </p>
                     )}
-                      <p className="text-xs text-gray-300">Gunakan nama yang jelas dan menarik untuk menarik perhatian bidder</p>
+                    <p className="text-xs text-gray-300">Gunakan nama yang jelas dan menarik untuk menarik perhatian bidder</p>
                   </div>
 
                   {/* Auction Details */}
@@ -525,9 +525,8 @@ export default function ProdukPage() {
                         onChange={(e) => handleInputChange('tanggal', e.target.value)}
                         onBlur={() => handleBlur('tanggal')}
                         min={new Date().toISOString().split('T')[0]}
-                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 ${
-                          errors.tanggal ? 'border-red-500' : 'border-white/10'
-                        }`}
+                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 ${errors.tanggal ? 'border-red-500' : 'border-white/10'
+                          }`}
                         required
                       />
                       {errors.tanggal && (
@@ -555,9 +554,8 @@ export default function ProdukPage() {
                           onBlur={() => handleBlur('harga_awal')}
                           min="100000"
                           step="100000"
-                          className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 ${
-                            errors.harga_awal ? 'border-red-500' : 'border-white/10'
-                          }`}
+                          className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 ${errors.harga_awal ? 'border-red-500' : 'border-white/10'
+                            }`}
                           required
                         />
                       </div>
@@ -725,9 +723,8 @@ export default function ProdukPage() {
                       onChange={(e) => handleInputChange('deskripsi', e.target.value)}
                       onBlur={() => handleBlur('deskripsi')}
                       rows={8}
-                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 resize-none ${
-                        errors.deskripsi ? 'border-red-500' : 'border-white/10'
-                      }`}
+                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0138C9]/20 focus:border-[#0138C9] transition-all duration-200 bg-white/5 text-white placeholder:text-white/60 hover:bg-white/6 resize-none ${errors.deskripsi ? 'border-red-500' : 'border-white/10'
+                        }`}
                       required
                     />
                     {errors.deskripsi && (
@@ -768,8 +765,8 @@ export default function ProdukPage() {
                           )}
                         </p>
                         <p className="text-xs text-gray-300 text-center">
-                          Format: PNG, JPG, JPEG<br/>
-                          Ukuran maksimal: 5MB<br/>
+                          Format: PNG, JPG, JPEG<br />
+                          Ukuran maksimal: 5MB<br />
                           Rekomendasi: Foto dari berbagai sudut
                         </p>
                       </label>
@@ -778,7 +775,7 @@ export default function ProdukPage() {
                 </div>
 
                 {/* Submit Section */}
-                  <div className="border-t border-white/10 pt-6">
+                <div className="border-t border-white/10 pt-6">
                   <div className="bg-white/6 rounded-lg p-4 mb-6 text-white">
                     <div className="flex items-start gap-3">
                       <div className="w-5 h-5 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -799,11 +796,10 @@ export default function ProdukPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full py-4 rounded-xl text-white font-bold shadow-lg transition-all duration-200 flex items-center justify-center gap-3 ${
-                      isSubmitting
+                    className={`w-full py-4 rounded-xl text-white font-bold shadow-lg transition-all duration-200 flex items-center justify-center gap-3 ${isSubmitting
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-gradient-to-r from-[#0138C9] to-[#0A2472] hover:from-[#0A2472] hover:to-[#0138C9] hover:shadow-xl transform hover:-translate-y-0.5"
-                    }`}
+                      }`}
                   >
                     {isSubmitting ? (
                       <>

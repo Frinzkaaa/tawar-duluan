@@ -10,14 +10,22 @@ function LelangStatusBanner() {
       .then(data => setStatus(data.status))
       .catch(() => setStatus(null));
   }, []);
+
   if (!status) return null;
+
   return (
-    <div className={`w-full text-center py-2 mb-4 font-semibold text-sm rounded-lg shadow-md ${status === 'buka' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-      {status === 'buka' ? 'Lelang Sedang Dibuka! Silakan ajukan tawaran.' : 'Lelang Sedang Ditutup. Tidak dapat mengajukan tawaran.'}
+    <div className={`w-full max-w-4xl mx-auto backdrop-blur-md px-6 py-3 mb-8 rounded-2xl shadow-xl flex items-center justify-center gap-3 border animate-in fade-in slide-in-from-top-4 duration-700 ${status === 'buka'
+      ? 'bg-emerald-50/80 border-emerald-100 text-emerald-700'
+      : 'bg-rose-50/80 border-rose-100 text-rose-700'
+      }`}>
+      <div className={`w-2 h-2 rounded-full animate-pulse ${status === 'buka' ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+      <p className="text-xs font-black uppercase tracking-widest">
+        {status === 'buka' ? 'Lelang Sedang Dibuka • Ajukan Penawaran Anda Sekarang' : 'Lelang Sedang Ditutup • Nantikan Sesi Berikutnya'}
+      </p>
     </div>
   );
 }
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Car as CarIcon, Users, Settings, Calendar, Gauge, Search, Filter, TrendingUp, Clock, DollarSign, Sparkles, Heart } from 'lucide-react';
@@ -37,6 +45,10 @@ interface Product {
   kilometer?: number;
   kategori?: string;
   createdAt?: string;
+  isSold?: boolean;
+  _count?: {
+    bids: number;
+  };
 }
 
 // --- CATEGORY HELPERS (harus di atas komponen!) ---
@@ -68,19 +80,19 @@ function normalizeKey(s?: string): string {
 // mengubah berbagai bentuk kategori → slug utama
 export function formatKategori(input?: string): string {
   if (!input) return "semua-mobil";
-  
+
   const upper = String(input).toUpperCase();
-  
+
   // Jika input sudah enum value Prisma
   if (ENUM_TO_SLUG[upper]) {
     return ENUM_TO_SLUG[upper];
   }
-  
+
   // Jika input adalah slug, kembalikan
   if (SLUG_TO_ENUM[String(input).toLowerCase()]) {
     return String(input).toLowerCase();
   }
-  
+
   return "semua-mobil"; // default
 }
 
@@ -91,6 +103,7 @@ function ProductCard({ product, onBid, isLoved, onToggleLove }: {
   isLoved: boolean;
   onToggleLove: (produkId: string) => void;
 }) {
+  const router = useRouter();
   const [bidAmount, setBidAmount] = useState(product.harga_awal + 1000000);
   const [submitting, setSubmitting] = useState(false);
   const [showBidForm, setShowBidForm] = useState(false);
@@ -109,111 +122,133 @@ function ProductCard({ product, onBid, isLoved, onToggleLove }: {
 
   return (
     <div
-      className="group relative bg-white/90 backdrop-blur-xl rounded-2xl p-3 sm:p-4 shadow-lg hover:shadow-xl transition-all duration-500 border border-white/30 hover:border-white/50 hover:scale-[1.02] flex flex-col h-full overflow-hidden cursor-pointer
-      w-full max-w-xs mx-auto sm:max-w-sm md:max-w-none"
-      style={{ minWidth: 0 }}
+      onClick={() => !product.isSold && router.push(`/jelajahi/${product.id}`)}
+      className={`group relative bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 hover:shadow-xl transition-all duration-500 ${product.isSold ? 'opacity-75 grayscale' : 'cursor-pointer'}`}
     >
       {/* Image section */}
-      {product.image_url && (
-        <div className="relative mb-3 overflow-hidden rounded-xl shadow-md group-hover:shadow-lg transition-shadow duration-300">
-          <img
-            src={product.image_url}
-            alt={product.nama_barang}
-            className="w-full h-32 sm:h-36 md:h-40 object-cover transition-transform duration-500 group-hover:scale-105 rounded-xl"
-          />
-          {/* Badge Lelang kiri atas */}
-          <div className="absolute top-2 left-2">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-2 py-0.5 rounded-md text-xs font-bold shadow-sm">
-              Lelang
-            </div>
-          </div>
-          {/* Tombol love kanan atas */}
+      <div className="relative h-44 overflow-hidden">
+        <img
+          src={product.image_url || '/images/cars/placeholder.jpg'}
+          alt={product.nama_barang}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+          {product.isSold ? (
+            <span className="bg-gray-900/90 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest flex items-center gap-1">
+              Sold
+            </span>
+          ) : (
+            <>
+              <span className="bg-blue-600/90 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest flex items-center gap-1 shadow-lg shadow-blue-900/40">
+                Lelang
+              </span>
+              {(product._count?.bids || 0) >= 2 && (
+                <span className="bg-rose-500/90 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest flex items-center gap-1 shadow-lg shadow-rose-900/40">
+                  <TrendingUp className="w-2.5 h-2.5" />
+                  Hot
+                </span>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Love Button */}
+        {!product.isSold && (
           <button
-            aria-label={isLoved ? 'Hapus dari Watchlist' : 'Tambah ke Watchlist'}
-            className={`absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-pink-100 border border-pink-200 shadow transition z-10 ${isLoved ? 'text-pink-600' : 'text-gray-400'}`}
             onClick={e => { e.stopPropagation(); onToggleLove(product.id); }}
+            className={`absolute top-3 right-3 w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center transition-all duration-300 hover:scale-110 ${isLoved ? 'text-rose-500' : 'text-white'}`}
           >
-            <Heart fill={isLoved ? '#ec4899' : 'none'} strokeWidth={2.2} className="w-6 h-6" />
+            <Heart fill={isLoved ? 'currentColor' : 'none'} className="w-4 h-4" />
           </button>
-        </div>
-      )}
-
-      <div className="space-y-2 flex-grow min-h-[120px] sm:min-h-[140px] md:min-h-[160px]">
-        {/* Title */}
-        <h4 className="text-sm font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
-          {product.nama_barang}
-        </h4>
-
-        {/* Brand and specs */}
-        <div className="flex items-center justify-between text-xs text-gray-600">
-          {product.merk_mobil && <span className="font-medium text-blue-600">{product.merk_mobil}</span>}
-          {product.jumlah_seat && <span>{product.jumlah_seat} Seat</span>}
-        </div>
-
-        {/* Transmission */}
-        {product.transmisi && (
-          <div className="text-xs text-gray-500 capitalize">
-            {product.transmisi}
-          </div>
         )}
-
-        {/* Date */}
-        <div className="flex items-center gap-1 text-xs text-gray-500">
-          <Calendar className="w-3 h-3" />
-          <span>{new Date(product.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span>
-        </div>
-
-        {/* Price */}
-        <div className="pt-2 border-t border-gray-100">
-          <p className="text-sm font-bold text-gray-900">Rp {product.harga_awal.toLocaleString('id-ID')}</p>
-        </div>
       </div>
 
-      {/* Bid section */}
-      <div className="mt-3 pt-3 border-t border-gray-200/50">
-        {!showBidForm ? (
-          <button
-            onClick={() => setShowBidForm(true)}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-3 rounded-lg text-xs sm:text-sm transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
-          >
-            Ajukan Tawaran
-          </button>
-        ) : (
-          <div className="space-y-2">
-            <input
-              type="number"
-              placeholder="Tawaran Anda"
-              value={bidAmount}
-              onChange={(e) => setBidAmount(Number(e.target.value))}
-              className="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm"
-              min={product.harga_awal + 1}
-            />
-
-            <div className="flex gap-1">
-              <button
-                onClick={handleBid}
-                disabled={submitting}
-                className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-1.5 px-2 rounded-md text-xs sm:text-sm transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                {submitting ? (
-                  <div className="flex items-center justify-center gap-1">
-                    <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
-                    <span>Mengajukan...</span>
-                  </div>
-                ) : (
-                  'Kirim'
-                )}
-              </button>
-
-              <button
-                onClick={() => setShowBidForm(false)}
-                className="px-2 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md text-xs sm:text-sm transition-colors duration-300"
-              >
-                Batal
-              </button>
+      <div className="p-4">
+        {/* Info Area */}
+        <div className="mb-3">
+          <div className="flex items-center gap-1.5 mb-1">
+            <p className="text-[8px] font-black text-blue-600 uppercase tracking-widest line-clamp-1">
+              {product.merk_mobil || 'Unknown'} • {product.kategori?.replace(/_/g, ' ') || 'Mobil'}
+            </p>
+          </div>
+          <h4 className="text-sm font-black text-gray-900 truncate tracking-tight mb-1 group-hover:text-blue-600 transition-colors">
+            {product.nama_barang}
+          </h4>
+          <div className="flex items-center gap-3 text-[10px] text-gray-400 font-bold uppercase tracking-tight">
+            <div className="flex items-center gap-1">
+              <Calendar className="w-3 h-3" />
+              {product.tahun || '-'}
+            </div>
+            <div className="flex items-center gap-1">
+              <Users className="w-3 h-3" />
+              {product.jumlah_seat || '-'} Seat
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Price & Bid Stats */}
+        <div className="flex items-end justify-between mb-4 pb-3 border-b border-gray-50">
+          <div>
+            <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Bid Mulai</p>
+            <p className="text-base font-black text-blue-600 tracking-tighter leading-none">
+              Rp {product.harga_awal.toLocaleString('id-ID')}
+            </p>
+          </div>
+          {product._count && product._count.bids > 0 && (
+            <div className="text-right">
+              <p className="text-[8px] font-black text-emerald-500 px-2 py-0.5 bg-emerald-50 rounded-full inline-block">
+                {product._count.bids} Bids active
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Action Button */}
+        <div className="mt-1">
+          {product.isSold ? (
+            <div className="w-full bg-gray-100 text-gray-400 font-black py-2.5 rounded-xl text-[10px] text-center uppercase tracking-widest">
+              Unit Terjual
+            </div>
+          ) : !showBidForm ? (
+            <button
+              onClick={(e) => { e.stopPropagation(); setShowBidForm(true); }}
+              className="w-full bg-gray-900 border border-transparent text-white font-black py-2.5 rounded-xl text-[10px] hover:bg-black transition-all shadow-lg shadow-gray-200 active:scale-95 uppercase tracking-widest"
+            >
+              Ajukan Bid
+            </button>
+          ) : (
+            <div className="space-y-2 animate-in fade-in zoom-in-95 duration-300">
+              <div className="relative">
+                <DollarSign className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-blue-600" />
+                <input
+                  type="number"
+                  value={bidAmount}
+                  onChange={(e) => setBidAmount(Number(e.target.value))}
+                  onClick={e => e.stopPropagation()}
+                  className="w-full pl-8 pr-3 py-2 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-blue-100 outline-none text-xs font-black text-blue-600"
+                  min={product.harga_awal + 1}
+                />
+              </div>
+              <div className="flex gap-1.5" onClick={e => e.stopPropagation()}>
+                <button
+                  onClick={handleBid}
+                  disabled={submitting}
+                  className="flex-1 bg-blue-600 text-white font-black py-2 rounded-lg text-[10px] transition-all hover:bg-blue-700 active:scale-95 uppercase tracking-widest"
+                >
+                  {submitting ? '...' : 'Kirim'}
+                </button>
+                <button
+                  onClick={() => setShowBidForm(false)}
+                  className="px-3 bg-gray-100 text-gray-500 font-black py-2 rounded-lg text-[10px] transition-all hover:bg-gray-200 uppercase tracking-widest"
+                >
+                  Batal
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -256,7 +291,7 @@ function JelajahiContent() {
     formatKategori(searchParams.get("category") || "semua-mobil")
   );
   const [sortBy, setSortBy] = useState<string>('terbaru');
-  
+
   // Search & Filter states
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filterMerk, setFilterMerk] = useState<string>('');
@@ -265,36 +300,58 @@ function JelajahiContent() {
   const getFilteredProducts = (category: string) => {
     // Convert slug to enum value if needed
     const enumValue = SLUG_TO_ENUM[category.toLowerCase()];
-    
+
     let filtered = products;
-    
-    // Filter by category
-    if (category !== "semua-mobil" && enumValue) {
+
+    // Filter by category (Dynamic Logic)
+    if (category === "sedang-ramai") {
+      // Logic for Trending: Based on bid count (e.g., >= 2 bids) OR static category
+      filtered = filtered.filter(product => (product._count?.bids || 0) >= 2 || product.kategori === "RAMAI");
+    } else if (category === "dibawah-100-juta") {
+      // Logic for Budget: Dynamic price check
+      filtered = filtered.filter(product => product.harga_awal < 100000000 || product.kategori === "DIBAWAH100");
+    } else if (category === "segera-berakhir") {
+      // Logic for Ending Soon: Next 3 days
+      const soon = new Date();
+      soon.setDate(soon.getDate() + 3);
+      filtered = filtered.filter(product =>
+        (new Date(product.tanggal) <= soon && new Date(product.tanggal) >= new Date()) ||
+        product.kategori === "SEGERA"
+      );
+    } else if (category === "baru-masuk") {
+      // Logic for New Arrival: Last 7 days
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      filtered = filtered.filter(product =>
+        (new Date(product.createdAt || "") >= weekAgo) ||
+        product.kategori === "BARU"
+      );
+    } else if (category !== "semua-mobil" && enumValue) {
       filtered = filtered.filter(product => product.kategori === enumValue);
     }
-    
+
     // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter(product =>
         product.nama_barang.toLowerCase().includes(query) ||
         product.merk_mobil?.toLowerCase().includes(query) ||
         product.tipe_mobil?.toLowerCase().includes(query) ||
         product.deskripsi.toLowerCase().includes(query)
       );
     }
-    
+
     // Filter by merk
     if (filterMerk && filterMerk !== '') {
-      filtered = filtered.filter(product => 
+      filtered = filtered.filter(product =>
         product.merk_mobil?.toLowerCase() === filterMerk.toLowerCase()
       );
     }
-    
+
     // Filter by harga
     if (filterHarga && filterHarga !== '') {
       filtered = filtered.filter(product => {
-        switch(filterHarga) {
+        switch (filterHarga) {
           case 'dibawah100':
             return product.harga_awal < 100000000;
           case '100-200':
@@ -308,7 +365,7 @@ function JelajahiContent() {
         }
       });
     }
-    
+
     // Sort
     if (sortBy === 'terbaru') {
       filtered.sort((a, b) => new Date(b.createdAt || '').getTime() - new Date(a.createdAt || '').getTime());
@@ -317,7 +374,7 @@ function JelajahiContent() {
     } else if (sortBy === 'termahal') {
       filtered.sort((a, b) => b.harga_awal - a.harga_awal);
     }
-    
+
     return filtered;
   };
 
@@ -398,131 +455,132 @@ function JelajahiContent() {
       <div className="container mx-auto px-4">
         <LelangStatusBanner />
       </div>
-      {/* Modern Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute inset-0 bg-[url('/images/car-pattern.png')] opacity-10"></div>
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-blue-900 to-blue-800"></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-30"></div>
 
-        <div className="relative container mx-auto px-4 py-16 lg:py-24">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6">
-              <Sparkles className="w-4 h-4" />
-              Temukan Mobil Impian Anda
-            </div>
+        {/* Decorative Light Orbs */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px] -mr-48 -mt-48" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/20 rounded-full blur-[100px] -ml-32 -mb-32" />
 
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
-              Jelajahi Koleksi
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                Mobil Premium
-              </span>
-            </h1>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 border border-white/20 text-white">
+            <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+            Premium Auction Collection
+          </div>
 
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Temukan berbagai pilihan mobil berkualitas dengan harga terbaik melalui sistem lelang modern kami
-            </p>
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter leading-[1.1]">
+            Temukan Unit <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-100">
+              Terbaik Hari Ini
+            </span>
+          </h1>
 
-            {/* Search and Filter Bar */}
-            <div className="max-w-4xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-white/20">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Cari mobil..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white/90 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400 placeholder-gray-500"
-                  />
-                </div>
+          <p className="text-blue-100 text-base md:text-lg mb-12 max-w-xl mx-auto font-medium opacity-80 leading-relaxed">
+            Berbagai pilihan mobil berkualitas dengan sistem lelang yang transparan dan aman.
+          </p>
 
-                <select 
-                  value={filterMerk} 
-                  onChange={(e) => setFilterMerk(e.target.value)}
-                  className="px-4 py-3 bg-white/90 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                >
-                  <option value="">Semua Merk</option>
-                  {getMerks().map((merk) => (
-                    <option key={merk} value={merk}>
-                      {merk}
-                    </option>
-                  ))}
-                </select>
-
-                <select 
-                  value={filterHarga} 
-                  onChange={(e) => setFilterHarga(e.target.value)}
-                  className="px-4 py-3 bg-white/90 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                >
-                  <option value="">Semua Harga</option>
-                  <option value="dibawah100">Dibawah 100jt</option>
-                  <option value="100-200">100jt - 200jt</option>
-                  <option value="200-300">200jt - 300jt</option>
-                  <option value="diatas300">Diatas 300jt</option>
-                </select>
-
-                <select 
-                  value={sortBy} 
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-3 bg-white/90 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                >
-                  <option value="terbaru">Terbaru</option>
-                  <option value="termurah">Termurah</option>
-                  <option value="termahal">Termahal</option>
-                </select>
+          {/* Search Box */}
+          <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-xl p-6 rounded-[32px] border border-white/20 shadow-2xl">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-focus-within:text-blue-400 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="Nama unit..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-white/90 pl-11 pr-4 py-3.5 rounded-xl text-xs font-black text-gray-900 outline-none focus:ring-4 focus:ring-blue-500/20 transition-all placeholder:text-gray-400 uppercase tracking-tight"
+                />
               </div>
+
+              <select
+                value={filterMerk}
+                onChange={(e) => setFilterMerk(e.target.value)}
+                className="w-full bg-white/90 px-4 py-3.5 rounded-xl text-xs font-black text-gray-900 outline-none focus:ring-4 focus:ring-blue-500/20 transition-all uppercase tracking-tight appearance-none"
+              >
+                <option value="">Semua Merk</option>
+                {getMerks().map((merk) => (
+                  <option key={merk} value={merk}>{merk}</option>
+                ))}
+              </select>
+
+              <select
+                value={filterHarga}
+                onChange={(e) => setFilterHarga(e.target.value)}
+                className="w-full bg-white/90 px-4 py-3.5 rounded-xl text-xs font-black text-gray-900 outline-none focus:ring-4 focus:ring-blue-500/20 transition-all uppercase tracking-tight appearance-none"
+              >
+                <option value="">Harga (Semua)</option>
+                <option value="dibawah100">{'< 100jt'}</option>
+                <option value="100-200">100jt - 200jt</option>
+                <option value="200-300">200jt - 300jt</option>
+                <option value="diatas300">{'> 300jt'}</option>
+              </select>
+
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full bg-blue-600 text-white px-4 py-3.5 rounded-xl text-xs font-black outline-none focus:ring-4 focus:ring-blue-500/20 transition-all uppercase tracking-tight"
+              >
+                <option value="terbaru">Urut: Terbaru</option>
+                <option value="termurah">Urut: Termurah</option>
+                <option value="termahal">Urut: Termahal</option>
+              </select>
             </div>
           </div>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      <main className="container mx-auto p-4 -mt-8 relative z-10">
-        {/* Banner status lelang di atas semua konten */}
-        <div className="mb-4">
-          <LelangStatusBanner />
-        </div>
-        {/* Stats Section */}
+      <div className="mb-12">
+        <LelangStatusBanner />
+      </div>
 
-        <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 rounded-full text-sm font-medium mb-4">
-              <TrendingUp className="w-4 h-4" />
-              Kategori Populer
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Temukan Mobil Sesuai Kebutuhan Anda</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Jelajahi berbagai kategori mobil yang sedang diminati pengguna kami</p>
+      <main className="container mx-auto p-4 relative z-10 mt-[-2rem]">
+
+        {/* Categories Section Heading */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">
+            <TrendingUp className="w-3.5 h-3.5" />
+            Featured Categories
           </div>
+          <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3 tracking-tighter">Unit Pilihan Terbaru</h2>
+          <p className="text-gray-500 max-w-xl mx-auto text-sm font-medium">Jelajahi berbagai kategori mobil yang sedang diminati.</p>
+        </div>
 
         {/* section semua mobil */}
-        <section id="semua-mobil" className="py-8">
-          <div className="flex items-center justify-between mb-8">
+        <section id="semua-mobil" className="py-12 border-t border-gray-50">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Semua Mobil</h2>
-              <p className="text-gray-600">Temukan mobil impian Anda dari berbagai pilihan</p>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-200">
+                  <CarIcon className="w-4 h-4 text-white" />
+                </div>
+                <h3 className="text-2xl font-black text-gray-900 tracking-tighter">Semua Unit</h3>
+              </div>
+              <p className="text-gray-500 text-xs font-medium">Koleksi lengkap armada berkualitas Tawar Duluan.</p>
             </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
-              <span>{getProductsByCategory('semua-mobil').length} mobil ditemukan</span>
+            <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+              <span className="text-blue-600">{getProductsByCategory('semua-mobil').length}</span> Units Available
             </div>
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-gray-600">Memuat koleksi mobil...</p>
+            <div className="flex items-center justify-center py-20">
+              <div className="flex flex-col items-center">
+                <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Loading Collection...</p>
               </div>
             </div>
           ) : getProductsByCategory('semua-mobil').length === 0 ? (
-            <div className="text-center py-16">
-              <CarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Tidak ada mobil tersedia</h3>
-              <p className="text-gray-600">Cek kembali nanti untuk koleksi mobil terbaru</p>
+            <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+              <CarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-black text-gray-900 mb-1 uppercase tracking-tight">Tidak Ada Unit</h3>
+              <p className="text-gray-500 text-xs">Cek kembali nanti untuk koleksi terbaru kami.</p>
             </div>
           ) : (
             <div
-              className="flex flex-row gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 sm:overflow-x-visible"
-              style={{ WebkitOverflowScrolling: 'touch' }}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
             >
               {getProductsByCategory('semua-mobil').map((product) => (
                 <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
@@ -539,204 +597,176 @@ function JelajahiContent() {
         </section>
         {/* Section Divider */}
         <div className="py-16">
-          
-        {/* section sedang ramai */}
-        <section id="sedang-ramai" className="py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+
+          {/* section sedang ramai */}
+          <section id="sedang-ramai" className="py-12 border-t border-gray-50">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-rose-100">
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Sedang Ramai</h3>
-                  <p className="text-gray-600 text-sm">Mobil dengan aktivitas tawaran tertinggi</p>
+                  <h3 className="text-2xl font-black text-gray-900 tracking-tighter">Sedang Ramai</h3>
+                  <p className="text-gray-500 text-xs font-medium">Unit dengan aktivitas tawaran tertinggi saat ini.</p>
                 </div>
               </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
-              <span>{getProductsByCategory('sedang-ramai').length} mobil ditemukan</span>
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-gray-600">Memuat koleksi mobil...</p>
+              <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                Found <span className="text-rose-500">{getProductsByCategory('sedang-ramai').length}</span> High-Interest Units
               </div>
             </div>
-          ) : getProductsByCategory('sedang-ramai').length === 0 ? (
-            <div className="text-center py-16">
-              <CarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Tidak ada mobil tersedia</h3>
-              <p className="text-gray-600">Cek kembali nanti untuk koleksi mobil terbaru</p>
-            </div>
-          ) : (
-            <div
-              className="flex flex-row gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 sm:overflow-x-visible"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              {getProductsByCategory('sedang-ramai').map((product) => (
-                <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
+
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-rose-100 border-t-rose-500 rounded-full animate-spin"></div>
+              </div>
+            ) : getProductsByCategory('sedang-ramai').length === 0 ? (
+              <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                <CarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-black text-gray-900 mb-1">No Hot Deals</h3>
+                <p className="text-gray-500 text-xs">Belum ada unit yang sedang ramai saat ini.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {getProductsByCategory('sedang-ramai').map((product) => (
                   <ProductCard
+                    key={product.id}
                     product={product}
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
                   />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+                ))}
+              </div>
+            )}
+          </section>
 
           {/* segera berakhir */}
-          <section id="segera-berakhir" className="py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+          <section id="segera-berakhir" className="py-12 border-t border-gray-50">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-100">
                   <Clock className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Segera Berakhir</h3>
-                  <p className="text-gray-600 text-sm">Lelang yang akan berakhir dalam waktu dekat</p>
+                  <h3 className="text-2xl font-black text-gray-900 tracking-tighter">Segera Berakhir</h3>
+                  <p className="text-gray-500 text-xs font-medium">Jangan sampai ketinggalan, lelang segera ditutup.</p>
                 </div>
               </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
-              <span>{getProductsByCategory('segera-berakhir').length} mobil ditemukan</span>
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-gray-600">Memuat koleksi mobil...</p>
+              <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                <span className="text-orange-500">{getProductsByCategory('segera-berakhir').length}</span> Units Expiring
               </div>
             </div>
-          ) : getProductsByCategory('segera-berakhir').length === 0 ? (
-            <div className="text-center py-16">
-              <CarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Tidak ada mobil tersedia</h3>
-              <p className="text-gray-600">Cek kembali nanti untuk koleksi mobil terbaru</p>
-            </div>
-          ) : (
-            <div
-              className="flex flex-row gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 sm:overflow-x-visible"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              {getProductsByCategory('segera-berakhir').map((product) => (
-                <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
+
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-orange-100 border-t-orange-500 rounded-full animate-spin"></div>
+              </div>
+            ) : getProductsByCategory('segera-berakhir').length === 0 ? (
+              <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                <CarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-black text-gray-900 mb-1">Time's Up</h3>
+                <p className="text-gray-500 text-xs">Semua lelang masih memiliki waktu yang cukup.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {getProductsByCategory('segera-berakhir').map((product) => (
                   <ProductCard
+                    key={product.id}
                     product={product}
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
                   />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+                ))}
+              </div>
+            )}
+          </section>
 
           {/* dibawah 100 juta */}
-          <section id="dibawah-100-juta" className="py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+          <section id="dibawah-100-juta" className="py-12 border-t border-gray-50">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-100">
                   <DollarSign className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Di Bawah 100 Juta</h3>
-                  <p className="text-gray-600 text-sm">Mobil dengan harga terjangkau dan berkualitas</p>
+                  <h3 className="text-2xl font-black text-gray-900 tracking-tighter">Budget Friendly</h3>
+                  <p className="text-gray-500 text-xs font-medium">Pilihan ekonomis di bawah 100 Juta.</p>
                 </div>
               </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
-              <span>{getProductsByCategory('dibawah-100-juta').length} mobil ditemukan</span>
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-gray-600">Memuat koleksi mobil...</p>
+              <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                <span className="text-emerald-500">{getProductsByCategory('dibawah-100-juta').length}</span> Affordable Units
               </div>
             </div>
-          ) : getProductsByCategory('dibawah-100-juta').length === 0 ? (
-            <div className="text-center py-16">
-              <CarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Tidak ada mobil tersedia</h3>
-              <p className="text-gray-600">Cek kembali nanti untuk koleksi mobil terbaru</p>
-            </div>
-          ) : (
-            <div
-              className="flex flex-row gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 sm:overflow-x-visible"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              {getProductsByCategory('dibawah-100-juta').map((product) => (
-                <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
+
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-emerald-100 border-t-emerald-500 rounded-full animate-spin"></div>
+              </div>
+            ) : getProductsByCategory('dibawah-100-juta').length === 0 ? (
+              <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                <CarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-black text-gray-900 mb-1">Out of Stock</h3>
+                <p className="text-gray-500 text-xs">Belum ada unit di kategori ini.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {getProductsByCategory('dibawah-100-juta').map((product) => (
                   <ProductCard
+                    key={product.id}
                     product={product}
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
                   />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+                ))}
+              </div>
+            )}
+          </section>
 
           {/* baru masuk */}
-          <section id="baru-masuk" className="py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+          <section id="baru-masuk" className="py-12 border-t border-gray-50">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-100">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Baru Masuk</h3>
-                  <p className="text-gray-600 text-sm">Koleksi mobil terbaru di platform kami</p>
+                  <h3 className="text-2xl font-black text-gray-900 tracking-tighter">Baru Masuk</h3>
+                  <p className="text-gray-500 text-xs font-medium">Koleksi armada terbaru minggu ini.</p>
                 </div>
               </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-500">
-              <span>{getProductsByCategory('baru-masuk').length} mobil ditemukan</span>
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-gray-600">Memuat koleksi mobil...</p>
+              <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                <span className="text-indigo-600">{getProductsByCategory('baru-masuk').length}</span> New Arrivals
               </div>
             </div>
-          ) : getProductsByCategory('baru-masuk').length === 0 ? (
-            <div className="text-center py-16">
-              <CarIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Tidak ada mobil tersedia</h3>
-              <p className="text-gray-600">Cek kembali nanti untuk koleksi mobil terbaru</p>
-            </div>
-          ) : (
-            <div
-              className="flex flex-row gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 sm:overflow-x-visible"
-              style={{ WebkitOverflowScrolling: 'touch' }}
-            >
-              {getProductsByCategory('baru-masuk').map((product) => (
-                <div key={product.id} className="min-w-[260px] max-w-xs w-full sm:min-w-0 sm:max-w-none">
+
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-indigo-100 border-t-indigo-500 rounded-full animate-spin"></div>
+              </div>
+            ) : getProductsByCategory('baru-masuk').length === 0 ? (
+              <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                <CarIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-black text-gray-900 mb-1">Nothing New</h3>
+                <p className="text-gray-500 text-xs">Belum ada unit baru untuk minggu ini.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {getProductsByCategory('baru-masuk').map((product) => (
                   <ProductCard
+                    key={product.id}
                     product={product}
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
                   />
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+                ))}
+              </div>
+            )}
+          </section>
         </div>
-      </main>
+      </main >
       <Footer />
     </>
   );

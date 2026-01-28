@@ -61,7 +61,7 @@ export default function AdminBidsPage() {
         body: JSON.stringify({ status: "approved" }),
       });
       if (!res.ok) throw new Error("Gagal approve bid");
-      
+
       setMessage({ type: "success", text: "Bid berhasil di-approve!" });
       fetchBids();
     } catch (error) {
@@ -81,7 +81,7 @@ export default function AdminBidsPage() {
         body: JSON.stringify({ status: "rejected" }),
       });
       if (!res.ok) throw new Error("Gagal reject bid");
-      
+
       setMessage({ type: "success", text: "Bid berhasil di-reject!" });
       fetchBids();
     } catch (error) {
@@ -92,8 +92,8 @@ export default function AdminBidsPage() {
     }
   };
 
-  const filteredBids = activeFilter === "semua" 
-    ? bids 
+  const filteredBids = activeFilter === "semua"
+    ? bids
     : bids.filter(b => b.status === activeFilter);
 
   const formatRupiah = (amount: number) => {
@@ -120,14 +120,14 @@ export default function AdminBidsPage() {
     <main className="flex-1 p-6 min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8 pb-6 border-b border-white/10">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="p-2.5 bg-blue-500/20 rounded-lg">
-              <TrendingUp className="w-6 h-6 text-blue-400" />
+        <div className="mb-6 pb-4 border-b border-white/5">
+          <div className="flex items-center gap-3 mb-1">
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <TrendingUp className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-white">Manajemen Bid (Tawaran)</h1>
-              <p className="text-gray-300 text-sm">Approve atau tolak tawaran dari user</p>
+              <h1 className="text-xl font-black text-white uppercase tracking-tighter">Manajemen Bid</h1>
+              <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest opacity-60">Kelola tawaran lelang dari user</p>
             </div>
           </div>
         </div>
@@ -135,47 +135,45 @@ export default function AdminBidsPage() {
         {/* Message Alert */}
         {message && (
           <div
-            className={`mb-6 p-4 rounded-lg flex items-start gap-3 ${
-              message.type === "success"
-                ? "bg-green-900/30 border border-green-500 text-green-200"
-                : "bg-red-900/30 border border-red-500 text-red-200"
-            }`}
+            className={`mb-4 p-3 rounded-xl flex items-center gap-3 ${message.type === "success"
+                ? "bg-green-500/10 border border-green-500/20 text-green-400"
+                : "bg-red-500/10 border border-red-500/20 text-red-400"
+              }`}
           >
-            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-            <p className="text-sm">{message.text}</p>
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <p className="text-[11px] font-bold uppercase tracking-tight">{message.text}</p>
           </div>
         )}
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-1.5 mb-5">
           {(["semua", "pending", "approved", "rejected"] as const).map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                activeFilter === filter
-                  ? "bg-white/10 text-white"
-                  : "bg-white/6 text-white/80 hover:bg-white/10"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${activeFilter === filter
+                  ? "bg-white text-blue-900"
+                  : "bg-white/5 text-white/60 hover:bg-white/10"
+                }`}
             >
-              {filter === "semua" ? "Semua Bid" : filter === "pending" ? "Menunggu" : filter === "approved" ? "Disetujui" : "Ditolak"}
+              {filter === "semua" ? "SEMUA" : filter === "pending" ? "MENUNGGU" : filter === "approved" ? "DISETUJUI" : "DITOLAK"}
             </button>
           ))}
         </div>
 
         {/* Table */}
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl overflow-hidden border border-white/20">
+        <div className="bg-[#1e293b]/50 backdrop-blur-md rounded-2xl overflow-hidden border border-white/5 shadow-2xl">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="text-xs text-gray-300 uppercase tracking-wider">
-                  <th className="py-3 px-6 text-left">User</th>
-                  <th className="py-3 px-6 text-left">Produk</th>
-                  <th className="py-3 px-6 text-right">Harga Awal</th>
-                  <th className="py-3 px-6 text-right">Jumlah Bid</th>
-                  <th className="py-3 px-6 text-center">Status</th>
-                  <th className="py-3 px-6 text-left">Tanggal</th>
-                  <th className="py-3 px-6 text-center">Aksi</th>
+                <tr className="bg-white/5 border-b border-white/5 font-black text-[9px] text-gray-400 uppercase tracking-[0.2em]">
+                  <th className="py-4 px-4">User</th>
+                  <th className="py-4 px-4">Produk</th>
+                  <th className="py-4 px-4 text-right">Harga Awal</th>
+                  <th className="py-4 px-4 text-right">Nilai Bid</th>
+                  <th className="py-4 px-4 text-center">Status</th>
+                  <th className="py-4 px-4">Tanggal</th>
+                  <th className="py-4 px-4 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -194,52 +192,54 @@ export default function AdminBidsPage() {
                   filteredBids.map((bid) => {
                     const statusColor = getStatusColor(bid.status);
                     return (
-                      <tr key={bid.id} className="border-t border-white/6 hover:bg-white/5 transition">
-                        <td className="py-4 px-6">
-                          <div>
-                            <p className="text-white font-medium">{bid.user.name}</p>
-                            <p className="text-xs text-gray-400">{bid.user.email}</p>
+                      <tr key={bid.id} className="hover:bg-white/[0.02] transition-colors group">
+                        <td className="py-3 px-4">
+                          <div className="flex flex-col">
+                            <p className="text-xs font-black text-white group-hover:text-blue-400 transition-colors uppercase tracking-tight">{bid.user.name}</p>
+                            <p className="text-[9px] font-bold text-gray-500 uppercase">{bid.user.email}</p>
                           </div>
                         </td>
-                        <td className="py-4 px-6 text-gray-300">{bid.produk.nama_barang}</td>
-                        <td className="py-4 px-6 text-right text-gray-300">{formatRupiah(bid.produk.harga_awal)}</td>
-                        <td className="py-4 px-6 text-right text-green-300 font-semibold">{formatRupiah(bid.bidAmount)}</td>
-                        <td className="py-4 px-6 text-center">
-                          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ring-1 ${statusColor.bg} ${statusColor.text}`}>
+                        <td className="py-3 px-4">
+                          <p className="text-[10px] font-bold text-gray-300 uppercase tracking-tight">{bid.produk.nama_barang}</p>
+                        </td>
+                        <td className="py-3 px-4 text-right text-xs font-medium text-gray-400">{formatRupiah(bid.produk.harga_awal)}</td>
+                        <td className="py-3 px-4 text-right text-xs font-black text-green-400 tracking-tight">{formatRupiah(bid.bidAmount)}</td>
+                        <td className="py-3 px-4 text-center">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${statusColor.bg} ${statusColor.text} ${statusColor.bg.replace('bg-', 'border-').replace('300', '400')}`}>
                             {statusColor.label}
                           </span>
                         </td>
-                        <td className="py-4 px-6 text-gray-300">
+                        <td className="py-3 px-4 text-[10px] font-bold text-gray-500 uppercase">
                           {new Date(bid.createdAt).toLocaleDateString("id-ID")}
                         </td>
-                        <td className="py-4 px-6 text-center whitespace-nowrap space-x-2">
+                        <td className="py-3 px-4 text-center whitespace-nowrap">
                           {bid.status === "pending" ? (
-                            <>
+                            <div className="flex items-center justify-center gap-1.5">
                               <button
                                 onClick={() => handleApprove(bid.id)}
                                 disabled={isProcessing === bid.id}
-                                className="inline-flex items-center gap-1 px-3 py-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 text-white rounded-lg text-xs font-semibold transition"
+                                className="p-1.5 bg-green-500/10 text-green-500 rounded-lg hover:bg-green-500 hover:text-white transition-all shadow-sm active:scale-90"
+                                title="Approve"
                               >
                                 {isProcessing === bid.id ? (
-                                  <Loader2 className="w-3 h-3 animate-spin" />
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
                                 ) : (
-                                  <CheckCircle className="w-3 h-3" />
+                                  <CheckCircle className="w-3.5 h-3.5" />
                                 )}
-                                Approve
                               </button>
                               <button
                                 onClick={() => handleReject(bid.id)}
                                 disabled={isProcessing === bid.id}
-                                className="inline-flex items-center gap-1 px-3 py-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white rounded-lg text-xs font-semibold transition"
+                                className="p-1.5 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm active:scale-90"
+                                title="Reject"
                               >
                                 {isProcessing === bid.id ? (
-                                  <Loader2 className="w-3 h-3 animate-spin" />
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
                                 ) : (
-                                  <XCircle className="w-3 h-3" />
+                                  <XCircle className="w-3.5 h-3.5" />
                                 )}
-                                Reject
                               </button>
-                            </>
+                            </div>
                           ) : (
                             <span className="text-xs text-gray-400">—</span>
                           )}

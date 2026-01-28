@@ -18,9 +18,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     console.log("REQUEST BODY:", body);
-    
+
     const { email, password } = body;
-    
+
     if (!email || !password) {
       console.log("Missing email or password");
       return NextResponse.json({ error: "Email dan password harus diisi" }, { status: 400 });
@@ -28,12 +28,12 @@ export async function POST(req: Request) {
 
     console.log("Mencari user dengan email:", email);
     const user = await prisma.user.findUnique({ where: { email } });
-    
+
     if (!user) {
       console.log("User tidak ditemukan");
       return NextResponse.json({ error: "Email tidak ditemukan" }, { status: 400 });
     }
-    
+
     if (user.password !== password) {
       console.log("Password salah");
       return NextResponse.json({ error: "Password salah" }, { status: 400 });
@@ -51,11 +51,12 @@ export async function POST(req: Request) {
       .sign(new TextEncoder().encode(process.env.JWT_SECRET!));
 
     const res = NextResponse.json({ success: true, role: user.role });
+    const cookieName = user.role === "admin" ? "admin_token" : "token";
     res.headers.set(
       "Set-Cookie",
-      `token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800`
+      `${cookieName}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800`
     );
-    console.log("Login successful, returning response");
+    console.log(`Login successful for ${user.role}, returning response with ${cookieName}`);
     return res;
   } catch (error: any) {
     console.error("LOGIN API ERROR:", error);

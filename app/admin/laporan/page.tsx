@@ -16,7 +16,26 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Loader2,
+  PieChart as PieIcon,
 } from "lucide-react";
+
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  AreaChart,
+  Area
+} from 'recharts';
 
 interface Produk {
   id: string;
@@ -24,6 +43,7 @@ interface Produk {
   harga_awal: number;
   tanggal: string;
   kategori?: string;
+  merk_mobil?: string;
   createdAt: string;
 }
 
@@ -44,92 +64,94 @@ interface Analytics {
   hargaTertinggi: number;
   hargaTerendah: number;
   topProducts: Produk[];
+  brandDistribution: { name: string; value: number }[];
+  monthlyTrends: { name: string; products: number; bids: number }[];
 }
 
 // Komponen utama
 export default function HalamanLaporan() {
   const handleGeneratePDF = () => {
-  if (!analytics) return;
+    if (!analytics) return;
 
-  const doc = new jsPDF("p", "mm", "a4");
+    const doc = new jsPDF("p", "mm", "a4");
 
-  /* ================= HEADER ================= */
-  doc.setFontSize(16);
-  doc.text("LAPORAN ANALITIK LELANG MOBIL", 14, 15);
+    /* ================= HEADER ================= */
+    doc.setFontSize(16);
+    doc.text("LAPORAN ANALITIK LELANG MOBIL", 14, 15);
 
-  doc.setFontSize(10);
-  doc.setTextColor(100);
-  doc.text(
-    `Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`,
-    14,
-    22
-  );
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(
+      `Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`,
+      14,
+      22
+    );
 
-  /* ================= SUMMARY ================= */
-  doc.setTextColor(0);
-  doc.setFontSize(12);
-  doc.text("Ringkasan Statistik", 14, 32);
+    /* ================= SUMMARY ================= */
+    doc.setTextColor(0);
+    doc.setFontSize(12);
+    doc.text("Ringkasan Statistik", 14, 32);
 
-  autoTable(doc,{
-    startY: 36,
-    head: [["Keterangan", "Nilai"]],
-    body: [
-      ["Total Produk", analytics.totalProduk.toString()],
-      ["Produk Bulan Ini", analytics.produkBulanIni.toString()],
-      ["Total Tawaran", analytics.totalBid.toString()],
-      ["Tawaran Bulan Ini", analytics.bidBulanIni.toString()],
-      [
-        "Nilai Total Lelang",
-        `Rp ${(analytics.totalNilaiAuction / 1_000_000).toFixed(0)}M`,
+    autoTable(doc, {
+      startY: 36,
+      head: [["Keterangan", "Nilai"]],
+      body: [
+        ["Total Produk", analytics.totalProduk.toString()],
+        ["Produk Bulan Ini", analytics.produkBulanIni.toString()],
+        ["Total Tawaran", analytics.totalBid.toString()],
+        ["Tawaran Bulan Ini", analytics.bidBulanIni.toString()],
+        [
+          "Nilai Total Lelang",
+          `Rp ${(analytics.totalNilaiAuction / 1_000_000).toFixed(0)}M`,
+        ],
+        [
+          "Rata-rata Tawaran",
+          `Rp ${(analytics.averageBidAmount / 1_000_000).toFixed(1)}M`,
+        ],
+        [
+          "Harga Tertinggi",
+          `Rp ${(analytics.hargaTertinggi / 1_000_000).toFixed(0)}M`,
+        ],
+        [
+          "Harga Terendah",
+          `Rp ${(analytics.hargaTerendah / 1_000_000).toFixed(0)}M`,
+        ],
       ],
-      [
-        "Rata-rata Tawaran",
-        `Rp ${(analytics.averageBidAmount / 1_000_000).toFixed(1)}M`,
-      ],
-      [
-        "Harga Tertinggi",
-        `Rp ${(analytics.hargaTertinggi / 1_000_000).toFixed(0)}M`,
-      ],
-      [
-        "Harga Terendah",
-        `Rp ${(analytics.hargaTerendah / 1_000_000).toFixed(0)}M`,
-      ],
-    ],
-  });
+    });
 
-  /* ================= KATEGORI ================= */
-  const kategoriY = (doc as any).lastAutoTable.finalY + 10;
-  doc.text("Distribusi Kategori", 14, kategoriY);
+    /* ================= KATEGORI ================= */
+    const kategoriY = (doc as any).lastAutoTable.finalY + 10;
+    doc.text("Distribusi Kategori", 14, kategoriY);
 
-  autoTable(doc,{
-    startY: kategoriY + 4,
-    head: [["Kategori", "Jumlah Produk"]],
-    body: Object.entries(analytics.kategoriDistribution).map(
-      ([kategori, jumlah]) => [kategori, jumlah.toString()]
-    ),
-  });
+    autoTable(doc, {
+      startY: kategoriY + 4,
+      head: [["Kategori", "Jumlah Produk"]],
+      body: Object.entries(analytics.kategoriDistribution).map(
+        ([kategori, jumlah]) => [kategori, jumlah.toString()]
+      ),
+    });
 
-  /* ================= TOP PRODUK ================= */
-  const topProdukY = (doc as any).lastAutoTable.finalY + 10;
-  doc.text("Top 5 Produk Berdasarkan Harga", 14, topProdukY);
+    /* ================= TOP PRODUK ================= */
+    const topProdukY = (doc as any).lastAutoTable.finalY + 10;
+    doc.text("Top 5 Produk Berdasarkan Harga", 14, topProdukY);
 
-   autoTable(doc,{
-    startY: topProdukY + 4,
-    head: [["No", "Nama Produk", "Harga", "Kategori", "Tanggal"]],
-    body: analytics.topProducts.map((p, i) => [
-      (i + 1).toString(),
-      p.nama_barang,
-      `Rp ${(p.harga_awal / 1_000_000).toFixed(0)}M`,
-      p.kategori || "Umum",
-      new Date(p.createdAt).toLocaleDateString("id-ID"),
-    ]),
-  });
+    autoTable(doc, {
+      startY: topProdukY + 4,
+      head: [["No", "Nama Produk", "Harga", "Kategori", "Tanggal"]],
+      body: analytics.topProducts.map((p, i) => [
+        (i + 1).toString(),
+        p.nama_barang,
+        `Rp ${(p.harga_awal / 1_000_000).toFixed(0)}M`,
+        p.kategori || "Umum",
+        new Date(p.createdAt).toLocaleDateString("id-ID"),
+      ]),
+    });
 
-  /* ================= SAVE ================= */
-  doc.save(
-    `laporan-analitik-${new Date().toISOString().slice(0, 10)}.pdf`
-  );
-};
+    /* ================= SAVE ================= */
+    doc.save(
+      `laporan-analitik-${new Date().toISOString().slice(0, 10)}.pdf`
+    );
+  };
 
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -184,6 +206,32 @@ export default function HalamanLaporan() {
         hargaTertinggi,
         hargaTerendah,
         topProducts,
+        brandDistribution: Object.entries(
+          produk.reduce((acc: Record<string, number>, p) => {
+            const brand = p.merk_mobil || "Lainnya";
+            acc[brand] = (acc[brand] || 0) + 1;
+            return acc;
+          }, {})
+        ).map(([name, value]) => ({ name, value })),
+        monthlyTrends: Array.from({ length: 6 }).map((_, i) => {
+          const date = new Date();
+          date.setMonth(date.getMonth() - (5 - i));
+          const monthName = date.toLocaleDateString('id-ID', { month: 'short' });
+          const start = new Date(date.getFullYear(), date.getMonth(), 1);
+          const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+          return {
+            name: monthName,
+            products: produk.filter(p => {
+              const d = new Date(p.createdAt);
+              return d >= start && d <= end;
+            }).length,
+            bids: bids.filter(b => {
+              const d = new Date(b.createdAt);
+              return d >= start && d <= end;
+            }).length,
+          };
+        })
       });
     } catch (error) {
       console.error("Gagal mengambil data:", error);
@@ -213,156 +261,226 @@ export default function HalamanLaporan() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
       <div className="max-w-7xl mx-auto p-8">
-      {/* Header */}
-      <div className="mb-8 pb-6 border-b border-white/10 flex items-start justify-between">
-  <div>
-    <div className="flex items-center gap-3 mb-2">
-      <div className="p-2.5 bg-blue-500/20 rounded-lg">
-        <BarChart2 className="w-6 h-6 text-blue-400" />
-      </div>
-      <h1 className="text-3xl font-bold text-white">
-        Dashboard Analitik
-      </h1>
-    </div>
-    <p className="text-gray-400 text-sm ml-11">
-      Monitor performa platform lelang mobil Anda
-    </p>
-  </div>
-
-  <button
-    onClick={handleGeneratePDF}
-    className="h-fit px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition"
-  >
-    Export PDF
-  </button>
-</div>
-
-
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <KPICard
-          title="Total Produk"
-          value={analytics.totalProduk}
-          change={analytics.produkBulanIni}
-          changeLabel="bulan ini"
-          icon={Package}
-          color="from-blue-500 to-blue-600"
-        />
-        <KPICard
-          title="Total Tawaran"
-          value={analytics.totalBid}
-          change={analytics.bidBulanIni}
-          changeLabel="bulan ini"
-          icon={TrendingUp}
-          color="from-green-500 to-green-600"
-        />
-        <KPICard
-          title="Nilai Total Lelang"
-          value={`Rp ${(analytics.totalNilaiAuction / 1000000).toFixed(0)}M`}
-          change={0}
-          changeLabel=""
-          icon={DollarSign}
-          color="from-purple-500 to-purple-600"
-        />
-        <KPICard
-          title="Rata-rata Tawaran"
-          value={`Rp ${(analytics.averageBidAmount / 1000000).toFixed(1)}M`}
-          change={0}
-          changeLabel=""
-          icon={Activity}
-          color="from-orange-500 to-orange-600"
-        />
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Price Range */}
-        <div className="lg:col-span-1 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5">
-          <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2">
-            <DollarSign className="w-4 h-4 text-purple-400" />
-            Rentang Harga
-          </h3>
-          <div className="space-y-3">
-            <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg p-3">
-              <p className="text-green-300 text-xs opacity-80">Harga Terendah</p>
-              <p className="text-green-100 text-xl font-bold mt-1">
-                Rp {(analytics.hargaTerendah / 1000000).toFixed(0)}M
-              </p>
-            </div>
-            <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 border border-red-500/30 rounded-lg p-3">
-              <p className="text-red-300 text-xs opacity-80">Harga Tertinggi</p>
-              <p className="text-red-100 text-xl font-bold mt-1">
-                Rp {(analytics.hargaTertinggi / 1000000).toFixed(0)}M
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Category Distribution */}
-        <div className="lg:col-span-2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5">
-          <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2">
-            <Package className="w-4 h-4 text-blue-400" />
-            Distribusi Kategori
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {Object.entries(analytics.kategoriDistribution).map(([category, count]) => (
-              <div key={category} className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-lg p-3">
-                <p className="text-blue-300 text-xs mb-1 line-clamp-2">{category}</p>
-                <p className="text-blue-100 text-2xl font-bold">{count}</p>
+        {/* Header */}
+        <div className="mb-8 pb-6 border-b border-white/10 flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2.5 bg-blue-500/20 rounded-lg">
+                <BarChart2 className="w-6 h-6 text-blue-400" />
               </div>
-            ))}
+              <h1 className="text-3xl font-bold text-white">
+                Dashboard Analitik
+              </h1>
+            </div>
+            <p className="text-gray-400 text-sm ml-11">
+              Monitor performa platform lelang mobil Anda
+            </p>
+          </div>
+
+          <button
+            onClick={handleGeneratePDF}
+            className="h-fit px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition"
+          >
+            Export PDF
+          </button>
+        </div>
+
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <KPICard
+            title="Total Produk"
+            value={analytics.totalProduk}
+            change={analytics.produkBulanIni}
+            changeLabel="bulan ini"
+            icon={Package}
+            color="from-blue-500 to-blue-600"
+          />
+          <KPICard
+            title="Total Tawaran"
+            value={analytics.totalBid}
+            change={analytics.bidBulanIni}
+            changeLabel="bulan ini"
+            icon={TrendingUp}
+            color="from-green-500 to-green-600"
+          />
+          <KPICard
+            title="Nilai Total Lelang"
+            value={`Rp ${(analytics.totalNilaiAuction / 1000000).toFixed(0)}M`}
+            change={0}
+            changeLabel=""
+            icon={DollarSign}
+            color="from-purple-500 to-purple-600"
+          />
+          <KPICard
+            title="Rata-rata Tawaran"
+            value={`Rp ${(analytics.averageBidAmount / 1000000).toFixed(1)}M`}
+            change={0}
+            changeLabel=""
+            icon={Activity}
+            color="from-orange-500 to-orange-600"
+          />
+        </div>
+        {/* Main Content Grid for Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Product & Bid Trend */}
+          <div className="lg:col-span-2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+            <h3 className="text-white font-semibold text-sm mb-6 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-green-400" />
+              Tren Aktivitas (6 Bulan Terakhir)
+            </h3>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={analytics.monthlyTrends}>
+                  <defs>
+                    <linearGradient id="colorBids" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+                  <XAxis
+                    dataKey="name"
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
+                    itemStyle={{ color: '#fff' }}
+                  />
+                  <Area type="monotone" dataKey="bids" stroke="#3b82f6" fillOpacity={1} fill="url(#colorBids)" name="Total Bid" />
+                  <Area type="monotone" dataKey="products" stroke="#10b981" fillOpacity={0} name="Mobil Masuk" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Popular Brands */}
+          <div className="lg:col-span-1 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6">
+            <h3 className="text-white font-semibold text-sm mb-6 flex items-center gap-2">
+              <PieIcon className="w-4 h-4 text-blue-400" />
+              Brand Terpopuler
+            </h3>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={analytics.brandDistribution} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" horizontal={false} />
+                  <XAxis type="number" hide />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    stroke="#94a3b8"
+                    fontSize={11}
+                    width={80}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
+                  />
+                  <Bar dataKey="value" fill="#6366f1" radius={[0, 4, 4, 0]} name="Unit" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Top Products */}
-      <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5">
-        <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-yellow-400" />
-          Top 5 Produk Berdasarkan Harga
-        </h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left py-2 px-3 text-gray-300 font-medium">Nama Produk</th>
-                <th className="text-left py-2 px-3 text-gray-300 font-medium">Harga</th>
-                <th className="text-left py-2 px-3 text-gray-300 font-medium">Kategori</th>
-                <th className="text-left py-2 px-3 text-gray-300 font-medium">Tanggal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {analytics.topProducts.map((product, idx) => (
-                <tr
-                  key={product.id}
-                  className="border-b border-white/5 hover:bg-white/5 transition cursor-pointer"
-                  onClick={() => router.push(`/admin/produk`)}
-                >
-                  <td className="py-2 px-3 text-white">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded text-white text-xs font-bold flex items-center justify-center">
-                        {idx + 1}
-                      </div>
-                      <span className="line-clamp-1 text-xs">{product.nama_barang}</span>
-                    </div>
-                  </td>
-                  <td className="py-2 px-3 text-green-400 font-semibold text-xs">
-                    Rp {(product.harga_awal / 1000000).toFixed(0)}M
-                  </td>
-                  <td className="py-2 px-3">
-                    <span className="px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded text-xs">
-                      {product.kategori || "Umum"}
-                    </span>
-                  </td>
-                  <td className="py-2 px-3 text-gray-400 text-xs">
-                    {new Date(product.createdAt).toLocaleDateString("id-ID")}
-                  </td>
-                </tr>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Price Range */}
+          <div className="lg:col-span-1 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5">
+            <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+              <DollarSign className="w-4 h-4 text-purple-400" />
+              Rentang Harga
+            </h3>
+            <div className="space-y-3">
+              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg p-3">
+                <p className="text-green-300 text-xs opacity-80">Harga Terendah</p>
+                <p className="text-green-100 text-xl font-bold mt-1">
+                  Rp {(analytics.hargaTerendah / 1000000).toFixed(0)}M
+                </p>
+              </div>
+              <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 border border-red-500/30 rounded-lg p-3">
+                <p className="text-red-300 text-xs opacity-80">Harga Tertinggi</p>
+                <p className="text-red-100 text-xl font-bold mt-1">
+                  Rp {(analytics.hargaTertinggi / 1000000).toFixed(0)}M
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Category Distribution */}
+          <div className="lg:col-span-2 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5">
+            <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+              <Package className="w-4 h-4 text-blue-400" />
+              Distribusi Kategori
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {Object.entries(analytics.kategoriDistribution).map(([category, count]) => (
+                <div key={category} className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 rounded-lg p-3">
+                  <p className="text-blue-300 text-xs mb-1 line-clamp-2">{category}</p>
+                  <p className="text-blue-100 text-2xl font-bold">{count}</p>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         </div>
-      </div>
+
+        {/* Top Products */}
+        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-5">
+          <h3 className="text-white font-semibold text-sm mb-4 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-yellow-400" />
+            Top 5 Produk Berdasarkan Harga
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-2 px-3 text-gray-300 font-medium">Nama Produk</th>
+                  <th className="text-left py-2 px-3 text-gray-300 font-medium">Harga</th>
+                  <th className="text-left py-2 px-3 text-gray-300 font-medium">Kategori</th>
+                  <th className="text-left py-2 px-3 text-gray-300 font-medium">Tanggal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {analytics.topProducts.map((product, idx) => (
+                  <tr
+                    key={product.id}
+                    className="border-b border-white/5 hover:bg-white/5 transition cursor-pointer"
+                    onClick={() => router.push(`/admin/produk`)}
+                  >
+                    <td className="py-2 px-3 text-white">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded text-white text-xs font-bold flex items-center justify-center">
+                          {idx + 1}
+                        </div>
+                        <span className="line-clamp-1 text-xs">{product.nama_barang}</span>
+                      </div>
+                    </td>
+                    <td className="py-2 px-3 text-green-400 font-semibold text-xs">
+                      Rp {(product.harga_awal / 1000000).toFixed(0)}M
+                    </td>
+                    <td className="py-2 px-3">
+                      <span className="px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded text-xs">
+                        {product.kategori || "Umum"}
+                      </span>
+                    </td>
+                    <td className="py-2 px-3 text-gray-400 text-xs">
+                      {new Date(product.createdAt).toLocaleDateString("id-ID")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

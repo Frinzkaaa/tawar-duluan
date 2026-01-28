@@ -10,12 +10,32 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    console.log("Fetching produk...");
     const produk = await prisma.produk.findMany({
+      include: {
+        _count: {
+          select: { bids: true }
+        },
+        bids: {
+          where: {
+            status: 'approved'
+          },
+          select: {
+            id: true
+          },
+          take: 1
+        }
+      },
       orderBy: { createdAt: "desc" },
     });
-    console.log("Fetched produk successfully:", produk.length, "items");
-    return NextResponse.json(produk);
+
+    // Transform to add isSold flag
+    const mappedProduk = produk.map(item => ({
+      ...item,
+      isSold: item.bids.length > 0
+    }));
+
+    console.log("Fetched produk successfully:", mappedProduk.length, "items");
+    return NextResponse.json(mappedProduk);
   } catch (err: any) {
     console.error("GET /api/produk error:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -43,6 +63,7 @@ export async function POST(req: Request) {
     const tahun = tahun_str ? parseInt(tahun_str) : null;
     const kilometer_str = formData.get("kilometer") as string | null;
     const kilometer = kilometer_str ? parseInt(kilometer_str) : null;
+    const lokasi_mobil = formData.get("lokasi_mobil") as string | null;
 
     console.log("Received form data:", {
       nama_barang,
@@ -105,10 +126,47 @@ export async function POST(req: Request) {
         jumlah_seat: jumlah_seat || null,
         tahun: tahun || null,
         kilometer: kilometer || null,
+        lokasi_mobil: lokasi_mobil || null,
       },
     });
 
     console.log("Produk created successfully:", produk.id);
+
+    // --- NOTIFICATION LOGIC: New Product Interest ---
+    try {
+      if (merk_mobil) {
+        // Find users who have this brand in their watchlist (via existing products in their watchlist)
+        const interestedUsers = await prisma.watchlist.findMany({
+          where: {
+            produk: {
+              merk_mobil: {
+                equals: merk_mobil,
+                mode: 'insensitive'
+              }
+            }
+          },
+          select: {
+            userId: true
+          },
+          distinct: ['userId']
+        });
+
+        if (interestedUsers.length > 0) {
+          await prisma.notification.createMany({
+            data: interestedUsers.map(u => ({
+              userId: u.userId,
+              title: "Mobil Baru Sesuai Minat!",
+              message: `Ada ${nama_barang} (${merk_mobil}) baru saja masuk! Cek sekarang sebelum terlambat.`,
+              type: "new_product",
+              link: `/jelajahi/${produk.id}`
+            }))
+          });
+        }
+      }
+    } catch (notifErr) {
+      console.error('Error sending new product notifications:', notifErr);
+    }
+
     return NextResponse.json(produk);
   } catch (err: any) {
     console.error("POST /api/produk error:", err);

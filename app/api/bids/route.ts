@@ -29,6 +29,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // --- PAYMENT CHECK: Require Deposit ---
+    const activeDeposit = await prisma.transaction.findFirst({
+      where: {
+        userId: user.id,
+        type: 'DEPOSIT',
+        status: 'settlement'
+      }
+    });
+
+    if (!activeDeposit) {
+      return NextResponse.json({
+        error: 'Deposit Required',
+        message: 'Anda belum menyetor uang jaminan lelang (Rp 5.000.000). Silakan lakukan pembayaran terlebih dahulu.',
+        requireDeposit: true
+      }, { status: 403 });
+    }
+
     // Validate bid amount is higher than starting price
     const product = await prisma.produk.findUnique({ where: { id: produkId } });
     if (!product) {
@@ -50,6 +67,39 @@ export async function POST(request: NextRequest) {
         produk: true,
       },
     });
+
+    // --- NOTIFICATION LOGIC: Outbid ---
+    try {
+      // Find all users who have bid on this product before (except the current bidder)
+      const previousBids = await prisma.bid.findMany({
+        where: {
+          produkId,
+          userId: { not: user.id }
+        },
+        select: {
+          userId: true
+        },
+        distinct: ['userId']
+      });
+
+      if (previousBids.length > 0) {
+        const notificationPromises = previousBids.map(pb =>
+          prisma.notification.create({
+            data: {
+              userId: pb.userId,
+              title: "Tawaran Anda Dilewati!",
+              message: `Tawaran Anda untuk ${product.nama_barang} telah dilewati oleh penawar lain. Ajukan tawaran baru sekarang!`,
+              type: "outbid",
+              link: `/jelajahi/${produkId}`
+            }
+          })
+        );
+        await Promise.all(notificationPromises);
+      }
+    } catch (notifErr) {
+      console.error('Error sending outbid notifications:', notifErr);
+      // Don't fail the bid if notification fails
+    }
 
     return NextResponse.json(bid, { status: 201 });
   } catch (error) {

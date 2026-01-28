@@ -44,11 +44,26 @@ export async function GET(request: NextRequest) {
 
   const watchlist = await prisma.watchlist.findMany({
     where: { userId: user.id },
-    include: { produk: true },
+    include: {
+      produk: {
+        include: {
+          bids: {
+            where: { status: 'approved' },
+            select: { id: true },
+            take: 1
+          }
+        }
+      }
+    },
     orderBy: { createdAt: "desc" },
   });
 
-  return NextResponse.json(watchlist.map((w) => w.produk));
+  const results = watchlist.map((w) => ({
+    ...w.produk,
+    isSold: w.produk.bids.length > 0
+  }));
+
+  return NextResponse.json(results);
 }
 
 // =====================

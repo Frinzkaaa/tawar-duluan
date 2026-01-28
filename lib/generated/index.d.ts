@@ -29,6 +29,16 @@ export type Setting = $Result.DefaultSelection<Prisma.$SettingPayload>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Transaction
+ * 
+ */
+export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
  * Model Produk
  * 
  */
@@ -205,6 +215,26 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.transaction`: Exposes CRUD operations for the **Transaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Transactions
+    * const transactions = await prisma.transaction.findMany()
+    * ```
+    */
+  get transaction(): Prisma.TransactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notifications
+    * const notifications = await prisma.notification.findMany()
+    * ```
+    */
+  get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.produk`: Exposes CRUD operations for the **Produk** model.
@@ -662,6 +692,8 @@ export namespace Prisma {
     Watchlist: 'Watchlist',
     Setting: 'Setting',
     User: 'User',
+    Transaction: 'Transaction',
+    Notification: 'Notification',
     Produk: 'Produk',
     Bid: 'Bid'
   };
@@ -679,7 +711,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "watchlist" | "setting" | "user" | "produk" | "bid"
+      modelProps: "watchlist" | "setting" | "user" | "transaction" | "notification" | "produk" | "bid"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -902,6 +934,154 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Transaction: {
+        payload: Prisma.$TransactionPayload<ExtArgs>
+        fields: Prisma.TransactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TransactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TransactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          findFirst: {
+            args: Prisma.TransactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TransactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          findMany: {
+            args: Prisma.TransactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+          }
+          create: {
+            args: Prisma.TransactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          createMany: {
+            args: Prisma.TransactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TransactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+          }
+          delete: {
+            args: Prisma.TransactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          update: {
+            args: Prisma.TransactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.TransactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TransactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TransactionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>[]
+          }
+          upsert: {
+            args: Prisma.TransactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TransactionPayload>
+          }
+          aggregate: {
+            args: Prisma.TransactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTransaction>
+          }
+          groupBy: {
+            args: Prisma.TransactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TransactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TransactionCountArgs<ExtArgs>
+            result: $Utils.Optional<TransactionCountAggregateOutputType> | number
+          }
+        }
+      }
+      Notification: {
+        payload: Prisma.$NotificationPayload<ExtArgs>
+        fields: Prisma.NotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findMany: {
+            args: Prisma.NotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          create: {
+            args: Prisma.NotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          createMany: {
+            args: Prisma.NotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          update: {
+            args: Prisma.NotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotification>
+          }
+          groupBy: {
+            args: Prisma.NotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationCountAggregateOutputType> | number
           }
         }
       }
@@ -1164,6 +1344,8 @@ export namespace Prisma {
     watchlist?: WatchlistOmit
     setting?: SettingOmit
     user?: UserOmit
+    transaction?: TransactionOmit
+    notification?: NotificationOmit
     produk?: ProdukOmit
     bid?: BidOmit
   }
@@ -1247,11 +1429,15 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     bids: number
+    notifications: number
+    transactions: number
     watchlists: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bids?: boolean | UserCountOutputTypeCountBidsArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
     watchlists?: boolean | UserCountOutputTypeCountWatchlistsArgs
   }
 
@@ -1271,6 +1457,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountBidsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BidWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
   }
 
   /**
@@ -1481,8 +1681,8 @@ export namespace Prisma {
     userId?: boolean
     produkId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["watchlist"]>
 
   export type WatchlistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1490,8 +1690,8 @@ export namespace Prisma {
     userId?: boolean
     produkId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["watchlist"]>
 
   export type WatchlistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1499,8 +1699,8 @@ export namespace Prisma {
     userId?: boolean
     produkId?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["watchlist"]>
 
   export type WatchlistSelectScalar = {
@@ -1512,23 +1712,23 @@ export namespace Prisma {
 
   export type WatchlistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "produkId" | "createdAt", ExtArgs["result"]["watchlist"]>
   export type WatchlistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type WatchlistIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type WatchlistIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $WatchlistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Watchlist"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       produk: Prisma.$ProdukPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1929,8 +2129,8 @@ export namespace Prisma {
    */
   export interface Prisma__WatchlistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     produk<T extends ProdukDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProdukDefaultArgs<ExtArgs>>): Prisma__ProdukClient<$Result.GetResult<Prisma.$ProdukPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3351,6 +3551,8 @@ export namespace Prisma {
     password: string | null
     role: string | null
     createdAt: Date | null
+    address: string | null
+    phone: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3360,6 +3562,8 @@ export namespace Prisma {
     password: string | null
     role: string | null
     createdAt: Date | null
+    address: string | null
+    phone: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3369,6 +3573,8 @@ export namespace Prisma {
     password: number
     role: number
     createdAt: number
+    address: number
+    phone: number
     _all: number
   }
 
@@ -3380,6 +3586,8 @@ export namespace Prisma {
     password?: true
     role?: true
     createdAt?: true
+    address?: true
+    phone?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3389,6 +3597,8 @@ export namespace Prisma {
     password?: true
     role?: true
     createdAt?: true
+    address?: true
+    phone?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3398,6 +3608,8 @@ export namespace Prisma {
     password?: true
     role?: true
     createdAt?: true
+    address?: true
+    phone?: true
     _all?: true
   }
 
@@ -3480,6 +3692,8 @@ export namespace Prisma {
     password: string
     role: string
     createdAt: Date
+    address: string | null
+    phone: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3506,7 +3720,11 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     createdAt?: boolean
+    address?: boolean
+    phone?: boolean
     bids?: boolean | User$bidsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    transactions?: boolean | User$transactionsArgs<ExtArgs>
     watchlists?: boolean | User$watchlistsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -3518,6 +3736,8 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     createdAt?: boolean
+    address?: boolean
+    phone?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3527,6 +3747,8 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     createdAt?: boolean
+    address?: boolean
+    phone?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3536,11 +3758,15 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     createdAt?: boolean
+    address?: boolean
+    phone?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "address" | "phone", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bids?: boolean | User$bidsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    transactions?: boolean | User$transactionsArgs<ExtArgs>
     watchlists?: boolean | User$watchlistsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -3551,6 +3777,8 @@ export namespace Prisma {
     name: "User"
     objects: {
       bids: Prisma.$BidPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      transactions: Prisma.$TransactionPayload<ExtArgs>[]
       watchlists: Prisma.$WatchlistPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -3560,6 +3788,8 @@ export namespace Prisma {
       password: string
       role: string
       createdAt: Date
+      address: string | null
+      phone: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3955,6 +4185,8 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     bids<T extends User$bidsArgs<ExtArgs> = {}>(args?: Subset<T, User$bidsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BidPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     watchlists<T extends User$watchlistsArgs<ExtArgs> = {}>(args?: Subset<T, User$watchlistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WatchlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3991,6 +4223,8 @@ export namespace Prisma {
     readonly password: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
+    readonly address: FieldRef<"User", 'String'>
+    readonly phone: FieldRef<"User", 'String'>
   }
     
 
@@ -4403,6 +4637,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.notifications
+   */
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.transactions
+   */
+  export type User$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
    * User.watchlists
    */
   export type User$watchlistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4446,6 +4728,2247 @@ export namespace Prisma {
 
 
   /**
+   * Model Transaction
+   */
+
+  export type AggregateTransaction = {
+    _count: TransactionCountAggregateOutputType | null
+    _avg: TransactionAvgAggregateOutputType | null
+    _sum: TransactionSumAggregateOutputType | null
+    _min: TransactionMinAggregateOutputType | null
+    _max: TransactionMaxAggregateOutputType | null
+  }
+
+  export type TransactionAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type TransactionSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type TransactionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    amount: number | null
+    status: string | null
+    type: string | null
+    snapToken: string | null
+    orderId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TransactionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    amount: number | null
+    status: string | null
+    type: string | null
+    snapToken: string | null
+    orderId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TransactionCountAggregateOutputType = {
+    id: number
+    userId: number
+    amount: number
+    status: number
+    type: number
+    snapToken: number
+    orderId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TransactionAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type TransactionSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type TransactionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    status?: true
+    type?: true
+    snapToken?: true
+    orderId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TransactionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    status?: true
+    type?: true
+    snapToken?: true
+    orderId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TransactionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    amount?: true
+    status?: true
+    type?: true
+    snapToken?: true
+    orderId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TransactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Transaction to aggregate.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Transactions
+    **/
+    _count?: true | TransactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TransactionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TransactionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TransactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TransactionMaxAggregateInputType
+  }
+
+  export type GetTransactionAggregateType<T extends TransactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateTransaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTransaction[P]>
+      : GetScalarType<T[P], AggregateTransaction[P]>
+  }
+
+
+
+
+  export type TransactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithAggregationInput | TransactionOrderByWithAggregationInput[]
+    by: TransactionScalarFieldEnum[] | TransactionScalarFieldEnum
+    having?: TransactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TransactionCountAggregateInputType | true
+    _avg?: TransactionAvgAggregateInputType
+    _sum?: TransactionSumAggregateInputType
+    _min?: TransactionMinAggregateInputType
+    _max?: TransactionMaxAggregateInputType
+  }
+
+  export type TransactionGroupByOutputType = {
+    id: string
+    userId: string
+    amount: number
+    status: string
+    type: string
+    snapToken: string | null
+    orderId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: TransactionCountAggregateOutputType | null
+    _avg: TransactionAvgAggregateOutputType | null
+    _sum: TransactionSumAggregateOutputType | null
+    _min: TransactionMinAggregateOutputType | null
+    _max: TransactionMaxAggregateOutputType | null
+  }
+
+  type GetTransactionGroupByPayload<T extends TransactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TransactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TransactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TransactionGroupByOutputType[P]>
+            : GetScalarType<T[P], TransactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    status?: boolean
+    type?: boolean
+    snapToken?: boolean
+    orderId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transaction"]>
+
+  export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    status?: boolean
+    type?: boolean
+    snapToken?: boolean
+    orderId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transaction"]>
+
+  export type TransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    status?: boolean
+    type?: boolean
+    snapToken?: boolean
+    orderId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["transaction"]>
+
+  export type TransactionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    amount?: boolean
+    status?: boolean
+    type?: boolean
+    snapToken?: boolean
+    orderId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "amount" | "status" | "type" | "snapToken" | "orderId" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Transaction"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      amount: number
+      status: string
+      type: string
+      snapToken: string | null
+      orderId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["transaction"]>
+    composites: {}
+  }
+
+  type TransactionGetPayload<S extends boolean | null | undefined | TransactionDefaultArgs> = $Result.GetResult<Prisma.$TransactionPayload, S>
+
+  type TransactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TransactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TransactionCountAggregateInputType | true
+    }
+
+  export interface TransactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Transaction'], meta: { name: 'Transaction' } }
+    /**
+     * Find zero or one Transaction that matches the filter.
+     * @param {TransactionFindUniqueArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TransactionFindUniqueArgs>(args: SelectSubset<T, TransactionFindUniqueArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Transaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TransactionFindUniqueOrThrowArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TransactionFindUniqueOrThrowArgs>(args: SelectSubset<T, TransactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Transaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindFirstArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TransactionFindFirstArgs>(args?: SelectSubset<T, TransactionFindFirstArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Transaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindFirstOrThrowArgs} args - Arguments to find a Transaction
+     * @example
+     * // Get one Transaction
+     * const transaction = await prisma.transaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TransactionFindFirstOrThrowArgs>(args?: SelectSubset<T, TransactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Transactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Transactions
+     * const transactions = await prisma.transaction.findMany()
+     * 
+     * // Get first 10 Transactions
+     * const transactions = await prisma.transaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const transactionWithIdOnly = await prisma.transaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TransactionFindManyArgs>(args?: SelectSubset<T, TransactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Transaction.
+     * @param {TransactionCreateArgs} args - Arguments to create a Transaction.
+     * @example
+     * // Create one Transaction
+     * const Transaction = await prisma.transaction.create({
+     *   data: {
+     *     // ... data to create a Transaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends TransactionCreateArgs>(args: SelectSubset<T, TransactionCreateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Transactions.
+     * @param {TransactionCreateManyArgs} args - Arguments to create many Transactions.
+     * @example
+     * // Create many Transactions
+     * const transaction = await prisma.transaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TransactionCreateManyArgs>(args?: SelectSubset<T, TransactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Transactions and returns the data saved in the database.
+     * @param {TransactionCreateManyAndReturnArgs} args - Arguments to create many Transactions.
+     * @example
+     * // Create many Transactions
+     * const transaction = await prisma.transaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Transactions and only return the `id`
+     * const transactionWithIdOnly = await prisma.transaction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TransactionCreateManyAndReturnArgs>(args?: SelectSubset<T, TransactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Transaction.
+     * @param {TransactionDeleteArgs} args - Arguments to delete one Transaction.
+     * @example
+     * // Delete one Transaction
+     * const Transaction = await prisma.transaction.delete({
+     *   where: {
+     *     // ... filter to delete one Transaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TransactionDeleteArgs>(args: SelectSubset<T, TransactionDeleteArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Transaction.
+     * @param {TransactionUpdateArgs} args - Arguments to update one Transaction.
+     * @example
+     * // Update one Transaction
+     * const transaction = await prisma.transaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TransactionUpdateArgs>(args: SelectSubset<T, TransactionUpdateArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Transactions.
+     * @param {TransactionDeleteManyArgs} args - Arguments to filter Transactions to delete.
+     * @example
+     * // Delete a few Transactions
+     * const { count } = await prisma.transaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TransactionDeleteManyArgs>(args?: SelectSubset<T, TransactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Transactions
+     * const transaction = await prisma.transaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TransactionUpdateManyArgs>(args: SelectSubset<T, TransactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Transactions and returns the data updated in the database.
+     * @param {TransactionUpdateManyAndReturnArgs} args - Arguments to update many Transactions.
+     * @example
+     * // Update many Transactions
+     * const transaction = await prisma.transaction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Transactions and only return the `id`
+     * const transactionWithIdOnly = await prisma.transaction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TransactionUpdateManyAndReturnArgs>(args: SelectSubset<T, TransactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Transaction.
+     * @param {TransactionUpsertArgs} args - Arguments to update or create a Transaction.
+     * @example
+     * // Update or create a Transaction
+     * const transaction = await prisma.transaction.upsert({
+     *   create: {
+     *     // ... data to create a Transaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Transaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TransactionUpsertArgs>(args: SelectSubset<T, TransactionUpsertArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Transactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionCountArgs} args - Arguments to filter Transactions to count.
+     * @example
+     * // Count the number of Transactions
+     * const count = await prisma.transaction.count({
+     *   where: {
+     *     // ... the filter for the Transactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends TransactionCountArgs>(
+      args?: Subset<T, TransactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TransactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TransactionAggregateArgs>(args: Subset<T, TransactionAggregateArgs>): Prisma.PrismaPromise<GetTransactionAggregateType<T>>
+
+    /**
+     * Group by Transaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TransactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TransactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TransactionGroupByArgs['orderBy'] }
+        : { orderBy?: TransactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TransactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTransactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Transaction model
+   */
+  readonly fields: TransactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Transaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Transaction model
+   */
+  interface TransactionFieldRefs {
+    readonly id: FieldRef<"Transaction", 'String'>
+    readonly userId: FieldRef<"Transaction", 'String'>
+    readonly amount: FieldRef<"Transaction", 'Int'>
+    readonly status: FieldRef<"Transaction", 'String'>
+    readonly type: FieldRef<"Transaction", 'String'>
+    readonly snapToken: FieldRef<"Transaction", 'String'>
+    readonly orderId: FieldRef<"Transaction", 'String'>
+    readonly createdAt: FieldRef<"Transaction", 'DateTime'>
+    readonly updatedAt: FieldRef<"Transaction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Transaction findUnique
+   */
+  export type TransactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction findUniqueOrThrow
+   */
+  export type TransactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction findFirst
+   */
+  export type TransactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Transactions.
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Transactions.
+     */
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Transaction findFirstOrThrow
+   */
+  export type TransactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transaction to fetch.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Transactions.
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Transactions.
+     */
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Transaction findMany
+   */
+  export type TransactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter, which Transactions to fetch.
+     */
+    where?: TransactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Transactions to fetch.
+     */
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Transactions.
+     */
+    cursor?: TransactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Transactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Transactions.
+     */
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Transaction create
+   */
+  export type TransactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Transaction.
+     */
+    data: XOR<TransactionCreateInput, TransactionUncheckedCreateInput>
+  }
+
+  /**
+   * Transaction createMany
+   */
+  export type TransactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Transactions.
+     */
+    data: TransactionCreateManyInput | TransactionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Transaction createManyAndReturn
+   */
+  export type TransactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Transactions.
+     */
+    data: TransactionCreateManyInput | TransactionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Transaction update
+   */
+  export type TransactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Transaction.
+     */
+    data: XOR<TransactionUpdateInput, TransactionUncheckedUpdateInput>
+    /**
+     * Choose, which Transaction to update.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction updateMany
+   */
+  export type TransactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Transactions.
+     */
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which Transactions to update
+     */
+    where?: TransactionWhereInput
+    /**
+     * Limit how many Transactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Transaction updateManyAndReturn
+   */
+  export type TransactionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * The data used to update Transactions.
+     */
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyInput>
+    /**
+     * Filter which Transactions to update
+     */
+    where?: TransactionWhereInput
+    /**
+     * Limit how many Transactions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Transaction upsert
+   */
+  export type TransactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Transaction to update in case it exists.
+     */
+    where: TransactionWhereUniqueInput
+    /**
+     * In case the Transaction found by the `where` argument doesn't exist, create a new Transaction with this data.
+     */
+    create: XOR<TransactionCreateInput, TransactionUncheckedCreateInput>
+    /**
+     * In case the Transaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TransactionUpdateInput, TransactionUncheckedUpdateInput>
+  }
+
+  /**
+   * Transaction delete
+   */
+  export type TransactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    /**
+     * Filter which Transaction to delete.
+     */
+    where: TransactionWhereUniqueInput
+  }
+
+  /**
+   * Transaction deleteMany
+   */
+  export type TransactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Transactions to delete
+     */
+    where?: TransactionWhereInput
+    /**
+     * Limit how many Transactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Transaction without action
+   */
+  export type TransactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Notification
+   */
+
+  export type AggregateNotification = {
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  export type NotificationMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    title: string | null
+    message: string | null
+    type: string | null
+    isRead: boolean | null
+    link: string | null
+    createdAt: Date | null
+  }
+
+  export type NotificationMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    title: string | null
+    message: string | null
+    type: string | null
+    isRead: boolean | null
+    link: string | null
+    createdAt: Date | null
+  }
+
+  export type NotificationCountAggregateOutputType = {
+    id: number
+    userId: number
+    title: number
+    message: number
+    type: number
+    isRead: number
+    link: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type NotificationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    message?: true
+    type?: true
+    isRead?: true
+    link?: true
+    createdAt?: true
+  }
+
+  export type NotificationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    message?: true
+    type?: true
+    isRead?: true
+    link?: true
+    createdAt?: true
+  }
+
+  export type NotificationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    message?: true
+    type?: true
+    isRead?: true
+    link?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type NotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notification to aggregate.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Notifications
+    **/
+    _count?: true | NotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type GetNotificationAggregateType<T extends NotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotification[P]>
+      : GetScalarType<T[P], AggregateNotification[P]>
+  }
+
+
+
+
+  export type NotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithAggregationInput | NotificationOrderByWithAggregationInput[]
+    by: NotificationScalarFieldEnum[] | NotificationScalarFieldEnum
+    having?: NotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationCountAggregateInputType | true
+    _min?: NotificationMinAggregateInputType
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type NotificationGroupByOutputType = {
+    id: string
+    userId: string
+    title: string
+    message: string
+    type: string
+    isRead: boolean
+    link: string | null
+    createdAt: Date
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  type GetNotificationGroupByPayload<T extends NotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    message?: boolean
+    type?: boolean
+    isRead?: boolean
+    link?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    message?: boolean
+    type?: boolean
+    isRead?: boolean
+    link?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    message?: boolean
+    type?: boolean
+    isRead?: boolean
+    link?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    message?: boolean
+    type?: boolean
+    isRead?: boolean
+    link?: boolean
+    createdAt?: boolean
+  }
+
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "message" | "type" | "isRead" | "link" | "createdAt", ExtArgs["result"]["notification"]>
+  export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Notification"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      title: string
+      message: string
+      type: string
+      isRead: boolean
+      link: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["notification"]>
+    composites: {}
+  }
+
+  type NotificationGetPayload<S extends boolean | null | undefined | NotificationDefaultArgs> = $Result.GetResult<Prisma.$NotificationPayload, S>
+
+  type NotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationCountAggregateInputType | true
+    }
+
+  export interface NotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Notification'], meta: { name: 'Notification' } }
+    /**
+     * Find zero or one Notification that matches the filter.
+     * @param {NotificationFindUniqueArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationFindUniqueArgs>(args: SelectSubset<T, NotificationFindUniqueArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Notification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificationFindUniqueOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationFindFirstArgs>(args?: SelectSubset<T, NotificationFindFirstArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Notifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Notifications
+     * const notifications = await prisma.notification.findMany()
+     * 
+     * // Get first 10 Notifications
+     * const notifications = await prisma.notification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationWithIdOnly = await prisma.notification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationFindManyArgs>(args?: SelectSubset<T, NotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Notification.
+     * @param {NotificationCreateArgs} args - Arguments to create a Notification.
+     * @example
+     * // Create one Notification
+     * const Notification = await prisma.notification.create({
+     *   data: {
+     *     // ... data to create a Notification
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationCreateArgs>(args: SelectSubset<T, NotificationCreateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Notifications.
+     * @param {NotificationCreateManyArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationCreateManyArgs>(args?: SelectSubset<T, NotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Notifications and returns the data saved in the database.
+     * @param {NotificationCreateManyAndReturnArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Notification.
+     * @param {NotificationDeleteArgs} args - Arguments to delete one Notification.
+     * @example
+     * // Delete one Notification
+     * const Notification = await prisma.notification.delete({
+     *   where: {
+     *     // ... filter to delete one Notification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationDeleteArgs>(args: SelectSubset<T, NotificationDeleteArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Notification.
+     * @param {NotificationUpdateArgs} args - Arguments to update one Notification.
+     * @example
+     * // Update one Notification
+     * const notification = await prisma.notification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationUpdateArgs>(args: SelectSubset<T, NotificationUpdateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Notifications.
+     * @param {NotificationDeleteManyArgs} args - Arguments to filter Notifications to delete.
+     * @example
+     * // Delete a few Notifications
+     * const { count } = await prisma.notification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationDeleteManyArgs>(args?: SelectSubset<T, NotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationUpdateManyArgs>(args: SelectSubset<T, NotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications and returns the data updated in the database.
+     * @param {NotificationUpdateManyAndReturnArgs} args - Arguments to update many Notifications.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Notification.
+     * @param {NotificationUpsertArgs} args - Arguments to update or create a Notification.
+     * @example
+     * // Update or create a Notification
+     * const notification = await prisma.notification.upsert({
+     *   create: {
+     *     // ... data to create a Notification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Notification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationUpsertArgs>(args: SelectSubset<T, NotificationUpsertArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationCountArgs} args - Arguments to filter Notifications to count.
+     * @example
+     * // Count the number of Notifications
+     * const count = await prisma.notification.count({
+     *   where: {
+     *     // ... the filter for the Notifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationCountArgs>(
+      args?: Subset<T, NotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationAggregateArgs>(args: Subset<T, NotificationAggregateArgs>): Prisma.PrismaPromise<GetNotificationAggregateType<T>>
+
+    /**
+     * Group by Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Notification model
+   */
+  readonly fields: NotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Notification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Notification model
+   */
+  interface NotificationFieldRefs {
+    readonly id: FieldRef<"Notification", 'String'>
+    readonly userId: FieldRef<"Notification", 'String'>
+    readonly title: FieldRef<"Notification", 'String'>
+    readonly message: FieldRef<"Notification", 'String'>
+    readonly type: FieldRef<"Notification", 'String'>
+    readonly isRead: FieldRef<"Notification", 'Boolean'>
+    readonly link: FieldRef<"Notification", 'String'>
+    readonly createdAt: FieldRef<"Notification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Notification findUnique
+   */
+  export type NotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findUniqueOrThrow
+   */
+  export type NotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findFirst
+   */
+  export type NotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findFirstOrThrow
+   */
+  export type NotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findMany
+   */
+  export type NotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notifications to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification create
+   */
+  export type NotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Notification.
+     */
+    data: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+  }
+
+  /**
+   * Notification createMany
+   */
+  export type NotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Notification createManyAndReturn
+   */
+  export type NotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification update
+   */
+  export type NotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Notification.
+     */
+    data: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+    /**
+     * Choose, which Notification to update.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification updateMany
+   */
+  export type NotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification updateManyAndReturn
+   */
+  export type NotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification upsert
+   */
+  export type NotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Notification to update in case it exists.
+     */
+    where: NotificationWhereUniqueInput
+    /**
+     * In case the Notification found by the `where` argument doesn't exist, create a new Notification with this data.
+     */
+    create: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+    /**
+     * In case the Notification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * Notification delete
+   */
+  export type NotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter which Notification to delete.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification deleteMany
+   */
+  export type NotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notifications to delete
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification without action
+   */
+  export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Produk
    */
 
@@ -4460,15 +6983,15 @@ export namespace Prisma {
   export type ProdukAvgAggregateOutputType = {
     harga_awal: number | null
     jumlah_seat: number | null
-    tahun: number | null
     kilometer: number | null
+    tahun: number | null
   }
 
   export type ProdukSumAggregateOutputType = {
     harga_awal: number | null
     jumlah_seat: number | null
-    tahun: number | null
     kilometer: number | null
+    tahun: number | null
   }
 
   export type ProdukMinAggregateOutputType = {
@@ -4477,15 +7000,19 @@ export namespace Prisma {
     tanggal: Date | null
     harga_awal: number | null
     deskripsi: string | null
+    createdAt: Date | null
     image_url: string | null
+    jumlah_seat: number | null
+    kilometer: number | null
     merk_mobil: string | null
+    tahun: number | null
     tipe_mobil: string | null
     transmisi: string | null
-    jumlah_seat: number | null
-    tahun: number | null
-    kilometer: number | null
+    interior: string | null
+    mesin: string | null
+    riwayat_servis: string | null
     kategori: $Enums.Kategori | null
-    createdAt: Date | null
+    lokasi_mobil: string | null
   }
 
   export type ProdukMaxAggregateOutputType = {
@@ -4494,15 +7021,19 @@ export namespace Prisma {
     tanggal: Date | null
     harga_awal: number | null
     deskripsi: string | null
+    createdAt: Date | null
     image_url: string | null
+    jumlah_seat: number | null
+    kilometer: number | null
     merk_mobil: string | null
+    tahun: number | null
     tipe_mobil: string | null
     transmisi: string | null
-    jumlah_seat: number | null
-    tahun: number | null
-    kilometer: number | null
+    interior: string | null
+    mesin: string | null
+    riwayat_servis: string | null
     kategori: $Enums.Kategori | null
-    createdAt: Date | null
+    lokasi_mobil: string | null
   }
 
   export type ProdukCountAggregateOutputType = {
@@ -4511,15 +7042,20 @@ export namespace Prisma {
     tanggal: number
     harga_awal: number
     deskripsi: number
+    createdAt: number
     image_url: number
+    jumlah_seat: number
+    kilometer: number
     merk_mobil: number
+    tahun: number
     tipe_mobil: number
     transmisi: number
-    jumlah_seat: number
-    tahun: number
-    kilometer: number
+    images: number
+    interior: number
+    mesin: number
+    riwayat_servis: number
     kategori: number
-    createdAt: number
+    lokasi_mobil: number
     _all: number
   }
 
@@ -4527,15 +7063,15 @@ export namespace Prisma {
   export type ProdukAvgAggregateInputType = {
     harga_awal?: true
     jumlah_seat?: true
-    tahun?: true
     kilometer?: true
+    tahun?: true
   }
 
   export type ProdukSumAggregateInputType = {
     harga_awal?: true
     jumlah_seat?: true
-    tahun?: true
     kilometer?: true
+    tahun?: true
   }
 
   export type ProdukMinAggregateInputType = {
@@ -4544,15 +7080,19 @@ export namespace Prisma {
     tanggal?: true
     harga_awal?: true
     deskripsi?: true
+    createdAt?: true
     image_url?: true
+    jumlah_seat?: true
+    kilometer?: true
     merk_mobil?: true
+    tahun?: true
     tipe_mobil?: true
     transmisi?: true
-    jumlah_seat?: true
-    tahun?: true
-    kilometer?: true
+    interior?: true
+    mesin?: true
+    riwayat_servis?: true
     kategori?: true
-    createdAt?: true
+    lokasi_mobil?: true
   }
 
   export type ProdukMaxAggregateInputType = {
@@ -4561,15 +7101,19 @@ export namespace Prisma {
     tanggal?: true
     harga_awal?: true
     deskripsi?: true
+    createdAt?: true
     image_url?: true
+    jumlah_seat?: true
+    kilometer?: true
     merk_mobil?: true
+    tahun?: true
     tipe_mobil?: true
     transmisi?: true
-    jumlah_seat?: true
-    tahun?: true
-    kilometer?: true
+    interior?: true
+    mesin?: true
+    riwayat_servis?: true
     kategori?: true
-    createdAt?: true
+    lokasi_mobil?: true
   }
 
   export type ProdukCountAggregateInputType = {
@@ -4578,15 +7122,20 @@ export namespace Prisma {
     tanggal?: true
     harga_awal?: true
     deskripsi?: true
+    createdAt?: true
     image_url?: true
+    jumlah_seat?: true
+    kilometer?: true
     merk_mobil?: true
+    tahun?: true
     tipe_mobil?: true
     transmisi?: true
-    jumlah_seat?: true
-    tahun?: true
-    kilometer?: true
+    images?: true
+    interior?: true
+    mesin?: true
+    riwayat_servis?: true
     kategori?: true
-    createdAt?: true
+    lokasi_mobil?: true
     _all?: true
   }
 
@@ -4682,15 +7231,20 @@ export namespace Prisma {
     tanggal: Date
     harga_awal: number
     deskripsi: string
+    createdAt: Date
     image_url: string | null
+    jumlah_seat: number | null
+    kilometer: number | null
     merk_mobil: string | null
+    tahun: number | null
     tipe_mobil: string | null
     transmisi: string | null
-    jumlah_seat: number | null
-    tahun: number | null
-    kilometer: number | null
+    images: string[]
+    interior: string | null
+    mesin: string | null
+    riwayat_servis: string | null
     kategori: $Enums.Kategori
-    createdAt: Date
+    lokasi_mobil: string | null
     _count: ProdukCountAggregateOutputType | null
     _avg: ProdukAvgAggregateOutputType | null
     _sum: ProdukSumAggregateOutputType | null
@@ -4718,15 +7272,20 @@ export namespace Prisma {
     tanggal?: boolean
     harga_awal?: boolean
     deskripsi?: boolean
+    createdAt?: boolean
     image_url?: boolean
+    jumlah_seat?: boolean
+    kilometer?: boolean
     merk_mobil?: boolean
+    tahun?: boolean
     tipe_mobil?: boolean
     transmisi?: boolean
-    jumlah_seat?: boolean
-    tahun?: boolean
-    kilometer?: boolean
+    images?: boolean
+    interior?: boolean
+    mesin?: boolean
+    riwayat_servis?: boolean
     kategori?: boolean
-    createdAt?: boolean
+    lokasi_mobil?: boolean
     bids?: boolean | Produk$bidsArgs<ExtArgs>
     watchlists?: boolean | Produk$watchlistsArgs<ExtArgs>
     _count?: boolean | ProdukCountOutputTypeDefaultArgs<ExtArgs>
@@ -4738,15 +7297,20 @@ export namespace Prisma {
     tanggal?: boolean
     harga_awal?: boolean
     deskripsi?: boolean
+    createdAt?: boolean
     image_url?: boolean
+    jumlah_seat?: boolean
+    kilometer?: boolean
     merk_mobil?: boolean
+    tahun?: boolean
     tipe_mobil?: boolean
     transmisi?: boolean
-    jumlah_seat?: boolean
-    tahun?: boolean
-    kilometer?: boolean
+    images?: boolean
+    interior?: boolean
+    mesin?: boolean
+    riwayat_servis?: boolean
     kategori?: boolean
-    createdAt?: boolean
+    lokasi_mobil?: boolean
   }, ExtArgs["result"]["produk"]>
 
   export type ProdukSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4755,15 +7319,20 @@ export namespace Prisma {
     tanggal?: boolean
     harga_awal?: boolean
     deskripsi?: boolean
+    createdAt?: boolean
     image_url?: boolean
+    jumlah_seat?: boolean
+    kilometer?: boolean
     merk_mobil?: boolean
+    tahun?: boolean
     tipe_mobil?: boolean
     transmisi?: boolean
-    jumlah_seat?: boolean
-    tahun?: boolean
-    kilometer?: boolean
+    images?: boolean
+    interior?: boolean
+    mesin?: boolean
+    riwayat_servis?: boolean
     kategori?: boolean
-    createdAt?: boolean
+    lokasi_mobil?: boolean
   }, ExtArgs["result"]["produk"]>
 
   export type ProdukSelectScalar = {
@@ -4772,18 +7341,23 @@ export namespace Prisma {
     tanggal?: boolean
     harga_awal?: boolean
     deskripsi?: boolean
+    createdAt?: boolean
     image_url?: boolean
+    jumlah_seat?: boolean
+    kilometer?: boolean
     merk_mobil?: boolean
+    tahun?: boolean
     tipe_mobil?: boolean
     transmisi?: boolean
-    jumlah_seat?: boolean
-    tahun?: boolean
-    kilometer?: boolean
+    images?: boolean
+    interior?: boolean
+    mesin?: boolean
+    riwayat_servis?: boolean
     kategori?: boolean
-    createdAt?: boolean
+    lokasi_mobil?: boolean
   }
 
-  export type ProdukOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nama_barang" | "tanggal" | "harga_awal" | "deskripsi" | "image_url" | "merk_mobil" | "tipe_mobil" | "transmisi" | "jumlah_seat" | "tahun" | "kilometer" | "kategori" | "createdAt", ExtArgs["result"]["produk"]>
+  export type ProdukOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nama_barang" | "tanggal" | "harga_awal" | "deskripsi" | "createdAt" | "image_url" | "jumlah_seat" | "kilometer" | "merk_mobil" | "tahun" | "tipe_mobil" | "transmisi" | "images" | "interior" | "mesin" | "riwayat_servis" | "kategori" | "lokasi_mobil", ExtArgs["result"]["produk"]>
   export type ProdukInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bids?: boolean | Produk$bidsArgs<ExtArgs>
     watchlists?: boolean | Produk$watchlistsArgs<ExtArgs>
@@ -4804,15 +7378,20 @@ export namespace Prisma {
       tanggal: Date
       harga_awal: number
       deskripsi: string
+      createdAt: Date
       image_url: string | null
+      jumlah_seat: number | null
+      kilometer: number | null
       merk_mobil: string | null
+      tahun: number | null
       tipe_mobil: string | null
       transmisi: string | null
-      jumlah_seat: number | null
-      tahun: number | null
-      kilometer: number | null
+      images: string[]
+      interior: string | null
+      mesin: string | null
+      riwayat_servis: string | null
       kategori: $Enums.Kategori
-      createdAt: Date
+      lokasi_mobil: string | null
     }, ExtArgs["result"]["produk"]>
     composites: {}
   }
@@ -5243,15 +7822,20 @@ export namespace Prisma {
     readonly tanggal: FieldRef<"Produk", 'DateTime'>
     readonly harga_awal: FieldRef<"Produk", 'Int'>
     readonly deskripsi: FieldRef<"Produk", 'String'>
+    readonly createdAt: FieldRef<"Produk", 'DateTime'>
     readonly image_url: FieldRef<"Produk", 'String'>
+    readonly jumlah_seat: FieldRef<"Produk", 'Int'>
+    readonly kilometer: FieldRef<"Produk", 'Int'>
     readonly merk_mobil: FieldRef<"Produk", 'String'>
+    readonly tahun: FieldRef<"Produk", 'Int'>
     readonly tipe_mobil: FieldRef<"Produk", 'String'>
     readonly transmisi: FieldRef<"Produk", 'String'>
-    readonly jumlah_seat: FieldRef<"Produk", 'Int'>
-    readonly tahun: FieldRef<"Produk", 'Int'>
-    readonly kilometer: FieldRef<"Produk", 'Int'>
+    readonly images: FieldRef<"Produk", 'String[]'>
+    readonly interior: FieldRef<"Produk", 'String'>
+    readonly mesin: FieldRef<"Produk", 'String'>
+    readonly riwayat_servis: FieldRef<"Produk", 'String'>
     readonly kategori: FieldRef<"Produk", 'Kategori'>
-    readonly createdAt: FieldRef<"Produk", 'DateTime'>
+    readonly lokasi_mobil: FieldRef<"Produk", 'String'>
   }
     
 
@@ -5733,6 +8317,7 @@ export namespace Prisma {
     bidAmount: number | null
     status: string | null
     createdAt: Date | null
+    paymentStatus: string | null
   }
 
   export type BidMaxAggregateOutputType = {
@@ -5742,6 +8327,7 @@ export namespace Prisma {
     bidAmount: number | null
     status: string | null
     createdAt: Date | null
+    paymentStatus: string | null
   }
 
   export type BidCountAggregateOutputType = {
@@ -5751,6 +8337,7 @@ export namespace Prisma {
     bidAmount: number
     status: number
     createdAt: number
+    paymentStatus: number
     _all: number
   }
 
@@ -5770,6 +8357,7 @@ export namespace Prisma {
     bidAmount?: true
     status?: true
     createdAt?: true
+    paymentStatus?: true
   }
 
   export type BidMaxAggregateInputType = {
@@ -5779,6 +8367,7 @@ export namespace Prisma {
     bidAmount?: true
     status?: true
     createdAt?: true
+    paymentStatus?: true
   }
 
   export type BidCountAggregateInputType = {
@@ -5788,6 +8377,7 @@ export namespace Prisma {
     bidAmount?: true
     status?: true
     createdAt?: true
+    paymentStatus?: true
     _all?: true
   }
 
@@ -5884,6 +8474,7 @@ export namespace Prisma {
     bidAmount: number
     status: string
     createdAt: Date
+    paymentStatus: string
     _count: BidCountAggregateOutputType | null
     _avg: BidAvgAggregateOutputType | null
     _sum: BidSumAggregateOutputType | null
@@ -5912,8 +8503,9 @@ export namespace Prisma {
     bidAmount?: boolean
     status?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    paymentStatus?: boolean
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bid"]>
 
   export type BidSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5923,8 +8515,9 @@ export namespace Prisma {
     bidAmount?: boolean
     status?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    paymentStatus?: boolean
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bid"]>
 
   export type BidSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5934,8 +8527,9 @@ export namespace Prisma {
     bidAmount?: boolean
     status?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    paymentStatus?: boolean
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bid"]>
 
   export type BidSelectScalar = {
@@ -5945,27 +8539,28 @@ export namespace Prisma {
     bidAmount?: boolean
     status?: boolean
     createdAt?: boolean
+    paymentStatus?: boolean
   }
 
-  export type BidOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "produkId" | "bidAmount" | "status" | "createdAt", ExtArgs["result"]["bid"]>
+  export type BidOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "produkId" | "bidAmount" | "status" | "createdAt" | "paymentStatus", ExtArgs["result"]["bid"]>
   export type BidInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type BidIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type BidIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     produk?: boolean | ProdukDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $BidPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Bid"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       produk: Prisma.$ProdukPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5974,6 +8569,7 @@ export namespace Prisma {
       bidAmount: number
       status: string
       createdAt: Date
+      paymentStatus: string
     }, ExtArgs["result"]["bid"]>
     composites: {}
   }
@@ -6368,8 +8964,8 @@ export namespace Prisma {
    */
   export interface Prisma__BidClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     produk<T extends ProdukDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProdukDefaultArgs<ExtArgs>>): Prisma__ProdukClient<$Result.GetResult<Prisma.$ProdukPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6405,6 +9001,7 @@ export namespace Prisma {
     readonly bidAmount: FieldRef<"Bid", 'Int'>
     readonly status: FieldRef<"Bid", 'String'>
     readonly createdAt: FieldRef<"Bid", 'DateTime'>
+    readonly paymentStatus: FieldRef<"Bid", 'String'>
   }
     
 
@@ -6857,10 +9454,41 @@ export namespace Prisma {
     email: 'email',
     password: 'password',
     role: 'role',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    address: 'address',
+    phone: 'phone'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const TransactionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    amount: 'amount',
+    status: 'status',
+    type: 'type',
+    snapToken: 'snapToken',
+    orderId: 'orderId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+
+
+  export const NotificationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    title: 'title',
+    message: 'message',
+    type: 'type',
+    isRead: 'isRead',
+    link: 'link',
+    createdAt: 'createdAt'
+  };
+
+  export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
   export const ProdukScalarFieldEnum: {
@@ -6869,15 +9497,20 @@ export namespace Prisma {
     tanggal: 'tanggal',
     harga_awal: 'harga_awal',
     deskripsi: 'deskripsi',
+    createdAt: 'createdAt',
     image_url: 'image_url',
+    jumlah_seat: 'jumlah_seat',
+    kilometer: 'kilometer',
     merk_mobil: 'merk_mobil',
+    tahun: 'tahun',
     tipe_mobil: 'tipe_mobil',
     transmisi: 'transmisi',
-    jumlah_seat: 'jumlah_seat',
-    tahun: 'tahun',
-    kilometer: 'kilometer',
+    images: 'images',
+    interior: 'interior',
+    mesin: 'mesin',
+    riwayat_servis: 'riwayat_servis',
     kategori: 'kategori',
-    createdAt: 'createdAt'
+    lokasi_mobil: 'lokasi_mobil'
   };
 
   export type ProdukScalarFieldEnum = (typeof ProdukScalarFieldEnum)[keyof typeof ProdukScalarFieldEnum]
@@ -6889,7 +9522,8 @@ export namespace Prisma {
     produkId: 'produkId',
     bidAmount: 'bidAmount',
     status: 'status',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    paymentStatus: 'paymentStatus'
   };
 
   export type BidScalarFieldEnum = (typeof BidScalarFieldEnum)[keyof typeof BidScalarFieldEnum]
@@ -6967,6 +9601,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Kategori'
    */
   export type EnumKategoriFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Kategori'>
@@ -7005,8 +9646,8 @@ export namespace Prisma {
     userId?: StringFilter<"Watchlist"> | string
     produkId?: StringFilter<"Watchlist"> | string
     createdAt?: DateTimeFilter<"Watchlist"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     produk?: XOR<ProdukScalarRelationFilter, ProdukWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type WatchlistOrderByWithRelationInput = {
@@ -7014,8 +9655,8 @@ export namespace Prisma {
     userId?: SortOrder
     produkId?: SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     produk?: ProdukOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type WatchlistWhereUniqueInput = Prisma.AtLeast<{
@@ -7027,8 +9668,8 @@ export namespace Prisma {
     userId?: StringFilter<"Watchlist"> | string
     produkId?: StringFilter<"Watchlist"> | string
     createdAt?: DateTimeFilter<"Watchlist"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     produk?: XOR<ProdukScalarRelationFilter, ProdukWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_produkId">
 
   export type WatchlistOrderByWithAggregationInput = {
@@ -7098,7 +9739,11 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     role?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
+    address?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
     bids?: BidListRelationFilter
+    notifications?: NotificationListRelationFilter
+    transactions?: TransactionListRelationFilter
     watchlists?: WatchlistListRelationFilter
   }
 
@@ -7109,7 +9754,11 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
+    address?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     bids?: BidOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
+    transactions?: TransactionOrderByRelationAggregateInput
     watchlists?: WatchlistOrderByRelationAggregateInput
   }
 
@@ -7123,7 +9772,11 @@ export namespace Prisma {
     password?: StringFilter<"User"> | string
     role?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
+    address?: StringNullableFilter<"User"> | string | null
+    phone?: StringNullableFilter<"User"> | string | null
     bids?: BidListRelationFilter
+    notifications?: NotificationListRelationFilter
+    transactions?: TransactionListRelationFilter
     watchlists?: WatchlistListRelationFilter
   }, "id" | "email">
 
@@ -7134,6 +9787,8 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
+    address?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -7149,6 +9804,155 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter<"User"> | string
     role?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    address?: StringNullableWithAggregatesFilter<"User"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+  }
+
+  export type TransactionWhereInput = {
+    AND?: TransactionWhereInput | TransactionWhereInput[]
+    OR?: TransactionWhereInput[]
+    NOT?: TransactionWhereInput | TransactionWhereInput[]
+    id?: StringFilter<"Transaction"> | string
+    userId?: StringFilter<"Transaction"> | string
+    amount?: IntFilter<"Transaction"> | number
+    status?: StringFilter<"Transaction"> | string
+    type?: StringFilter<"Transaction"> | string
+    snapToken?: StringNullableFilter<"Transaction"> | string | null
+    orderId?: StringFilter<"Transaction"> | string
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+    updatedAt?: DateTimeFilter<"Transaction"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type TransactionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
+    snapToken?: SortOrderInput | SortOrder
+    orderId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type TransactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    orderId?: string
+    AND?: TransactionWhereInput | TransactionWhereInput[]
+    OR?: TransactionWhereInput[]
+    NOT?: TransactionWhereInput | TransactionWhereInput[]
+    userId?: StringFilter<"Transaction"> | string
+    amount?: IntFilter<"Transaction"> | number
+    status?: StringFilter<"Transaction"> | string
+    type?: StringFilter<"Transaction"> | string
+    snapToken?: StringNullableFilter<"Transaction"> | string | null
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+    updatedAt?: DateTimeFilter<"Transaction"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "orderId">
+
+  export type TransactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
+    snapToken?: SortOrderInput | SortOrder
+    orderId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TransactionCountOrderByAggregateInput
+    _avg?: TransactionAvgOrderByAggregateInput
+    _max?: TransactionMaxOrderByAggregateInput
+    _min?: TransactionMinOrderByAggregateInput
+    _sum?: TransactionSumOrderByAggregateInput
+  }
+
+  export type TransactionScalarWhereWithAggregatesInput = {
+    AND?: TransactionScalarWhereWithAggregatesInput | TransactionScalarWhereWithAggregatesInput[]
+    OR?: TransactionScalarWhereWithAggregatesInput[]
+    NOT?: TransactionScalarWhereWithAggregatesInput | TransactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Transaction"> | string
+    userId?: StringWithAggregatesFilter<"Transaction"> | string
+    amount?: IntWithAggregatesFilter<"Transaction"> | number
+    status?: StringWithAggregatesFilter<"Transaction"> | string
+    type?: StringWithAggregatesFilter<"Transaction"> | string
+    snapToken?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
+    orderId?: StringWithAggregatesFilter<"Transaction"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
+  }
+
+  export type NotificationWhereInput = {
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    isRead?: BoolFilter<"Notification"> | boolean
+    link?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type NotificationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    link?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type NotificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    isRead?: BoolFilter<"Notification"> | boolean
+    link?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type NotificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    link?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: NotificationCountOrderByAggregateInput
+    _max?: NotificationMaxOrderByAggregateInput
+    _min?: NotificationMinOrderByAggregateInput
+  }
+
+  export type NotificationScalarWhereWithAggregatesInput = {
+    AND?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    OR?: NotificationScalarWhereWithAggregatesInput[]
+    NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Notification"> | string
+    userId?: StringWithAggregatesFilter<"Notification"> | string
+    title?: StringWithAggregatesFilter<"Notification"> | string
+    message?: StringWithAggregatesFilter<"Notification"> | string
+    type?: StringWithAggregatesFilter<"Notification"> | string
+    isRead?: BoolWithAggregatesFilter<"Notification"> | boolean
+    link?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
   export type ProdukWhereInput = {
@@ -7160,15 +9964,20 @@ export namespace Prisma {
     tanggal?: DateTimeFilter<"Produk"> | Date | string
     harga_awal?: IntFilter<"Produk"> | number
     deskripsi?: StringFilter<"Produk"> | string
+    createdAt?: DateTimeFilter<"Produk"> | Date | string
     image_url?: StringNullableFilter<"Produk"> | string | null
+    jumlah_seat?: IntNullableFilter<"Produk"> | number | null
+    kilometer?: IntNullableFilter<"Produk"> | number | null
     merk_mobil?: StringNullableFilter<"Produk"> | string | null
+    tahun?: IntNullableFilter<"Produk"> | number | null
     tipe_mobil?: StringNullableFilter<"Produk"> | string | null
     transmisi?: StringNullableFilter<"Produk"> | string | null
-    jumlah_seat?: IntNullableFilter<"Produk"> | number | null
-    tahun?: IntNullableFilter<"Produk"> | number | null
-    kilometer?: IntNullableFilter<"Produk"> | number | null
+    images?: StringNullableListFilter<"Produk">
+    interior?: StringNullableFilter<"Produk"> | string | null
+    mesin?: StringNullableFilter<"Produk"> | string | null
+    riwayat_servis?: StringNullableFilter<"Produk"> | string | null
     kategori?: EnumKategoriFilter<"Produk"> | $Enums.Kategori
-    createdAt?: DateTimeFilter<"Produk"> | Date | string
+    lokasi_mobil?: StringNullableFilter<"Produk"> | string | null
     bids?: BidListRelationFilter
     watchlists?: WatchlistListRelationFilter
   }
@@ -7179,15 +9988,20 @@ export namespace Prisma {
     tanggal?: SortOrder
     harga_awal?: SortOrder
     deskripsi?: SortOrder
+    createdAt?: SortOrder
     image_url?: SortOrderInput | SortOrder
+    jumlah_seat?: SortOrderInput | SortOrder
+    kilometer?: SortOrderInput | SortOrder
     merk_mobil?: SortOrderInput | SortOrder
+    tahun?: SortOrderInput | SortOrder
     tipe_mobil?: SortOrderInput | SortOrder
     transmisi?: SortOrderInput | SortOrder
-    jumlah_seat?: SortOrderInput | SortOrder
-    tahun?: SortOrderInput | SortOrder
-    kilometer?: SortOrderInput | SortOrder
+    images?: SortOrder
+    interior?: SortOrderInput | SortOrder
+    mesin?: SortOrderInput | SortOrder
+    riwayat_servis?: SortOrderInput | SortOrder
     kategori?: SortOrder
-    createdAt?: SortOrder
+    lokasi_mobil?: SortOrderInput | SortOrder
     bids?: BidOrderByRelationAggregateInput
     watchlists?: WatchlistOrderByRelationAggregateInput
   }
@@ -7201,15 +10015,20 @@ export namespace Prisma {
     tanggal?: DateTimeFilter<"Produk"> | Date | string
     harga_awal?: IntFilter<"Produk"> | number
     deskripsi?: StringFilter<"Produk"> | string
+    createdAt?: DateTimeFilter<"Produk"> | Date | string
     image_url?: StringNullableFilter<"Produk"> | string | null
+    jumlah_seat?: IntNullableFilter<"Produk"> | number | null
+    kilometer?: IntNullableFilter<"Produk"> | number | null
     merk_mobil?: StringNullableFilter<"Produk"> | string | null
+    tahun?: IntNullableFilter<"Produk"> | number | null
     tipe_mobil?: StringNullableFilter<"Produk"> | string | null
     transmisi?: StringNullableFilter<"Produk"> | string | null
-    jumlah_seat?: IntNullableFilter<"Produk"> | number | null
-    tahun?: IntNullableFilter<"Produk"> | number | null
-    kilometer?: IntNullableFilter<"Produk"> | number | null
+    images?: StringNullableListFilter<"Produk">
+    interior?: StringNullableFilter<"Produk"> | string | null
+    mesin?: StringNullableFilter<"Produk"> | string | null
+    riwayat_servis?: StringNullableFilter<"Produk"> | string | null
     kategori?: EnumKategoriFilter<"Produk"> | $Enums.Kategori
-    createdAt?: DateTimeFilter<"Produk"> | Date | string
+    lokasi_mobil?: StringNullableFilter<"Produk"> | string | null
     bids?: BidListRelationFilter
     watchlists?: WatchlistListRelationFilter
   }, "id">
@@ -7220,15 +10039,20 @@ export namespace Prisma {
     tanggal?: SortOrder
     harga_awal?: SortOrder
     deskripsi?: SortOrder
+    createdAt?: SortOrder
     image_url?: SortOrderInput | SortOrder
+    jumlah_seat?: SortOrderInput | SortOrder
+    kilometer?: SortOrderInput | SortOrder
     merk_mobil?: SortOrderInput | SortOrder
+    tahun?: SortOrderInput | SortOrder
     tipe_mobil?: SortOrderInput | SortOrder
     transmisi?: SortOrderInput | SortOrder
-    jumlah_seat?: SortOrderInput | SortOrder
-    tahun?: SortOrderInput | SortOrder
-    kilometer?: SortOrderInput | SortOrder
+    images?: SortOrder
+    interior?: SortOrderInput | SortOrder
+    mesin?: SortOrderInput | SortOrder
+    riwayat_servis?: SortOrderInput | SortOrder
     kategori?: SortOrder
-    createdAt?: SortOrder
+    lokasi_mobil?: SortOrderInput | SortOrder
     _count?: ProdukCountOrderByAggregateInput
     _avg?: ProdukAvgOrderByAggregateInput
     _max?: ProdukMaxOrderByAggregateInput
@@ -7245,15 +10069,20 @@ export namespace Prisma {
     tanggal?: DateTimeWithAggregatesFilter<"Produk"> | Date | string
     harga_awal?: IntWithAggregatesFilter<"Produk"> | number
     deskripsi?: StringWithAggregatesFilter<"Produk"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Produk"> | Date | string
     image_url?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    jumlah_seat?: IntNullableWithAggregatesFilter<"Produk"> | number | null
+    kilometer?: IntNullableWithAggregatesFilter<"Produk"> | number | null
     merk_mobil?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    tahun?: IntNullableWithAggregatesFilter<"Produk"> | number | null
     tipe_mobil?: StringNullableWithAggregatesFilter<"Produk"> | string | null
     transmisi?: StringNullableWithAggregatesFilter<"Produk"> | string | null
-    jumlah_seat?: IntNullableWithAggregatesFilter<"Produk"> | number | null
-    tahun?: IntNullableWithAggregatesFilter<"Produk"> | number | null
-    kilometer?: IntNullableWithAggregatesFilter<"Produk"> | number | null
+    images?: StringNullableListFilter<"Produk">
+    interior?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    mesin?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    riwayat_servis?: StringNullableWithAggregatesFilter<"Produk"> | string | null
     kategori?: EnumKategoriWithAggregatesFilter<"Produk"> | $Enums.Kategori
-    createdAt?: DateTimeWithAggregatesFilter<"Produk"> | Date | string
+    lokasi_mobil?: StringNullableWithAggregatesFilter<"Produk"> | string | null
   }
 
   export type BidWhereInput = {
@@ -7266,8 +10095,9 @@ export namespace Prisma {
     bidAmount?: IntFilter<"Bid"> | number
     status?: StringFilter<"Bid"> | string
     createdAt?: DateTimeFilter<"Bid"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    paymentStatus?: StringFilter<"Bid"> | string
     produk?: XOR<ProdukScalarRelationFilter, ProdukWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type BidOrderByWithRelationInput = {
@@ -7277,8 +10107,9 @@ export namespace Prisma {
     bidAmount?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
+    paymentStatus?: SortOrder
     produk?: ProdukOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type BidWhereUniqueInput = Prisma.AtLeast<{
@@ -7291,8 +10122,9 @@ export namespace Prisma {
     bidAmount?: IntFilter<"Bid"> | number
     status?: StringFilter<"Bid"> | string
     createdAt?: DateTimeFilter<"Bid"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    paymentStatus?: StringFilter<"Bid"> | string
     produk?: XOR<ProdukScalarRelationFilter, ProdukWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type BidOrderByWithAggregationInput = {
@@ -7302,6 +10134,7 @@ export namespace Prisma {
     bidAmount?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    paymentStatus?: SortOrder
     _count?: BidCountOrderByAggregateInput
     _avg?: BidAvgOrderByAggregateInput
     _max?: BidMaxOrderByAggregateInput
@@ -7319,13 +10152,14 @@ export namespace Prisma {
     bidAmount?: IntWithAggregatesFilter<"Bid"> | number
     status?: StringWithAggregatesFilter<"Bid"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Bid"> | Date | string
+    paymentStatus?: StringWithAggregatesFilter<"Bid"> | string
   }
 
   export type WatchlistCreateInput = {
     id?: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutWatchlistsInput
     produk: ProdukCreateNestedOneWithoutWatchlistsInput
+    user: UserCreateNestedOneWithoutWatchlistsInput
   }
 
   export type WatchlistUncheckedCreateInput = {
@@ -7338,8 +10172,8 @@ export namespace Prisma {
   export type WatchlistUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWatchlistsNestedInput
     produk?: ProdukUpdateOneRequiredWithoutWatchlistsNestedInput
+    user?: UserUpdateOneRequiredWithoutWatchlistsNestedInput
   }
 
   export type WatchlistUncheckedUpdateInput = {
@@ -7410,7 +10244,11 @@ export namespace Prisma {
     password: string
     role?: string
     createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
     bids?: BidCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
     watchlists?: WatchlistCreateNestedManyWithoutUserInput
   }
 
@@ -7421,7 +10259,11 @@ export namespace Prisma {
     password: string
     role?: string
     createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
     bids?: BidUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -7432,7 +10274,11 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUpdateManyWithoutUserNestedInput
   }
 
@@ -7443,7 +10289,11 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -7454,6 +10304,8 @@ export namespace Prisma {
     password: string
     role?: string
     createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -7463,6 +10315,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -7472,6 +10326,167 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TransactionCreateInput = {
+    id?: string
+    amount: number
+    status?: string
+    type: string
+    snapToken?: string | null
+    orderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTransactionsInput
+  }
+
+  export type TransactionUncheckedCreateInput = {
+    id?: string
+    userId: string
+    amount: number
+    status?: string
+    type: string
+    snapToken?: string | null
+    orderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TransactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
+  }
+
+  export type TransactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionCreateManyInput = {
+    id?: string
+    userId: string
+    amount: number
+    status?: string
+    type: string
+    snapToken?: string | null
+    orderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TransactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateInput = {
+    id?: string
+    title: string
+    message: string
+    type: string
+    isRead?: boolean
+    link?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateInput = {
+    id?: string
+    userId: string
+    title: string
+    message: string
+    type: string
+    isRead?: boolean
+    link?: string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateManyInput = {
+    id?: string
+    userId: string
+    title: string
+    message: string
+    type: string
+    isRead?: boolean
+    link?: string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProdukCreateInput = {
@@ -7480,15 +10495,20 @@ export namespace Prisma {
     tanggal: Date | string
     harga_awal: number
     deskripsi: string
+    createdAt?: Date | string
     image_url?: string | null
+    jumlah_seat?: number | null
+    kilometer?: number | null
     merk_mobil?: string | null
+    tahun?: number | null
     tipe_mobil?: string | null
     transmisi?: string | null
-    jumlah_seat?: number | null
-    tahun?: number | null
-    kilometer?: number | null
+    images?: ProdukCreateimagesInput | string[]
+    interior?: string | null
+    mesin?: string | null
+    riwayat_servis?: string | null
     kategori?: $Enums.Kategori
-    createdAt?: Date | string
+    lokasi_mobil?: string | null
     bids?: BidCreateNestedManyWithoutProdukInput
     watchlists?: WatchlistCreateNestedManyWithoutProdukInput
   }
@@ -7499,15 +10519,20 @@ export namespace Prisma {
     tanggal: Date | string
     harga_awal: number
     deskripsi: string
+    createdAt?: Date | string
     image_url?: string | null
+    jumlah_seat?: number | null
+    kilometer?: number | null
     merk_mobil?: string | null
+    tahun?: number | null
     tipe_mobil?: string | null
     transmisi?: string | null
-    jumlah_seat?: number | null
-    tahun?: number | null
-    kilometer?: number | null
+    images?: ProdukCreateimagesInput | string[]
+    interior?: string | null
+    mesin?: string | null
+    riwayat_servis?: string | null
     kategori?: $Enums.Kategori
-    createdAt?: Date | string
+    lokasi_mobil?: string | null
     bids?: BidUncheckedCreateNestedManyWithoutProdukInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutProdukInput
   }
@@ -7518,15 +10543,20 @@ export namespace Prisma {
     tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
     harga_awal?: IntFieldUpdateOperationsInput | number
     deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
     merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
     tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUpdateManyWithoutProdukNestedInput
     watchlists?: WatchlistUpdateManyWithoutProdukNestedInput
   }
@@ -7537,15 +10567,20 @@ export namespace Prisma {
     tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
     harga_awal?: IntFieldUpdateOperationsInput | number
     deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
     merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
     tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUncheckedUpdateManyWithoutProdukNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutProdukNestedInput
   }
@@ -7556,15 +10591,20 @@ export namespace Prisma {
     tanggal: Date | string
     harga_awal: number
     deskripsi: string
+    createdAt?: Date | string
     image_url?: string | null
+    jumlah_seat?: number | null
+    kilometer?: number | null
     merk_mobil?: string | null
+    tahun?: number | null
     tipe_mobil?: string | null
     transmisi?: string | null
-    jumlah_seat?: number | null
-    tahun?: number | null
-    kilometer?: number | null
+    images?: ProdukCreateimagesInput | string[]
+    interior?: string | null
+    mesin?: string | null
+    riwayat_servis?: string | null
     kategori?: $Enums.Kategori
-    createdAt?: Date | string
+    lokasi_mobil?: string | null
   }
 
   export type ProdukUpdateManyMutationInput = {
@@ -7573,15 +10613,20 @@ export namespace Prisma {
     tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
     harga_awal?: IntFieldUpdateOperationsInput | number
     deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
     merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
     tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProdukUncheckedUpdateManyInput = {
@@ -7590,15 +10635,20 @@ export namespace Prisma {
     tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
     harga_awal?: IntFieldUpdateOperationsInput | number
     deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
     merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
     tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BidCreateInput = {
@@ -7606,8 +10656,9 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutBidsInput
+    paymentStatus?: string
     produk: ProdukCreateNestedOneWithoutBidsInput
+    user: UserCreateNestedOneWithoutBidsInput
   }
 
   export type BidUncheckedCreateInput = {
@@ -7617,6 +10668,7 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
   }
 
   export type BidUpdateInput = {
@@ -7624,8 +10676,9 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutBidsNestedInput
+    paymentStatus?: StringFieldUpdateOperationsInput | string
     produk?: ProdukUpdateOneRequiredWithoutBidsNestedInput
+    user?: UserUpdateOneRequiredWithoutBidsNestedInput
   }
 
   export type BidUncheckedUpdateInput = {
@@ -7635,6 +10688,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type BidCreateManyInput = {
@@ -7644,6 +10698,7 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
   }
 
   export type BidUpdateManyMutationInput = {
@@ -7651,6 +10706,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type BidUncheckedUpdateManyInput = {
@@ -7660,6 +10716,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -7688,14 +10745,14 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type ProdukScalarRelationFilter = {
     is?: ProdukWhereInput
     isNot?: ProdukWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type WatchlistUserIdProdukIdCompoundUniqueInput = {
@@ -7771,64 +10828,6 @@ export namespace Prisma {
     value?: SortOrder
   }
 
-  export type BidListRelationFilter = {
-    every?: BidWhereInput
-    some?: BidWhereInput
-    none?: BidWhereInput
-  }
-
-  export type WatchlistListRelationFilter = {
-    every?: WatchlistWhereInput
-    some?: WatchlistWhereInput
-    none?: WatchlistWhereInput
-  }
-
-  export type BidOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type WatchlistOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    role?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    role?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type UserMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    password?: SortOrder
-    role?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -7844,22 +10843,28 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  export type BidListRelationFilter = {
+    every?: BidWhereInput
+    some?: BidWhereInput
+    none?: BidWhereInput
   }
 
-  export type EnumKategoriFilter<$PrismaModel = never> = {
-    equals?: $Enums.Kategori | EnumKategoriFieldRefInput<$PrismaModel>
-    in?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
-    not?: NestedEnumKategoriFilter<$PrismaModel> | $Enums.Kategori
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
+  export type TransactionListRelationFilter = {
+    every?: TransactionWhereInput
+    some?: TransactionWhereInput
+    none?: TransactionWhereInput
+  }
+
+  export type WatchlistListRelationFilter = {
+    every?: WatchlistWhereInput
+    some?: WatchlistWhereInput
+    none?: WatchlistWhereInput
   }
 
   export type SortOrderInput = {
@@ -7867,85 +10872,53 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type ProdukCountOrderByAggregateInput = {
+  export type BidOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WatchlistOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserCountOrderByAggregateInput = {
     id?: SortOrder
-    nama_barang?: SortOrder
-    tanggal?: SortOrder
-    harga_awal?: SortOrder
-    deskripsi?: SortOrder
-    image_url?: SortOrder
-    merk_mobil?: SortOrder
-    tipe_mobil?: SortOrder
-    transmisi?: SortOrder
-    jumlah_seat?: SortOrder
-    tahun?: SortOrder
-    kilometer?: SortOrder
-    kategori?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
     createdAt?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
   }
 
-  export type ProdukAvgOrderByAggregateInput = {
-    harga_awal?: SortOrder
-    jumlah_seat?: SortOrder
-    tahun?: SortOrder
-    kilometer?: SortOrder
-  }
-
-  export type ProdukMaxOrderByAggregateInput = {
+  export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
-    nama_barang?: SortOrder
-    tanggal?: SortOrder
-    harga_awal?: SortOrder
-    deskripsi?: SortOrder
-    image_url?: SortOrder
-    merk_mobil?: SortOrder
-    tipe_mobil?: SortOrder
-    transmisi?: SortOrder
-    jumlah_seat?: SortOrder
-    tahun?: SortOrder
-    kilometer?: SortOrder
-    kategori?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
     createdAt?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
   }
 
-  export type ProdukMinOrderByAggregateInput = {
+  export type UserMinOrderByAggregateInput = {
     id?: SortOrder
-    nama_barang?: SortOrder
-    tanggal?: SortOrder
-    harga_awal?: SortOrder
-    deskripsi?: SortOrder
-    image_url?: SortOrder
-    merk_mobil?: SortOrder
-    tipe_mobil?: SortOrder
-    transmisi?: SortOrder
-    jumlah_seat?: SortOrder
-    tahun?: SortOrder
-    kilometer?: SortOrder
-    kategori?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type ProdukSumOrderByAggregateInput = {
-    harga_awal?: SortOrder
-    jumlah_seat?: SortOrder
-    tahun?: SortOrder
-    kilometer?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    address?: SortOrder
+    phone?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7964,6 +10937,227 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type TransactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
+    snapToken?: SortOrder
+    orderId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TransactionAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type TransactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
+    snapToken?: SortOrder
+    orderId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TransactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    amount?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
+    snapToken?: SortOrder
+    orderId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TransactionSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NotificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    link?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    link?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    type?: SortOrder
+    isRead?: SortOrder
+    link?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type EnumKategoriFilter<$PrismaModel = never> = {
+    equals?: $Enums.Kategori | EnumKategoriFieldRefInput<$PrismaModel>
+    in?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
+    not?: NestedEnumKategoriFilter<$PrismaModel> | $Enums.Kategori
+  }
+
+  export type ProdukCountOrderByAggregateInput = {
+    id?: SortOrder
+    nama_barang?: SortOrder
+    tanggal?: SortOrder
+    harga_awal?: SortOrder
+    deskripsi?: SortOrder
+    createdAt?: SortOrder
+    image_url?: SortOrder
+    jumlah_seat?: SortOrder
+    kilometer?: SortOrder
+    merk_mobil?: SortOrder
+    tahun?: SortOrder
+    tipe_mobil?: SortOrder
+    transmisi?: SortOrder
+    images?: SortOrder
+    interior?: SortOrder
+    mesin?: SortOrder
+    riwayat_servis?: SortOrder
+    kategori?: SortOrder
+    lokasi_mobil?: SortOrder
+  }
+
+  export type ProdukAvgOrderByAggregateInput = {
+    harga_awal?: SortOrder
+    jumlah_seat?: SortOrder
+    kilometer?: SortOrder
+    tahun?: SortOrder
+  }
+
+  export type ProdukMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nama_barang?: SortOrder
+    tanggal?: SortOrder
+    harga_awal?: SortOrder
+    deskripsi?: SortOrder
+    createdAt?: SortOrder
+    image_url?: SortOrder
+    jumlah_seat?: SortOrder
+    kilometer?: SortOrder
+    merk_mobil?: SortOrder
+    tahun?: SortOrder
+    tipe_mobil?: SortOrder
+    transmisi?: SortOrder
+    interior?: SortOrder
+    mesin?: SortOrder
+    riwayat_servis?: SortOrder
+    kategori?: SortOrder
+    lokasi_mobil?: SortOrder
+  }
+
+  export type ProdukMinOrderByAggregateInput = {
+    id?: SortOrder
+    nama_barang?: SortOrder
+    tanggal?: SortOrder
+    harga_awal?: SortOrder
+    deskripsi?: SortOrder
+    createdAt?: SortOrder
+    image_url?: SortOrder
+    jumlah_seat?: SortOrder
+    kilometer?: SortOrder
+    merk_mobil?: SortOrder
+    tahun?: SortOrder
+    tipe_mobil?: SortOrder
+    transmisi?: SortOrder
+    interior?: SortOrder
+    mesin?: SortOrder
+    riwayat_servis?: SortOrder
+    kategori?: SortOrder
+    lokasi_mobil?: SortOrder
+  }
+
+  export type ProdukSumOrderByAggregateInput = {
+    harga_awal?: SortOrder
+    jumlah_seat?: SortOrder
+    kilometer?: SortOrder
+    tahun?: SortOrder
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7999,6 +11193,7 @@ export namespace Prisma {
     bidAmount?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    paymentStatus?: SortOrder
   }
 
   export type BidAvgOrderByAggregateInput = {
@@ -8012,6 +11207,7 @@ export namespace Prisma {
     bidAmount?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    paymentStatus?: SortOrder
   }
 
   export type BidMinOrderByAggregateInput = {
@@ -8021,22 +11217,23 @@ export namespace Prisma {
     bidAmount?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
+    paymentStatus?: SortOrder
   }
 
   export type BidSumOrderByAggregateInput = {
     bidAmount?: SortOrder
   }
 
-  export type UserCreateNestedOneWithoutWatchlistsInput = {
-    create?: XOR<UserCreateWithoutWatchlistsInput, UserUncheckedCreateWithoutWatchlistsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWatchlistsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type ProdukCreateNestedOneWithoutWatchlistsInput = {
     create?: XOR<ProdukCreateWithoutWatchlistsInput, ProdukUncheckedCreateWithoutWatchlistsInput>
     connectOrCreate?: ProdukCreateOrConnectWithoutWatchlistsInput
     connect?: ProdukWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutWatchlistsInput = {
+    create?: XOR<UserCreateWithoutWatchlistsInput, UserUncheckedCreateWithoutWatchlistsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWatchlistsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8047,14 +11244,6 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type UserUpdateOneRequiredWithoutWatchlistsNestedInput = {
-    create?: XOR<UserCreateWithoutWatchlistsInput, UserUncheckedCreateWithoutWatchlistsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWatchlistsInput
-    upsert?: UserUpsertWithoutWatchlistsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWatchlistsInput, UserUpdateWithoutWatchlistsInput>, UserUncheckedUpdateWithoutWatchlistsInput>
-  }
-
   export type ProdukUpdateOneRequiredWithoutWatchlistsNestedInput = {
     create?: XOR<ProdukCreateWithoutWatchlistsInput, ProdukUncheckedCreateWithoutWatchlistsInput>
     connectOrCreate?: ProdukCreateOrConnectWithoutWatchlistsInput
@@ -8063,11 +11252,33 @@ export namespace Prisma {
     update?: XOR<XOR<ProdukUpdateToOneWithWhereWithoutWatchlistsInput, ProdukUpdateWithoutWatchlistsInput>, ProdukUncheckedUpdateWithoutWatchlistsInput>
   }
 
+  export type UserUpdateOneRequiredWithoutWatchlistsNestedInput = {
+    create?: XOR<UserCreateWithoutWatchlistsInput, UserUncheckedCreateWithoutWatchlistsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWatchlistsInput
+    upsert?: UserUpsertWithoutWatchlistsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWatchlistsInput, UserUpdateWithoutWatchlistsInput>, UserUncheckedUpdateWithoutWatchlistsInput>
+  }
+
   export type BidCreateNestedManyWithoutUserInput = {
     create?: XOR<BidCreateWithoutUserInput, BidUncheckedCreateWithoutUserInput> | BidCreateWithoutUserInput[] | BidUncheckedCreateWithoutUserInput[]
     connectOrCreate?: BidCreateOrConnectWithoutUserInput | BidCreateOrConnectWithoutUserInput[]
     createMany?: BidCreateManyUserInputEnvelope
     connect?: BidWhereUniqueInput | BidWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type TransactionCreateNestedManyWithoutUserInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
   export type WatchlistCreateNestedManyWithoutUserInput = {
@@ -8084,11 +11295,29 @@ export namespace Prisma {
     connect?: BidWhereUniqueInput | BidWhereUniqueInput[]
   }
 
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
   export type WatchlistUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<WatchlistCreateWithoutUserInput, WatchlistUncheckedCreateWithoutUserInput> | WatchlistCreateWithoutUserInput[] | WatchlistUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WatchlistCreateOrConnectWithoutUserInput | WatchlistCreateOrConnectWithoutUserInput[]
     createMany?: WatchlistCreateManyUserInputEnvelope
     connect?: WatchlistWhereUniqueInput | WatchlistWhereUniqueInput[]
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type BidUpdateManyWithoutUserNestedInput = {
@@ -8103,6 +11332,34 @@ export namespace Prisma {
     update?: BidUpdateWithWhereUniqueWithoutUserInput | BidUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: BidUpdateManyWithWhereWithoutUserInput | BidUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: BidScalarWhereInput | BidScalarWhereInput[]
+  }
+
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type TransactionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
   }
 
   export type WatchlistUpdateManyWithoutUserNestedInput = {
@@ -8133,6 +11390,34 @@ export namespace Prisma {
     deleteMany?: BidScalarWhereInput | BidScalarWhereInput[]
   }
 
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
   export type WatchlistUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<WatchlistCreateWithoutUserInput, WatchlistUncheckedCreateWithoutUserInput> | WatchlistCreateWithoutUserInput[] | WatchlistUncheckedCreateWithoutUserInput[]
     connectOrCreate?: WatchlistCreateOrConnectWithoutUserInput | WatchlistCreateOrConnectWithoutUserInput[]
@@ -8145,6 +11430,50 @@ export namespace Prisma {
     update?: WatchlistUpdateWithWhereUniqueWithoutUserInput | WatchlistUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: WatchlistUpdateManyWithWhereWithoutUserInput | WatchlistUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: WatchlistScalarWhereInput | WatchlistScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTransactionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutTransactionsNestedInput = {
+    create?: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTransactionsInput
+    upsert?: UserUpsertWithoutTransactionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type UserCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    upsert?: UserUpsertWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type ProdukCreateimagesInput = {
+    set: string[]
   }
 
   export type BidCreateNestedManyWithoutProdukInput = {
@@ -8175,24 +11504,17 @@ export namespace Prisma {
     connect?: WatchlistWhereUniqueInput | WatchlistWhereUniqueInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type ProdukUpdateimagesInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type EnumKategoriFieldUpdateOperationsInput = {
@@ -8255,24 +11577,16 @@ export namespace Prisma {
     deleteMany?: WatchlistScalarWhereInput | WatchlistScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutBidsInput = {
-    create?: XOR<UserCreateWithoutBidsInput, UserUncheckedCreateWithoutBidsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutBidsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type ProdukCreateNestedOneWithoutBidsInput = {
     create?: XOR<ProdukCreateWithoutBidsInput, ProdukUncheckedCreateWithoutBidsInput>
     connectOrCreate?: ProdukCreateOrConnectWithoutBidsInput
     connect?: ProdukWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutBidsNestedInput = {
+  export type UserCreateNestedOneWithoutBidsInput = {
     create?: XOR<UserCreateWithoutBidsInput, UserUncheckedCreateWithoutBidsInput>
     connectOrCreate?: UserCreateOrConnectWithoutBidsInput
-    upsert?: UserUpsertWithoutBidsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBidsInput, UserUpdateWithoutBidsInput>, UserUncheckedUpdateWithoutBidsInput>
   }
 
   export type ProdukUpdateOneRequiredWithoutBidsNestedInput = {
@@ -8281,6 +11595,14 @@ export namespace Prisma {
     upsert?: ProdukUpsertWithoutBidsInput
     connect?: ProdukWhereUniqueInput
     update?: XOR<XOR<ProdukUpdateToOneWithWhereWithoutBidsInput, ProdukUpdateWithoutBidsInput>, ProdukUncheckedUpdateWithoutBidsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutBidsNestedInput = {
+    create?: XOR<UserCreateWithoutBidsInput, UserUncheckedCreateWithoutBidsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBidsInput
+    upsert?: UserUpsertWithoutBidsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBidsInput, UserUpdateWithoutBidsInput>, UserUncheckedUpdateWithoutBidsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8364,6 +11686,23 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -8373,13 +11712,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumKategoriFilter<$PrismaModel = never> = {
-    equals?: $Enums.Kategori | EnumKategoriFieldRefInput<$PrismaModel>
-    in?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
-    not?: NestedEnumKategoriFilter<$PrismaModel> | $Enums.Kategori
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -8409,21 +11741,24 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedEnumKategoriFilter<$PrismaModel = never> = {
+    equals?: $Enums.Kategori | EnumKategoriFieldRefInput<$PrismaModel>
+    in?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Kategori[] | ListEnumKategoriFieldRefInput<$PrismaModel>
+    not?: NestedEnumKategoriFilter<$PrismaModel> | $Enums.Kategori
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8463,46 +11798,26 @@ export namespace Prisma {
     _max?: NestedEnumKategoriFilter<$PrismaModel>
   }
 
-  export type UserCreateWithoutWatchlistsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: string
-    createdAt?: Date | string
-    bids?: BidCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutWatchlistsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: string
-    createdAt?: Date | string
-    bids?: BidUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutWatchlistsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutWatchlistsInput, UserUncheckedCreateWithoutWatchlistsInput>
-  }
-
   export type ProdukCreateWithoutWatchlistsInput = {
     id?: string
     nama_barang: string
     tanggal: Date | string
     harga_awal: number
     deskripsi: string
+    createdAt?: Date | string
     image_url?: string | null
+    jumlah_seat?: number | null
+    kilometer?: number | null
     merk_mobil?: string | null
+    tahun?: number | null
     tipe_mobil?: string | null
     transmisi?: string | null
-    jumlah_seat?: number | null
-    tahun?: number | null
-    kilometer?: number | null
+    images?: ProdukCreateimagesInput | string[]
+    interior?: string | null
+    mesin?: string | null
+    riwayat_servis?: string | null
     kategori?: $Enums.Kategori
-    createdAt?: Date | string
+    lokasi_mobil?: string | null
     bids?: BidCreateNestedManyWithoutProdukInput
   }
 
@@ -8512,21 +11827,116 @@ export namespace Prisma {
     tanggal: Date | string
     harga_awal: number
     deskripsi: string
+    createdAt?: Date | string
     image_url?: string | null
+    jumlah_seat?: number | null
+    kilometer?: number | null
     merk_mobil?: string | null
+    tahun?: number | null
     tipe_mobil?: string | null
     transmisi?: string | null
-    jumlah_seat?: number | null
-    tahun?: number | null
-    kilometer?: number | null
+    images?: ProdukCreateimagesInput | string[]
+    interior?: string | null
+    mesin?: string | null
+    riwayat_servis?: string | null
     kategori?: $Enums.Kategori
-    createdAt?: Date | string
+    lokasi_mobil?: string | null
     bids?: BidUncheckedCreateNestedManyWithoutProdukInput
   }
 
   export type ProdukCreateOrConnectWithoutWatchlistsInput = {
     where: ProdukWhereUniqueInput
     create: XOR<ProdukCreateWithoutWatchlistsInput, ProdukUncheckedCreateWithoutWatchlistsInput>
+  }
+
+  export type UserCreateWithoutWatchlistsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    bids?: BidCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutWatchlistsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    bids?: BidUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutWatchlistsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWatchlistsInput, UserUncheckedCreateWithoutWatchlistsInput>
+  }
+
+  export type ProdukUpsertWithoutWatchlistsInput = {
+    update: XOR<ProdukUpdateWithoutWatchlistsInput, ProdukUncheckedUpdateWithoutWatchlistsInput>
+    create: XOR<ProdukCreateWithoutWatchlistsInput, ProdukUncheckedCreateWithoutWatchlistsInput>
+    where?: ProdukWhereInput
+  }
+
+  export type ProdukUpdateToOneWithWhereWithoutWatchlistsInput = {
+    where?: ProdukWhereInput
+    data: XOR<ProdukUpdateWithoutWatchlistsInput, ProdukUncheckedUpdateWithoutWatchlistsInput>
+  }
+
+  export type ProdukUpdateWithoutWatchlistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama_barang?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    harga_awal?: IntFieldUpdateOperationsInput | number
+    deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
+    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
+    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    bids?: BidUpdateManyWithoutProdukNestedInput
+  }
+
+  export type ProdukUncheckedUpdateWithoutWatchlistsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama_barang?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    harga_awal?: IntFieldUpdateOperationsInput | number
+    deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
+    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
+    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    bids?: BidUncheckedUpdateManyWithoutProdukNestedInput
   }
 
   export type UserUpsertWithoutWatchlistsInput = {
@@ -8547,7 +11957,11 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWatchlistsInput = {
@@ -8557,54 +11971,11 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ProdukUpsertWithoutWatchlistsInput = {
-    update: XOR<ProdukUpdateWithoutWatchlistsInput, ProdukUncheckedUpdateWithoutWatchlistsInput>
-    create: XOR<ProdukCreateWithoutWatchlistsInput, ProdukUncheckedCreateWithoutWatchlistsInput>
-    where?: ProdukWhereInput
-  }
-
-  export type ProdukUpdateToOneWithWhereWithoutWatchlistsInput = {
-    where?: ProdukWhereInput
-    data: XOR<ProdukUpdateWithoutWatchlistsInput, ProdukUncheckedUpdateWithoutWatchlistsInput>
-  }
-
-  export type ProdukUpdateWithoutWatchlistsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nama_barang?: StringFieldUpdateOperationsInput | string
-    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
-    harga_awal?: IntFieldUpdateOperationsInput | number
-    deskripsi?: StringFieldUpdateOperationsInput | string
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
-    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bids?: BidUpdateManyWithoutProdukNestedInput
-  }
-
-  export type ProdukUncheckedUpdateWithoutWatchlistsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nama_barang?: StringFieldUpdateOperationsInput | string
-    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
-    harga_awal?: IntFieldUpdateOperationsInput | number
-    deskripsi?: StringFieldUpdateOperationsInput | string
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
-    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bids?: BidUncheckedUpdateManyWithoutProdukNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BidCreateWithoutUserInput = {
@@ -8612,6 +11983,7 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
     produk: ProdukCreateNestedOneWithoutBidsInput
   }
 
@@ -8621,6 +11993,7 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
   }
 
   export type BidCreateOrConnectWithoutUserInput = {
@@ -8630,6 +12003,68 @@ export namespace Prisma {
 
   export type BidCreateManyUserInputEnvelope = {
     data: BidCreateManyUserInput | BidCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutUserInput = {
+    id?: string
+    title: string
+    message: string
+    type: string
+    isRead?: boolean
+    link?: string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    message: string
+    type: string
+    isRead?: boolean
+    link?: string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    status?: string
+    type: string
+    snapToken?: string | null
+    orderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TransactionUncheckedCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    status?: string
+    type: string
+    snapToken?: string | null
+    orderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TransactionCreateOrConnectWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TransactionCreateManyUserInputEnvelope = {
+    data: TransactionCreateManyUserInput | TransactionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -8681,6 +12116,68 @@ export namespace Prisma {
     bidAmount?: IntFilter<"Bid"> | number
     status?: StringFilter<"Bid"> | string
     createdAt?: DateTimeFilter<"Bid"> | Date | string
+    paymentStatus?: StringFilter<"Bid"> | string
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    message?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    isRead?: BoolFilter<"Notification"> | boolean
+    link?: StringNullableFilter<"Notification"> | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
+    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutUserInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TransactionScalarWhereInput = {
+    AND?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    OR?: TransactionScalarWhereInput[]
+    NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    id?: StringFilter<"Transaction"> | string
+    userId?: StringFilter<"Transaction"> | string
+    amount?: IntFilter<"Transaction"> | number
+    status?: StringFilter<"Transaction"> | string
+    type?: StringFilter<"Transaction"> | string
+    snapToken?: StringNullableFilter<"Transaction"> | string | null
+    orderId?: StringFilter<"Transaction"> | string
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+    updatedAt?: DateTimeFilter<"Transaction"> | Date | string
   }
 
   export type WatchlistUpsertWithWhereUniqueWithoutUserInput = {
@@ -8709,11 +12206,156 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Watchlist"> | Date | string
   }
 
+  export type UserCreateWithoutTransactionsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    bids?: BidCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    watchlists?: WatchlistCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTransactionsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    bids?: BidUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTransactionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+  }
+
+  export type UserUpsertWithoutTransactionsInput = {
+    update: XOR<UserUpdateWithoutTransactionsInput, UserUncheckedUpdateWithoutTransactionsInput>
+    create: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTransactionsInput, UserUncheckedUpdateWithoutTransactionsInput>
+  }
+
+  export type UserUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bids?: BidUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    watchlists?: WatchlistUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTransactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bids?: BidUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutNotificationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    bids?: BidCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    watchlists?: WatchlistCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: string
+    createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    bids?: BidUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type UserUpsertWithoutNotificationsInput = {
+    update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bids?: BidUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    watchlists?: WatchlistUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bids?: BidUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type BidCreateWithoutProdukInput = {
     id?: string
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
     user: UserCreateNestedOneWithoutBidsInput
   }
 
@@ -8723,6 +12365,7 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
   }
 
   export type BidCreateOrConnectWithoutProdukInput = {
@@ -8789,6 +12432,57 @@ export namespace Prisma {
     data: XOR<WatchlistUpdateManyMutationInput, WatchlistUncheckedUpdateManyWithoutProdukInput>
   }
 
+  export type ProdukCreateWithoutBidsInput = {
+    id?: string
+    nama_barang: string
+    tanggal: Date | string
+    harga_awal: number
+    deskripsi: string
+    createdAt?: Date | string
+    image_url?: string | null
+    jumlah_seat?: number | null
+    kilometer?: number | null
+    merk_mobil?: string | null
+    tahun?: number | null
+    tipe_mobil?: string | null
+    transmisi?: string | null
+    images?: ProdukCreateimagesInput | string[]
+    interior?: string | null
+    mesin?: string | null
+    riwayat_servis?: string | null
+    kategori?: $Enums.Kategori
+    lokasi_mobil?: string | null
+    watchlists?: WatchlistCreateNestedManyWithoutProdukInput
+  }
+
+  export type ProdukUncheckedCreateWithoutBidsInput = {
+    id?: string
+    nama_barang: string
+    tanggal: Date | string
+    harga_awal: number
+    deskripsi: string
+    createdAt?: Date | string
+    image_url?: string | null
+    jumlah_seat?: number | null
+    kilometer?: number | null
+    merk_mobil?: string | null
+    tahun?: number | null
+    tipe_mobil?: string | null
+    transmisi?: string | null
+    images?: ProdukCreateimagesInput | string[]
+    interior?: string | null
+    mesin?: string | null
+    riwayat_servis?: string | null
+    kategori?: $Enums.Kategori
+    lokasi_mobil?: string | null
+    watchlists?: WatchlistUncheckedCreateNestedManyWithoutProdukInput
+  }
+
+  export type ProdukCreateOrConnectWithoutBidsInput = {
+    where: ProdukWhereUniqueInput
+    create: XOR<ProdukCreateWithoutBidsInput, ProdukUncheckedCreateWithoutBidsInput>
+  }
+
   export type UserCreateWithoutBidsInput = {
     id?: string
     name: string
@@ -8796,6 +12490,10 @@ export namespace Prisma {
     password: string
     role?: string
     createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
     watchlists?: WatchlistCreateNestedManyWithoutUserInput
   }
 
@@ -8806,6 +12504,10 @@ export namespace Prisma {
     password: string
     role?: string
     createdAt?: Date | string
+    address?: string | null
+    phone?: string | null
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -8814,45 +12516,61 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutBidsInput, UserUncheckedCreateWithoutBidsInput>
   }
 
-  export type ProdukCreateWithoutBidsInput = {
-    id?: string
-    nama_barang: string
-    tanggal: Date | string
-    harga_awal: number
-    deskripsi: string
-    image_url?: string | null
-    merk_mobil?: string | null
-    tipe_mobil?: string | null
-    transmisi?: string | null
-    jumlah_seat?: number | null
-    tahun?: number | null
-    kilometer?: number | null
-    kategori?: $Enums.Kategori
-    createdAt?: Date | string
-    watchlists?: WatchlistCreateNestedManyWithoutProdukInput
-  }
-
-  export type ProdukUncheckedCreateWithoutBidsInput = {
-    id?: string
-    nama_barang: string
-    tanggal: Date | string
-    harga_awal: number
-    deskripsi: string
-    image_url?: string | null
-    merk_mobil?: string | null
-    tipe_mobil?: string | null
-    transmisi?: string | null
-    jumlah_seat?: number | null
-    tahun?: number | null
-    kilometer?: number | null
-    kategori?: $Enums.Kategori
-    createdAt?: Date | string
-    watchlists?: WatchlistUncheckedCreateNestedManyWithoutProdukInput
-  }
-
-  export type ProdukCreateOrConnectWithoutBidsInput = {
-    where: ProdukWhereUniqueInput
+  export type ProdukUpsertWithoutBidsInput = {
+    update: XOR<ProdukUpdateWithoutBidsInput, ProdukUncheckedUpdateWithoutBidsInput>
     create: XOR<ProdukCreateWithoutBidsInput, ProdukUncheckedCreateWithoutBidsInput>
+    where?: ProdukWhereInput
+  }
+
+  export type ProdukUpdateToOneWithWhereWithoutBidsInput = {
+    where?: ProdukWhereInput
+    data: XOR<ProdukUpdateWithoutBidsInput, ProdukUncheckedUpdateWithoutBidsInput>
+  }
+
+  export type ProdukUpdateWithoutBidsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama_barang?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    harga_awal?: IntFieldUpdateOperationsInput | number
+    deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
+    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
+    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    watchlists?: WatchlistUpdateManyWithoutProdukNestedInput
+  }
+
+  export type ProdukUncheckedUpdateWithoutBidsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama_barang?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    harga_awal?: IntFieldUpdateOperationsInput | number
+    deskripsi?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
+    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
+    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
+    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    tahun?: NullableIntFieldUpdateOperationsInput | number | null
+    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
+    images?: ProdukUpdateimagesInput | string[]
+    interior?: NullableStringFieldUpdateOperationsInput | string | null
+    mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
+    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
+    watchlists?: WatchlistUncheckedUpdateManyWithoutProdukNestedInput
   }
 
   export type UserUpsertWithoutBidsInput = {
@@ -8873,6 +12591,10 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUpdateManyWithoutUserNestedInput
   }
 
@@ -8883,54 +12605,11 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ProdukUpsertWithoutBidsInput = {
-    update: XOR<ProdukUpdateWithoutBidsInput, ProdukUncheckedUpdateWithoutBidsInput>
-    create: XOR<ProdukCreateWithoutBidsInput, ProdukUncheckedCreateWithoutBidsInput>
-    where?: ProdukWhereInput
-  }
-
-  export type ProdukUpdateToOneWithWhereWithoutBidsInput = {
-    where?: ProdukWhereInput
-    data: XOR<ProdukUpdateWithoutBidsInput, ProdukUncheckedUpdateWithoutBidsInput>
-  }
-
-  export type ProdukUpdateWithoutBidsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nama_barang?: StringFieldUpdateOperationsInput | string
-    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
-    harga_awal?: IntFieldUpdateOperationsInput | number
-    deskripsi?: StringFieldUpdateOperationsInput | string
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
-    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    watchlists?: WatchlistUpdateManyWithoutProdukNestedInput
-  }
-
-  export type ProdukUncheckedUpdateWithoutBidsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nama_barang?: StringFieldUpdateOperationsInput | string
-    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
-    harga_awal?: IntFieldUpdateOperationsInput | number
-    deskripsi?: StringFieldUpdateOperationsInput | string
-    image_url?: NullableStringFieldUpdateOperationsInput | string | null
-    merk_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    tipe_mobil?: NullableStringFieldUpdateOperationsInput | string | null
-    transmisi?: NullableStringFieldUpdateOperationsInput | string | null
-    jumlah_seat?: NullableIntFieldUpdateOperationsInput | number | null
-    tahun?: NullableIntFieldUpdateOperationsInput | number | null
-    kilometer?: NullableIntFieldUpdateOperationsInput | number | null
-    kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    watchlists?: WatchlistUncheckedUpdateManyWithoutProdukNestedInput
   }
 
   export type BidCreateManyUserInput = {
@@ -8939,6 +12618,28 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
+  }
+
+  export type NotificationCreateManyUserInput = {
+    id?: string
+    title: string
+    message: string
+    type: string
+    isRead?: boolean
+    link?: string | null
+    createdAt?: Date | string
+  }
+
+  export type TransactionCreateManyUserInput = {
+    id?: string
+    amount: number
+    status?: string
+    type: string
+    snapToken?: string | null
+    orderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type WatchlistCreateManyUserInput = {
@@ -8952,6 +12653,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
     produk?: ProdukUpdateOneRequiredWithoutBidsNestedInput
   }
 
@@ -8961,6 +12663,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type BidUncheckedUpdateManyWithoutUserInput = {
@@ -8969,6 +12672,70 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type NotificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    link?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    snapToken?: NullableStringFieldUpdateOperationsInput | string | null
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WatchlistUpdateWithoutUserInput = {
@@ -8995,6 +12762,7 @@ export namespace Prisma {
     bidAmount: number
     status?: string
     createdAt?: Date | string
+    paymentStatus?: string
   }
 
   export type WatchlistCreateManyProdukInput = {
@@ -9008,6 +12776,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutBidsNestedInput
   }
 
@@ -9017,6 +12786,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type BidUncheckedUpdateManyWithoutProdukInput = {
@@ -9025,6 +12795,7 @@ export namespace Prisma {
     bidAmount?: IntFieldUpdateOperationsInput | number
     status?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentStatus?: StringFieldUpdateOperationsInput | string
   }
 
   export type WatchlistUpdateWithoutProdukInput = {
