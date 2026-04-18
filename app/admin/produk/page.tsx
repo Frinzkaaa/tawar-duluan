@@ -375,6 +375,16 @@ export default function ProdukPage() {
                                         <input type="number" value={form.jumlah_seat || ""} onChange={e => handleInputChange('jumlah_seat', Number(e.target.value))} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold" />
                                     </div>
                                 </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Tahun</label>
+                                        <input type="number" placeholder="Contoh: 2021" value={form.tahun || ""} onChange={e => handleInputChange('tahun', Number(e.target.value))} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Kilometer</label>
+                                        <input type="number" placeholder="Contoh: 45000" value={form.kilometer || ""} onChange={e => handleInputChange('kilometer', Number(e.target.value))} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold" />
+                                    </div>
+                                </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Deskripsi</label>
                                     <textarea value={form.deskripsi} onChange={e => handleInputChange('deskripsi', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-medium h-32 focus:border-blue-500 outline-none transition-all resize-none" required />
