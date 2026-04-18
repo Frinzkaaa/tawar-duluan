@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Bell, ExternalLink, Sun, Moon } from "lucide-react";
-import { useTheme } from "@/app/providers/ThemeProvider";
+import { Bell, ExternalLink } from "lucide-react";
 
 
 export default function Navbar() {
@@ -117,16 +116,6 @@ export default function Navbar() {
 
       {/* USER GREETING or DAFTAR BUTTON (DESKTOP) */}
       <div className="hidden md:flex items-center">
-        {/* Theme toggle */}
-        {(() => { const { theme, toggle } = useTheme(); return (
-          <button
-            onClick={toggle}
-            className="p-2 text-white hover:bg-white/10 rounded-full transition-colors mr-1"
-            title={theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}
-          >
-            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
-        );})()}
         {user ? (
           <div className="flex items-center gap-4">
             {/* Notification Bell */}
@@ -271,17 +260,6 @@ export default function Navbar() {
               )}
             </li>
 
-            <li className="p-4 border-t border-white/10">
-              {(() => { const { theme, toggle } = useTheme(); return (
-                <button
-                  onClick={toggle}
-                  className="w-full flex items-center justify-between px-6 py-3 hover:bg-white/10 rounded-xl transition-colors text-white font-medium"
-                >
-                  <span>{theme === 'dark' ? 'Mode Terang' : 'Mode Gelap'}</span>
-                  {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                </button>
-              );})()}
-            </li>
             <li className="p-4">
               {user ? (
                 <div className="flex flex-col gap-2">

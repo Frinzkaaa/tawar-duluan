@@ -151,10 +151,10 @@ export default function DetailProdukPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-background">
-                <div className="flex flex-col items-center gap-3">
-                    <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                    <span className="text-blue-500 text-xs font-black uppercase tracking-widest">Memuat...</span>
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 uppercase tracking-widest text-sm font-bold text-blue-600">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span>Loading...</span>
                 </div>
             </div>
         );
@@ -162,9 +162,9 @@ export default function DetailProdukPage() {
 
     if (!product) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center bg-background">
-                <h1 className="text-xl font-black uppercase tracking-tighter text-foreground">Produk tidak ditemukan</h1>
-                <button onClick={() => router.push('/jelajahi')} className="mt-4 bg-blue-600 text-white px-6 py-2.5 rounded-xl font-black uppercase tracking-widest text-xs">Kembali</button>
+            <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+                <h1 className="text-2xl font-black uppercase tracking-tighter">Produk tidak ditemukan</h1>
+                <button onClick={() => router.push('/jelajahi')} className="mt-4 bg-blue-600 text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest text-xs">Kembali</button>
             </div>
         );
     }
@@ -182,250 +182,161 @@ export default function DetailProdukPage() {
     return (
         <>
             <Navbar />
-            <div className="min-h-screen bg-background text-foreground pt-16 pb-16 transition-colors duration-200">
-                <div className="max-w-6xl mx-auto px-4 pt-6">
+            <div className="bg-gray-50 min-h-screen pt-20 pb-8">
+                <div className="container mx-auto px-4 max-w-6xl">
+                    <div className="flex items-center gap-2 text-[11px] text-gray-500 mb-4">
+                        <button onClick={() => router.push('/jelajahi')} className="flex items-center hover:text-blue-600 transition-colors uppercase font-bold tracking-tight group">
+                            <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+                            <span>Kembali</span>
+                        </button>
+                        <span>/</span>
+                        <span className="text-gray-900 font-bold truncate uppercase tracking-tight">{product.nama_barang}</span>
+                    </div>
 
-                    {/* Breadcrumb */}
-                    <button
-                        onClick={() => router.push('/jelajahi')}
-                        className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-colors text-xs font-bold uppercase tracking-widest mb-5 group"
-                    >
-                        <ChevronLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
-                        Kembali ke Jelajahi
-                    </button>
-
-                    {/* MAIN GRID */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-                        {/* LEFT — Images + Specs */}
-                        <div className="lg:col-span-7 space-y-3">
-                            <div className="relative aspect-[16/9] bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
-                                {activeImage
-                                    ? <img src={activeImage} alt={product.nama_barang} className="w-full h-full object-cover" />
-                                    : <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs uppercase font-black tracking-widest">Tidak ada foto</div>
-                                }
-                                <div className="absolute top-3 left-3">
-                                    <span className="bg-blue-600 text-[9px] text-white font-black px-2.5 py-1 rounded-full uppercase tracking-widest">Unit Unggulan</span>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div className="lg:col-span-7 space-y-4">
+                            <div className="relative aspect-[16/9] bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                                <img src={activeImage} alt={product.nama_barang} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                <div className="absolute top-4 left-4">
+                                    <span className="bg-blue-600 text-[10px] text-white font-black px-3 py-1.5 rounded-full shadow-lg uppercase tracking-widest">UNIT UNGGULAN</span>
                                 </div>
                             </div>
-
-                            {allImages.length > 1 && (
-                                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                                    {allImages.map((img, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={() => setActiveImage(img)}
-                                            className={`relative w-20 h-14 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all ${activeImage === img ? 'border-blue-500 opacity-100' : 'border-black/5 dark:border-white/10 opacity-50 hover:opacity-80'}`}
-                                        >
-                                            <img src={img} alt="" className="w-full h-full object-cover" />
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-
-                            <div className="grid grid-cols-4 gap-2">
+                            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                                {allImages.map((img, idx) => (
+                                    <button key={idx} onClick={() => setActiveImage(img)} className={`relative w-24 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${activeImage === img ? 'border-blue-600 scale-105 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'}`}>
+                                        <img src={img} alt="Spec" className="w-full h-full object-cover" />
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="grid grid-cols-4 gap-2 mt-3">
                                 {specs.map(({ icon: Icon, label, value }) => (
-                                    <div key={label} className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-white/5 rounded-xl p-3 flex flex-col items-center text-center gap-1.5 shadow-sm dark:shadow-none">
-                                        <Icon className="w-4 h-4 text-blue-500 dark:text-blue-400" />
-                                        <span className="text-[8px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-wider leading-none">{label}</span>
-                                        <span className="text-[11px] font-black text-gray-900 dark:text-white leading-none">{value}</span>
+                                    <div key={label} className="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center gap-1">
+                                        <Icon className="w-5 h-5 text-blue-600" />
+                                        <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">{label}</span>
+                                        <span className="text-[11px] font-black text-gray-900 tracking-tight">{value}</span>
                                     </div>
                                 ))}
                             </div>
-
-                            <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-white/5 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
-                                <div className="flex border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-transparent">
-                                    {(['specs', 'history', 'desc'] as const).map((tab) => (
-                                        <button
-                                            key={tab}
-                                            onClick={() => setActiveTab(tab)}
-                                            className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab
-                                                    ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-500 bg-white dark:bg-transparent'
-                                                    : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'}`}
-                                        >
-                                            {tab === 'specs' ? 'Spesifikasi' : tab === 'history' ? 'Riwayat Bid' : 'Deskripsi'}
-                                        </button>
-                                    ))}
-                                </div>
-
-                                <div className="p-4 md:p-6">
-                                    {activeTab === 'specs' && (
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div>
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <Wrench className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
-                                                    <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Data Fisik</span>
-                                                </div>
-                                                <div className="space-y-2">
-                                                    {[
-                                                        { label: 'Merk', value: product.merk_mobil },
-                                                        { label: 'Model', value: product.tipe_mobil },
-                                                        { label: 'Mesin', value: product.mesin },
-                                                        { label: 'Transmisi', value: product.transmisi },
-                                                        { label: 'KM', value: product.kilometer ? `${product.kilometer.toLocaleString()} km` : null },
-                                                    ].map((item, i) => (
-                                                        <div key={i} className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-white/5">
-                                                            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest">{item.label}</span>
-                                                            <span className="text-xs font-black text-gray-900 dark:text-white uppercase">{item.value || '-'}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <Armchair className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
-                                                    <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Kondisi</span>
-                                                </div>
-                                                <div className="space-y-2">
-                                                    {[
-                                                        { label: 'Interior', value: product.interior || 'Grade A (Mulus)' },
-                                                        { label: 'Servis', value: product.riwayat_servis || 'Rutin Dealer' },
-                                                        { label: 'Plat', value: 'B (Jakarta)' },
-                                                        { label: 'Pajak', value: 'Aktif' },
-                                                    ].map((item, i) => (
-                                                        <div key={i} className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-white/5">
-                                                            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest">{item.label}</span>
-                                                            <span className="text-xs font-black text-gray-900 dark:text-white uppercase">{item.value}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {activeTab === 'history' && (
-                                        <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight">Log Penawaran</span>
-                                                <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">{product.bids.length} Total Bid</span>
-                                            </div>
-                                            {product.bids.length > 0 ? (
-                                                <div className="space-y-2">
-                                                    {product.bids.map((bid, i) => (
-                                                        <div key={bid.id} className={`flex items-center justify-between p-3 rounded-xl border ${i === 0 ? 'bg-blue-50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20' : 'bg-white dark:bg-white/[0.02] border-gray-50 dark:border-white/5'}`}>
-                                                            <div className="flex items-center gap-3">
-                                                                <div className={`w-7 h-7 rounded-full flex items-center justify-center font-black text-xs ${i === 0 ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-white/10 text-gray-400'}`}>
-                                                                    {i === 0 ? <Trophy className="w-3.5 h-3.5" /> : i + 1}
-                                                                </div>
-                                                                <div>
-                                                                    <p className="text-xs font-black text-gray-900 dark:text-white uppercase tracking-tight">{bid.user.name}</p>
-                                                                    <p className="text-[9px] text-gray-400 dark:text-gray-500 uppercase">{new Date(bid.createdAt).toLocaleString('id-ID')}</p>
-                                                                </div>
-                                                            </div>
-                                                            <div className="text-right">
-                                                                <p className={`text-sm font-black tracking-tighter ${i === 0 ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-gray-300'}`}>
-                                                                    Rp {bid.bidAmount.toLocaleString('id-ID')}
-                                                                </p>
-                                                                {i === 0 && <span className="text-[8px] bg-blue-600 text-white px-1.5 py-0.5 rounded-full font-black uppercase">Tertinggi</span>}
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                <div className="py-16 text-center">
-                                                    <History className="w-12 h-12 text-gray-100 dark:text-white/5 mx-auto mb-3" />
-                                                    <p className="text-gray-400 dark:text-gray-600 uppercase font-black text-[10px] tracking-widest">Belum ada penawaran.</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    {activeTab === 'desc' && (
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-4">
-                                                <FileText className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
-                                                <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Catatan Unit</span>
-                                            </div>
-                                            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{product.deskripsi}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
                         </div>
 
-                        {/* RIGHT — Bid card sticky */}
-                        <div className="lg:col-span-5">
-                            <div className="lg:sticky lg:top-24 bg-white dark:bg-gray-800 border border-gray-100 dark:border-white/5 rounded-2xl p-5 space-y-4 shadow-xl dark:shadow-none">
-                                <div>
-                                    <span className="text-blue-600 dark:text-blue-400 font-black text-[10px] tracking-[0.2em] uppercase block mb-1">
-                                        {product.merk_mobil} {product.tipe_mobil}
-                                    </span>
-                                    <h1 className="text-lg md:text-xl font-black text-gray-900 dark:text-white leading-tight tracking-tighter">{product.nama_barang}</h1>
-                                    <div className="flex items-center gap-1.5 mt-1.5 text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">
-                                        <Clock className="w-3 h-3" />
-                                        <span>Berakhir: {new Date(product.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                        <div className="lg:col-span-5 space-y-4">
+                            <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 h-full">
+                                <div className="mb-4">
+                                    <span className="text-blue-600 font-black text-[11px] tracking-[0.2em] uppercase mb-1 block">{product.merk_mobil || 'Premium'} {product.tipe_mobil}</span>
+                                    <h1 className="text-xl md:text-2xl font-black text-gray-900 leading-tight mb-2 tracking-tighter">{product.nama_barang}</h1>
+                                    <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        <span>Lelang berakhir: {new Date(product.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                                     </div>
                                 </div>
 
-                                <div className="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-xl p-4">
-                                    <p className="text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-1">Harga Saat Ini</p>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xl md:text-2xl font-black text-gray-900 dark:text-white tracking-tighter">
-                                            Rp {highestBid.toLocaleString('id-ID')}
-                                        </span>
-                                        <span className="bg-blue-600/5 dark:bg-blue-500/10 border border-blue-600/10 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">
-                                            {product.bids.length} Bid
-                                        </span>
+                                <div className="bg-[#0f172a] rounded-2xl p-4 mb-4 text-white overflow-hidden relative">
+                                    <div className="relative z-10">
+                                        <p className="text-[9px] font-black text-blue-400 uppercase mb-1 tracking-[0.2em]">Harga Saat Ini</p>
+                                        <div className="flex justify-between items-center">
+                                            <h2 className="text-xl md:text-2xl font-black tracking-tighter text-white">Rp {highestBid.toLocaleString('id-ID')}</h2>
+                                            <div className="bg-white/10 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/10">{product.bids.length} BID</div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {hasDeposit === false ? (
-                                    <div className="bg-orange-50 dark:bg-orange-500/10 border border-orange-100 dark:border-orange-500/20 rounded-xl p-4 space-y-3 text-center">
-                                        <div className="w-9 h-9 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center mx-auto">
-                                            <AlertCircle className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-                                        </div>
+                                    <div className="bg-orange-50 border border-orange-100 rounded-2xl p-6 text-center space-y-4">
+                                        <div className="bg-orange-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto"><AlertCircle className="w-6 h-6 text-orange-600" /></div>
                                         <div>
-                                            <h4 className="font-black text-gray-900 dark:text-white text-sm uppercase tracking-tight">Butuh Aktivasi</h4>
-                                            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Bayar jaminan Rp 5.000.000 untuk mulai bidding.</p>
+                                            <h4 className="font-black text-gray-900 text-sm uppercase tracking-tight">Butuh Aktivasi</h4>
+                                            <p className="text-[11px] text-gray-500 font-medium leading-relaxed">Bayar jaminan Rp 5.000.000 untuk bidding unit ini.</p>
                                         </div>
-                                        <button
-                                            onClick={handlePayDeposit}
-                                            className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all"
-                                        >
-                                            Bayar Sekarang
-                                        </button>
+                                        <button onClick={handlePayDeposit} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest transition-all">BAYAR SEKARANG</button>
                                     </div>
                                 ) : (
                                     <form onSubmit={handleBid} className="space-y-3">
-                                        <div>
-                                            <label className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest block mb-1.5">
-                                                Minimal: Rp {(product.harga_awal + 500000).toLocaleString('id-ID')}
-                                            </label>
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Minimal Bid: Rp {(product.harga_awal + 500000).toLocaleString('id-ID')}</label>
                                             <div className="relative">
-                                                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 font-black text-sm">Rp</span>
-                                                <input
-                                                    type="number"
-                                                    value={bidAmount}
-                                                    onChange={(e) => setBidAmount(parseInt(e.target.value))}
-                                                    className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-white/10 text-gray-900 dark:text-white rounded-xl py-3 pl-10 pr-4 font-black text-base focus:ring-2 focus:ring-blue-600 dark:focus:ring-blue-500 focus:border-blue-600 dark:focus:border-blue-500 outline-none transition-all shadow-inner"
-                                                    placeholder="Masukkan angka..."
-                                                />
+                                                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-black text-gray-400 text-base">Rp</span>
+                                                <input type="number" value={bidAmount} onChange={(e) => setBidAmount(parseInt(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 font-black text-lg focus:ring-2 focus:ring-blue-600 outline-none transition-all shadow-inner" placeholder="Masukkan angka..." />
                                             </div>
                                         </div>
-                                        <button
-                                            type="submit"
-                                            disabled={submitting}
-                                            className="w-full bg-[#0138C9] hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-black py-3 rounded-xl text-xs uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20"
-                                        >
-                                            {submitting ? 'Memproses...' : 'Ajukan Penawaran'}
-                                            {!submitting && <ChevronRight className="w-4 h-4" />}
+                                        <button type="submit" disabled={submitting} className="w-full bg-[#0138C9] hover:bg-blue-700 text-white font-black py-4 rounded-xl transition-all shadow-xl shadow-blue-200 active:scale-95 disabled:opacity-50 text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+                                            {submitting ? 'MEMPROSES...' : 'AJUKAN PENAWARAN'}
+                                            {!submitting && <ChevronRight className="w-5 h-5" />}
                                         </button>
                                     </form>
                                 )}
+                            </div>
+                        </div>
+                    </div>
 
-                                {product.bids.length > 0 && (
-                                    <div className="flex gap-2 pt-1 border-t border-gray-50 dark:border-white/5 pt-4">
-                                        <div className="flex-1 bg-gray-50 dark:bg-white/[0.03] rounded-xl p-3 text-center border border-gray-100 dark:border-transparent">
-                                            <p className="text-[9px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Penawar</p>
-                                            <p className="text-sm font-black text-gray-900 dark:text-white mt-0.5">{product.bids.length}</p>
-                                        </div>
-                                        <div className="flex-1 bg-gray-50 dark:bg-white/[0.03] rounded-xl p-3 text-center border border-gray-100 dark:border-transparent">
-                                            <p className="text-[9px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Bid Tertinggi</p>
-                                            <p className="text-sm font-black text-blue-600 dark:text-blue-400 mt-0.5">Rp {(highestBid / 1000000).toFixed(0)}jt</p>
+                    <div className="mt-8 bg-white rounded-[32px] shadow-xl overflow-hidden border border-gray-100">
+                        <div className="flex border-b border-gray-100 p-2 gap-2 bg-gray-50/50">
+                            {(['specs', 'history', 'desc'] as const).map((tab) => (
+                                <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 py-4 px-6 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${activeTab === tab ? 'bg-white text-blue-600 shadow-sm border border-gray-100' : 'text-gray-400 hover:bg-gray-100'}`}>
+                                    {tab === 'specs' ? 'Spesifikasi' : tab === 'history' ? 'Riwayat Bid' : 'Deskripsi'}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="p-8">
+                            {activeTab === 'specs' && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                    <div className="space-y-6">
+                                        <h3 className="text-lg font-black text-gray-900 border-l-4 border-blue-600 pl-4 uppercase tracking-tighter">DATA FISIK</h3>
+                                        <div className="space-y-3">
+                                            {[
+                                                { label: 'Merk', value: product.merk_mobil },
+                                                { label: 'Model', value: product.tipe_mobil },
+                                                { label: 'Mesin', value: product.mesin },
+                                                { label: 'Transmisi', value: product.transmisi },
+                                                { label: 'KM', value: product.kilometer ? `${product.kilometer.toLocaleString()} km` : null }
+                                            ].map((item, i) => (
+                                                <div key={i} className="flex justify-between py-3 border-b border-gray-50 text-sm">
+                                                    <span className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">{item.label}</span>
+                                                    <span className="font-black text-gray-900 uppercase tracking-tight">{item.value || '-'}</span>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
-                                )}
-                            </div>
+                                    <div className="space-y-6">
+                                        <h3 className="text-lg font-black text-gray-900 border-l-4 border-indigo-600 pl-4 uppercase tracking-tighter">KONDISI</h3>
+                                        <div className="space-y-3">
+                                            {[
+                                                { label: 'Interior', value: product.interior || 'Grade A (Mulus)' },
+                                                { label: 'Servis', value: product.riwayat_servis || 'Rutinitas Dealer' },
+                                                { label: 'Plat', value: 'B (Jakarta)' },
+                                                { label: 'Pajak', value: 'Aktif' }
+                                            ].map((item, i) => (
+                                                <div key={i} className="flex justify-between py-3 border-b border-gray-50 text-sm">
+                                                    <span className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">{item.label}</span>
+                                                    <span className="font-black text-gray-900 uppercase tracking-tight">{item.value}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {activeTab === 'history' && (
+                                <div className="space-y-6">
+                                    <div className="flex items-center justify-between"><h3 className="text-lg font-black text-gray-900 uppercase tracking-tight text-xl">LOG PENAWARAN</h3><span className="text-xs font-black text-gray-400 uppercase tracking-widest">{product.bids.length} TOTAL BID</span></div>
+                                    {product.bids.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {product.bids.map((bid, i) => (
+                                                <div key={bid.id} className={`flex items-center justify-between p-5 rounded-2xl border ${i === 0 ? 'bg-blue-50 border-blue-200' : 'bg-white border-gray-100'}`}>
+                                                    <div className="flex items-center gap-4">
+                                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-black text-white ${i === 0 ? 'bg-blue-600 shadow-lg' : 'bg-gray-300'}`}>{i === 0 ? <Trophy className="w-5 h-5" /> : i + 1}</div>
+                                                        <div><p className="font-black text-gray-900 uppercase text-xs tracking-tight">{bid.user.name}</p><p className="text-[10px] font-bold text-gray-500 uppercase">{new Date(bid.createdAt).toLocaleString('id-ID')}</p></div>
+                                                    </div>
+                                                    <div className="text-right"><p className={`text-lg font-black tracking-tighter ${i === 0 ? 'text-blue-700' : 'text-gray-900'}`}>Rp {bid.bidAmount.toLocaleString('id-ID')}</p>{i === 0 && <span className="text-[8px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-black uppercase tracking-widest">HIGHEST</span>}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="py-20 text-center"><History className="w-16 h-16 text-gray-100 mx-auto mb-4" /><p className="text-gray-400 uppercase font-black text-[10px] tracking-widest">Belum ada penawaran.</p></div>
+                                    )}
+                                </div>
+                            )}
+                            {activeTab === 'desc' && (
+                                <div className="prose prose-blue max-w-none"><h3 className="text-lg font-black text-gray-900 mb-6 uppercase tracking-tighter border-l-4 border-slate-900 pl-4">CATATAN UNIT</h3><div className="text-gray-600 leading-relaxed whitespace-pre-wrap font-medium text-sm">{product.deskripsi}</div></div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -435,101 +346,59 @@ export default function DetailProdukPage() {
             {/* PAYMENT MODAL */}
             {showPaymentModal && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/60 dark:bg-black/70 backdrop-blur-sm" onClick={() => !isPaying && setShowPaymentModal(false)} />
-                    <div className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-                        <div className="p-5 border-b border-gray-100 dark:border-white/5 flex justify-between items-center bg-gray-50/50 dark:bg-transparent">
-                            <div>
-                                <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest">Uang Jaminan</h3>
-                                <p className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-tight mt-0.5">Deposit per akun</p>
-                            </div>
-                            <button onClick={() => setShowPaymentModal(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors">
-                                <X className="w-4 h-4 text-gray-400" />
-                            </button>
+                    <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => !isPaying && setShowPaymentModal(false)}></div>
+                    <div className="relative bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <div><h3 className="text-sm font-black text-gray-900 uppercase tracking-widest">Uang Jaminan</h3><p className="text-[10px] text-gray-400 font-bold uppercase tracking-tight">Deposit per akun</p></div>
+                            <button onClick={() => setShowPaymentModal(false)} className="p-2 hover:bg-white rounded-full transition-colors"><X className="w-5 h-5 text-gray-400" /></button>
                         </div>
-
-                        <div className="p-6">
+                        <div className="p-8">
                             {paymentStep === 'methods' && (
-                                <div className="space-y-5">
-                                    <div className="bg-blue-600 p-5 rounded-xl text-center shadow-lg shadow-blue-500/20">
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-blue-100 block mb-1 opacity-70">Total Pembayaran</span>
-                                        <span className="text-2xl font-black text-white tracking-tighter">Rp 5.000.000</span>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <p className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">Pilih Metode</p>
-                                        <button onClick={() => initiatePayment('QRIS')} className="w-full p-3.5 border border-gray-100 dark:border-white/10 rounded-xl flex items-center justify-between hover:border-blue-500/50 hover:bg-blue-50 dark:hover:bg-blue-500/5 transition-all group">
-                                            <div className="flex items-center gap-3">
-                                                <div className="bg-purple-100 dark:bg-purple-500/10 p-2.5 rounded-xl"><QrCode className="w-4 h-4 text-purple-600 dark:text-purple-400" /></div>
-                                                <div className="text-left">
-                                                    <p className="font-black text-gray-900 dark:text-white text-xs uppercase">QRIS / E-Wallet</p>
-                                                    <p className="text-[9px] text-gray-400 dark:text-gray-500 uppercase">GoPay, ShopeePay, OVO</p>
-                                                </div>
-                                            </div>
-                                            <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                                <div className="space-y-6">
+                                    <div className="bg-blue-600 p-6 rounded-2xl flex flex-col items-center text-white"><span className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">Total Pembayaran</span><span className="text-3xl font-black tracking-tighter">Rp 5.000.000</span></div>
+                                    <div className="space-y-3">
+                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Pilih Metode</p>
+                                        <button onClick={() => initiatePayment('QRIS')} className="w-full p-4 border border-gray-100 rounded-2xl flex items-center justify-between hover:border-blue-600 hover:bg-blue-50/50 transition-all group">
+                                            <div className="flex items-center gap-4"><div className="bg-purple-100 p-3 rounded-xl"><QrCode className="w-5 h-5 text-purple-600" /></div><div className="text-left"><p className="font-black text-gray-900 text-xs uppercase tracking-tight">QRIS / E-WALLET</p><p className="text-[10px] text-gray-400 font-bold uppercase">GoPay, ShopeePay, OVO</p></div></div><ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600" />
                                         </button>
-                                        <button onClick={() => initiatePayment('VA_BCA')} className="w-full p-3.5 border border-gray-100 dark:border-white/10 rounded-xl flex items-center justify-between hover:border-blue-500/50 hover:bg-blue-50 dark:hover:bg-blue-500/5 transition-all group">
-                                            <div className="flex items-center gap-3">
-                                                <div className="bg-blue-100 dark:bg-blue-500/10 p-2.5 rounded-xl"><Building2 className="w-4 h-4 text-blue-600 dark:text-blue-400" /></div>
-                                                <div className="text-left">
-                                                    <p className="font-black text-gray-900 dark:text-white text-xs uppercase">Virtual Account</p>
-                                                    <p className="text-[9px] text-gray-400 dark:text-gray-500 uppercase">ATM, M-Banking (BCA)</p>
-                                                </div>
-                                            </div>
-                                            <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+                                        <button onClick={() => initiatePayment('VA_BCA')} className="w-full p-4 border border-gray-100 rounded-2xl flex items-center justify-between hover:border-blue-600 hover:bg-blue-50/50 transition-all group">
+                                            <div className="flex items-center gap-4"><div className="bg-blue-100 p-3 rounded-xl"><Building2 className="w-5 h-5 text-blue-600" /></div><div className="text-left"><p className="font-black text-gray-900 text-xs uppercase tracking-tight">VIRTUAL ACCOUNT</p><p className="text-[10px] text-gray-400 font-bold uppercase">ATM, M-Banking (BCA)</p></div></div><ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600" />
                                         </button>
                                     </div>
                                 </div>
                             )}
-
                             {paymentStep === 'details' && (
-                                <div className="text-center space-y-6">
+                                <div className="text-center space-y-8 py-4">
                                     {selectedMethod === 'QRIS' ? (
-                                        <div className="space-y-4">
-                                            <div className="mx-auto w-36 h-36 bg-gray-50 dark:bg-white/5 rounded-xl flex items-center justify-center border border-gray-100 dark:border-white/10 font-bold text-gray-300">
-                                                <QrCode className="w-24 h-24 opacity-20" />
-                                            </div>
-                                            <div>
-                                                <p className="font-black text-gray-900 dark:text-white text-xs uppercase tracking-widest">Scan untuk Bayar</p>
-                                                <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 uppercase">Berlaku 15 menit</p>
-                                            </div>
+                                        <div className="space-y-6">
+                                            <div className="mx-auto w-44 h-44 bg-gray-50 rounded-2xl p-4 flex items-center justify-center border-2 border-dashed border-gray-200 font-bold text-gray-200">CODE QR</div>
+                                            <div><h4 className="font-black text-gray-900 uppercase text-xs tracking-widest">SCAN UNTUK BAYAR</h4><p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Berlaku s/d 15 menit ke depan</p></div>
                                         </div>
                                     ) : (
-                                        <div className="space-y-4">
-                                            <div className="bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-white/5 p-5 rounded-xl">
-                                                <p className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">Virtual Account BCA</p>
-                                                <div className="flex items-center justify-center gap-3">
-                                                    <span className="text-2xl font-black text-gray-900 dark:text-white tracking-widest">8831 0982 7716</span>
-                                                    <button className="p-1.5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-lg transition-colors"><Copy className="w-4 h-4 text-blue-600 dark:text-blue-400" /></button>
-                                                </div>
+                                        <div className="space-y-6">
+                                            <div className="bg-slate-900 p-8 rounded-2xl text-white">
+                                                <p className="text-[9px] font-black uppercase tracking-[0.3em] opacity-50 mb-4">VIRTUAL ACCOUNT (BCA)</p>
+                                                <div className="flex items-center justify-center gap-3"><span className="text-3xl font-black tracking-widest">8831 0982 7716</span><button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Copy className="w-4 h-4 text-blue-400" /></button></div>
                                             </div>
-                                            <div className="bg-gray-50/50 dark:bg-white/5 p-4 rounded-xl text-left space-y-2 border border-blue-50 dark:border-transparent">
-                                                <p className="text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Instruksi:</p>
-                                                <div className="text-[10px] text-gray-400 dark:text-gray-500 space-y-1.5 uppercase font-medium">
-                                                    <p>1. Menu m-Transfer → BCA Virtual Account</p>
-                                                    <p>2. Paste nomor VA di atas</p>
+                                            <div className="text-left bg-gray-50 p-6 rounded-2xl space-y-3 text-xs uppercase font-bold tracking-tight">
+                                                <p className="text-gray-900">Instruksi:</p>
+                                                <div className="text-gray-500 space-y-2 leading-relaxed">
+                                                    <p>1. Menu m-Transfer &gt; BCA Virtual Account</p>
+                                                    <p>2. Paste Nomor VA di atas</p>
                                                     <p>3. Konfirmasi nama akun TDI</p>
                                                 </div>
                                             </div>
                                         </div>
                                     )}
-                                    <button
-                                        onClick={confirmPaymentSuccess}
-                                        disabled={isPaying}
-                                        className="w-full bg-blue-600 hover:bg-black text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-xl shadow-blue-500/20"
-                                    >
-                                        {isPaying ? 'Memverifikasi...' : 'Saya Sudah Bayar'}
+                                    <button onClick={confirmPaymentSuccess} disabled={isPaying} className="w-full bg-blue-600 hover:bg-black text-white font-black py-4 rounded-xl shadow-xl transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
+                                        {isPaying ? 'MEMVERIFIKASI...' : 'SAYA SUDAH BAYAR'}
                                     </button>
                                 </div>
                             )}
-
                             {paymentStep === 'success' && (
-                                <div className="text-center py-10 space-y-4">
-                                    <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto">
-                                        <CheckCircle2 className="w-9 h-9 text-emerald-600 dark:text-emerald-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tighter uppercase">Sukses!</h3>
-                                        <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1.5 leading-relaxed px-4 uppercase font-bold tracking-tight">Akun Anda telah teraktivasi. Jaminan tersimpan aman.</p>
-                                    </div>
+                                <div className="text-center py-12 space-y-6 animate-in zoom-in-95 duration-500">
+                                    <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-600"><CheckCircle2 className="w-12 h-12" /></div>
+                                    <div><h3 className="text-2xl font-black text-gray-900 tracking-tighter uppercase">SUKSES!</h3><p className="text-[11px] text-gray-400 font-bold uppercase tracking-tight mt-2 px-6 leading-relaxed">Akun Anda telah teraktivasi. Jaminan tersimpan aman dalam sistem.</p></div>
                                 </div>
                             )}
                         </div>
