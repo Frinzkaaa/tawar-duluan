@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import type { ReactNode } from "react";
 import { Poppins, Slackey } from "next/font/google";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,7 +20,6 @@ const slackey = Slackey({
   display: "swap",
 });
 
-
 export const metadata: Metadata = {
   title: "Tawar Duluan | Platform Lelang Mobil Terpercaya",
   description: "Dapatkan mobil impian Anda dengan harga terbaik melalui sistem lelang transparan dan terpercaya.",
@@ -31,11 +31,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body
-        className={`${poppins.variable} ${slackey.variable} bg-gray-50 text-gray-900`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${poppins.variable} ${slackey.variable}`}>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
