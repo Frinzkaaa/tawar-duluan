@@ -64,19 +64,17 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user, account }) {
       try {
-        if (user || !token.id) {
-          if (token.email) {
-            const dbUser = await prisma.user.findUnique({
-              where: { email: token.email }
-            });
+        const emailToFind = user?.email || token?.email;
+        if (emailToFind) {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: emailToFind }
+          });
 
-            if (dbUser) {
-              token.id = dbUser.id;
-              token.role = dbUser.role;
-            }
-          }
-          
-          if (!token.id && user) {
+          if (dbUser) {
+            token.id = dbUser.id;
+            token.role = dbUser.role;
+          } else if (user && !token.id) {
+            // Ini cadangan, seharusnya dbUser selalu ketemu berkat signIn callback
             token.id = user.id;
             token.role = (user as any).role || "masyarakat";
           }
