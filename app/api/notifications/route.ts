@@ -1,18 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-async function getCurrentUser(request: NextRequest) {
-    const token = request.cookies.get("token")?.value;
-    if (!token) return null;
-
-    try {
-        const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
-        const user = await prisma.user.findUnique({ where: { id: payload.uid } });
-        return user;
-    } catch (error) {
-        return null;
-    }
-}
+import { getCurrentUser } from '@/lib/session';
 
 export async function GET(request: NextRequest) {
     try {

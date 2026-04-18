@@ -4,34 +4,7 @@ export const runtime = "nodejs"; // ✅ PENTING
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// =====================
-// Helper: get current user
-// =====================
-type JwtPayload = {
-  uid: string;
-};
-
-async function getCurrentUser(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
-  if (!token) return null;
-
-  try {
-    const base64Payload = token.split(".")[1];
-    const payload = JSON.parse(
-      Buffer.from(base64Payload, "base64").toString()
-    ) as JwtPayload;
-
-    if (!payload.uid) return null;
-
-    const user = await prisma.user.findUnique({
-      where: { id: payload.uid },
-    });
-
-    return user;
-  } catch {
-    return null;
-  }
-}
+import { getCurrentUser } from "@/lib/session";
 
 // =====================
 // GET: List watchlist

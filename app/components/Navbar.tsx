@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import { Bell, ExternalLink } from "lucide-react";
 
 
 export default function Navbar() {
+  const { data: session, status } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [user, setUser] = useState<{ name: string } | null>(null);
@@ -15,20 +17,28 @@ export default function Navbar() {
 
   // Handler untuk logout
   const handleLogout = async () => {
+    // Logout dari custom JWT
     await fetch('/api/logout', { method: 'POST' });
-    setUser(null);
-    window.location.href = '/login';
+    // Logout dari NextAuth
+    await signOut({ callbackUrl: '/login' });
   };
 
   useEffect(() => {
-    fetch('/api/me')
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data && data.name) setUser({ name: data.name });
-        else setUser(null);
-      })
-      .catch(() => setUser(null));
-  }, []);
+    if (status === "loading") return;
+
+    if (session?.user) {
+      setUser({ name: session.user.name || "User" });
+    } else {
+      // Hanya cek API me jika memang tidak ada session NextAuth
+      fetch('/api/me')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data && data.name) setUser({ name: data.name });
+          else setUser(null);
+        })
+        .catch(() => setUser(null));
+    }
+  }, [session, status]);
 
   const fetchNotifications = async () => {
     const res = await fetch('/api/notifications');
@@ -79,7 +89,7 @@ export default function Navbar() {
             <ul className="absolute left-0 top-full w-44 bg-white text-[#0138C9] rounded-xl shadow-xl invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 z-10 py-2.5 border border-blue-50">
               <li><Link href="/jelajahi" className="block px-6 py-2 hover:bg-[#f0f4ff] tracking-tight">Semua Mobil</Link></li>
               <li><a href="#sedang-ramai" className="block px-6 py-2 hover:bg-[#f0f4ff] tracking-tight">Sedang Ramai</a></li>
-              <li><a href="#segera-berakhir" className="block px-6 py-2 hover:bg-[#f0f4ff] tracking-tight">Segera Berakhir</a></li>
+              <li><a href="#segera-berakhir" className="block px-6 py-2 hover:bg-[#f0f4ff] tracking-tight">Sedang Ramai</a></li>
               <li><a href="#dibawah-100-juta" className="block px-6 py-2 hover:bg-[#f0f4ff] tracking-tight">Di Bawah 100 Juta</a></li>
               <li><a href="#baru-masuk" className="block px-6 py-2 hover:bg-[#f0f4ff] tracking-tight">Baru Masuk</a></li>
             </ul>
