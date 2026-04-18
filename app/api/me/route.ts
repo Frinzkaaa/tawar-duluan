@@ -4,6 +4,7 @@ export const runtime = "nodejs";
 
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getToken } from "next-auth/jwt";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -25,6 +26,14 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (session?.user) {
       userId = (session.user as any).id;
+    }
+  }
+
+  // 3rd Fallback
+  if (!userId) {
+    const nextAuthToken = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (nextAuthToken?.id) {
+      userId = nextAuthToken.id as string;
     }
   }
 

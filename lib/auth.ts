@@ -40,13 +40,16 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      console.log("[signIn] Callback triggered for:", user.email);
       try {
         if (account?.provider === "google") {
           const existingUser = await prisma.user.findUnique({
             where: { email: user.email! }
           });
+          console.log("[signIn] existingUser found:", !!existingUser);
 
           if (!existingUser) {
+            console.log("[signIn] Creating new Google user in DB...");
             await prisma.user.create({
               data: {
                 email: user.email!,
@@ -55,32 +58,51 @@ export const authOptions: NextAuthOptions = {
                 role: "masyarakat",
               }
             });
+            console.log("[signIn] Successfully created new Google user");
           }
         }
       } catch (error) {
-        console.error("SignIn Callback Error:", error);
+        console.error("[signIn] Error:", error);
       }
       return true;
     },
     async jwt({ token, user, account }) {
+      console.log("[jwt] Callback triggered. token:", JSON.stringify(token));
+      console.log("[jwt] user param:", user ? user.id : "none");
       try {
         const emailToFind = user?.email || token?.email;
+        console.log("[jwt] emailToFind:", emailToFind);
+
         if (emailToFind) {
-          const dbUser = await prisma.user.findUnique({
+          let dbUser = await prisma.user.findUnique({
             where: { email: emailToFind }
           });
+          console.log("[jwt] dbUser found:", !!dbUser);
+
+          // Jika dbUser tetap tidak ada, ini adalah fallback darurat untuk langsung bikin di DB
+          if (!dbUser && (user || token.name)) {
+            console.log("[jwt] WARNING: dbUser tidak ada! Membuat user baru dari dalam JWT...");
+            dbUser = await prisma.user.create({
+              data: {
+                email: emailToFind,
+                name: user?.name || token?.name || "",
+                image: user?.image || token?.picture || "",
+                role: "masyarakat",
+              }
+            });
+            console.log("[jwt] Berhasil membuat user darurat:", dbUser.id);
+          }
 
           if (dbUser) {
             token.id = dbUser.id;
             token.role = dbUser.role;
-          } else if (user && !token.id) {
-            // Ini cadangan, seharusnya dbUser selalu ketemu berkat signIn callback
-            token.id = user.id;
-            token.role = (user as any).role || "masyarakat";
+            console.log("[jwt] Assigned token.id from dbUser:", token.id);
+          } else {
+            console.log("[jwt] CRITICAL: Tetap gagal mendapatkan/membuat dbUser!");
           }
         }
       } catch (error) {
-        console.error("JWT Callback Error:", error);
+        console.error("[jwt] Error:", error);
       }
       return token;
     },
