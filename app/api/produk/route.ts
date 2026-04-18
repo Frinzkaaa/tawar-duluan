@@ -1,10 +1,9 @@
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
-import { Kategori as KategoriEnum } from "@/lib/generated";
 import { Kategori } from "@/lib/generated";
+import { uploadToCloudinary } from "@/lib/cloudinary";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -69,25 +68,13 @@ export async function POST(req: Request) {
       nama_barang,
       tanggal,
       harga_awal,
-      harga_awal_str,
       deskripsi,
       kategori,
-      merk_mobil,
-      tipe_mobil,
-      transmisi,
-      jumlah_seat,
-      tahun,
-      kilometer,
       hasImage: !!image,
+      imageSize: image instanceof File ? image.size : 0,
     });
 
     if (!nama_barang || !tanggal || isNaN(harga_awal) || !deskripsi) {
-      console.error("Validation failed:", {
-        nama_barang: !nama_barang,
-        tanggal: !tanggal,
-        harga_awal: isNaN(harga_awal),
-        deskripsi: !deskripsi,
-      });
       return NextResponse.json({ error: "Invalid form data: missing required fields" }, { status: 400 });
     }
 
@@ -96,18 +83,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
     }
 
-    let image_url = "";
-    if (image) {
-      const uploadsDir = join(process.cwd(), "public", "uploads");
-      await mkdir(uploadsDir, { recursive: true });
-      const parts = image.name.split(".");
-      const fileExtension = parts.length > 1 ? parts.pop() : "jpg";
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExtension}`;
-      const filePath = join(uploadsDir, fileName);
-      const bytes = await image.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      await writeFile(filePath, buffer);
-      image_url = `/uploads/${fileName}`;
+    // Upload gambar ke Cloudinary (jika ada)
+    let image_url: string | null = null;
+    if (image instanceof File && image.size > 0) {
+      try {
+        console.log("Uploading image to Cloudinary...");
+        image_url = await uploadToCloudinary(image);
+        console.log("Image uploaded:", image_url);
+      } catch (uploadErr: any) {
+        console.error("Cloudinary upload error:", uploadErr);
+        return NextResponse.json({ error: `Gagal mengunggah gambar: ${uploadErr.message}` }, { status: 500 });
+      }
     }
 
     const produk = await prisma.produk.create({
@@ -116,9 +102,7 @@ export async function POST(req: Request) {
         tanggal: new Date(tanggal),
         harga_awal,
         deskripsi,
-        image_url: image_url || null,
-
-
+        image_url,
         kategori: kategori && kategori.trim() ? (kategori as Kategori) : undefined,
         merk_mobil: merk_mobil && merk_mobil.trim() ? merk_mobil : null,
         tipe_mobil: tipe_mobil && tipe_mobil.trim() ? tipe_mobil : null,
@@ -135,7 +119,6 @@ export async function POST(req: Request) {
     // --- NOTIFICATION LOGIC: New Product Interest ---
     try {
       if (merk_mobil) {
-        // Find users who have this brand in their watchlist (via existing products in their watchlist)
         const interestedUsers = await prisma.watchlist.findMany({
           where: {
             produk: {
@@ -145,9 +128,7 @@ export async function POST(req: Request) {
               }
             }
           },
-          select: {
-            userId: true
-          },
+          select: { userId: true },
           distinct: ['userId']
         });
 

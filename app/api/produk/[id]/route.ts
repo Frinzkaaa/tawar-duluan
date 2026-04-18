@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export const runtime = "nodejs";
 
@@ -14,14 +13,10 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
         bids: {
           include: {
             user: {
-              select: {
-                name: true,
-              },
+              select: { name: true },
             },
           },
-          orderBy: {
-            createdAt: 'desc',
-          },
+          orderBy: { createdAt: 'desc' },
         },
       },
     });
@@ -39,8 +34,9 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
 
 export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = await context.params; // ⬅️ WAJIB await
+    const { id } = await context.params;
     const formData = await req.formData();
+
     const nama_barang = formData.get("nama_barang") as string;
     const tanggal = formData.get("tanggal") as string;
     const harga_awal_str = formData.get("harga_awal") as string;
@@ -68,30 +64,9 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
 
     const imagesFiles = formData.getAll("images") as File[];
 
-    console.log("PUT data:", {
-      id,
-      nama_barang,
-      tanggal,
-      harga_awal_str,
-      harga_awal,
-      deskripsi,
-      kategori,
-      merk_mobil,
-      tipe_mobil,
-      transmisi,
-      jumlah_seat,
-      tahun,
-      kilometer,
-      hasImage: !!image
-    });
+    console.log("PUT data:", { id, nama_barang, tanggal, harga_awal, hasImage: !!image });
 
     if (!nama_barang || !tanggal || isNaN(harga_awal) || !deskripsi) {
-      console.error("Validation failed:", {
-        nama_barang: !nama_barang,
-        tanggal: !tanggal,
-        harga_awal: isNaN(harga_awal),
-        deskripsi: !deskripsi,
-      });
       return NextResponse.json({ error: "Invalid form data: missing required fields" }, { status: 400 });
     }
 
@@ -100,39 +75,28 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
       return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
     }
 
-    let image_url = undefined;
-    const uploadsDir = join(process.cwd(), "public", "uploads");
-
-    if (image) {
+    // Upload gambar utama ke Cloudinary (jika ada)
+    let image_url: string | undefined = undefined;
+    if (image instanceof File && image.size > 0) {
       try {
-        await mkdir(uploadsDir, { recursive: true });
-      } catch (error) { }
-
-      const parts = image.name.split(".");
-      const fileExtension = parts.length > 1 ? parts.pop() : "jpg";
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExtension}`;
-      const filePath = join(uploadsDir, fileName);
-
-      const bytes = await image.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      await writeFile(filePath, buffer);
-
-      image_url = `/uploads/${fileName}`;
+        console.log(`Uploading main image to Cloudinary for product ${id}...`);
+        image_url = await uploadToCloudinary(image);
+        console.log("Main image uploaded:", image_url);
+      } catch (uploadErr: any) {
+        console.error("Cloudinary upload error:", uploadErr);
+        return NextResponse.json({ error: `Gagal mengunggah gambar: ${uploadErr.message}` }, { status: 500 });
+      }
     }
 
-    // Handle multiple images
+    // Upload additional images ke Cloudinary
     let additionalImages: string[] = [];
-    if (imagesFiles.length > 0) {
-      await mkdir(uploadsDir, { recursive: true });
-      for (const img of imagesFiles) {
-        if (img.size === 0) continue;
-        const parts = img.name.split(".");
-        const ext = parts.length > 1 ? parts.pop() : "jpg";
-        const fname = `${Date.now()}-${Math.random().toString(36).substring(2)}.${ext}`;
-        const fpath = join(uploadsDir, fname);
-        const bytes = await img.arrayBuffer();
-        await writeFile(fpath, Buffer.from(bytes));
-        additionalImages.push(`/uploads/${fname}`);
+    for (const img of imagesFiles) {
+      if (!(img instanceof File) || img.size === 0) continue;
+      try {
+        const url = await uploadToCloudinary(img);
+        additionalImages.push(url);
+      } catch (uploadErr: any) {
+        console.error("Cloudinary additional image upload error:", uploadErr);
       }
     }
 
@@ -162,13 +126,12 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
       updateData.images = additionalImages;
     }
 
-    console.log("About to update produk with data:", updateData);
     const produk = await prisma.produk.update({
       where: { id },
       data: updateData,
     });
-    console.log("Produk updated successfully:", produk);
 
+    console.log("Produk updated successfully:", produk.id);
     return NextResponse.json(produk);
   } catch (err: any) {
     console.error("PUT /api/produk error:", err);
@@ -179,14 +142,10 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
 
 export async function DELETE(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = await context.params; // ⬅️ WAJIB await
-    await prisma.produk.delete({
-      where: { id },
-    });
-
+    const { id } = await context.params;
+    await prisma.produk.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
-

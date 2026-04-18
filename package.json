@@ -11,6 +11,7 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
+    "cloudinary": "^2.9.0",
     "dotenv": "^17.2.3",
     "firebase": "^12.6.0",
     "framer-motion": "^12.23.24",

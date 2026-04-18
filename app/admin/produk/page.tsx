@@ -141,13 +141,18 @@ export default function ProdukPage() {
                 res = await fetch("/api/produk", { method: "POST", body: formData });
             }
 
-            if (!res.ok) throw new Error("Gagal menyimpan produk");
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || "Gagal menyimpan produk");
+            }
+
             closeModal();
             alert("Produk berhasil disimpan!");
             fetchProduk();
-        } catch (err) {
+        } catch (err: any) {
             console.error("Submit error:", err);
-            setErrors({ submit: "Terjadi kesalahan saat menyimpan produk" });
+            setErrors({ submit: err.message || "Terjadi kesalahan saat menyimpan produk" });
+            alert(err.message || "Terjadi kesalahan saat menyimpan produk");
         } finally {
             setIsSubmitting(false);
         }
