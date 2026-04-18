@@ -238,47 +238,47 @@ export default function DetailProdukPage() {
                                     </button>
                                 ))}
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-                                    <Gauge className="w-6 h-6 text-blue-600 mb-2" />
-                                    <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">Kilometer</span>
-                                    <span className="text-xs font-black text-gray-900 tracking-tight">{product.kilometer?.toLocaleString()} km</span>
+                            <div className="grid grid-cols-4 gap-2 mt-3">
+                                <div className="bg-white p-2.5 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center gap-1">
+                                    <Gauge className="w-4 h-4 text-blue-600" />
+                                    <span className="text-[8px] text-gray-400 font-black uppercase tracking-wider leading-none">KM</span>
+                                    <span className="text-[10px] font-black text-gray-900 tracking-tight leading-none">{product.kilometer ? `${product.kilometer.toLocaleString()} km` : '-'}</span>
                                 </div>
-                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-                                    <Settings className="w-6 h-6 text-blue-600 mb-2" />
-                                    <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">Transmisi</span>
-                                    <span className="text-xs font-black text-gray-900 capitalize tracking-tight">{product.transmisi}</span>
+                                <div className="bg-white p-2.5 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center gap-1">
+                                    <Settings className="w-4 h-4 text-blue-600" />
+                                    <span className="text-[8px] text-gray-400 font-black uppercase tracking-wider leading-none">Transmisi</span>
+                                    <span className="text-[10px] font-black text-gray-900 capitalize tracking-tight leading-none">{product.transmisi || '-'}</span>
                                 </div>
-                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-                                    <Calendar className="w-6 h-6 text-blue-600 mb-2" />
-                                    <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">Tahun</span>
-                                    <span className="text-xs font-black text-gray-900 tracking-tight">{product.tahun}</span>
+                                <div className="bg-white p-2.5 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center gap-1">
+                                    <Calendar className="w-4 h-4 text-blue-600" />
+                                    <span className="text-[8px] text-gray-400 font-black uppercase tracking-wider leading-none">Tahun</span>
+                                    <span className="text-[10px] font-black text-gray-900 tracking-tight leading-none">{product.tahun || '-'}</span>
                                 </div>
-                                <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
-                                    <Users className="w-6 h-6 text-blue-600 mb-2" />
-                                    <span className="text-[9px] text-gray-400 font-black uppercase tracking-widest">Kapasitas</span>
-                                    <span className="text-xs font-black text-gray-900 tracking-tight">{product.jumlah_seat} Seat</span>
+                                <div className="bg-white p-2.5 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center gap-1">
+                                    <Users className="w-4 h-4 text-blue-600" />
+                                    <span className="text-[8px] text-gray-400 font-black uppercase tracking-wider leading-none">Seat</span>
+                                    <span className="text-[10px] font-black text-gray-900 tracking-tight leading-none">{product.jumlah_seat ? `${product.jumlah_seat} Seat` : '-'}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div className="lg:col-span-5 space-y-4">
                             <div className="bg-white rounded-3xl p-6 shadow-xl border border-gray-100 h-full">
-                                <div className="mb-6">
-                                    <span className="text-blue-600 font-black text-[11px] tracking-[0.2em] uppercase mb-2 block">{product.merk_mobil || 'Premium'} {product.tipe_mobil}</span>
-                                    <h1 className="text-3xl font-black text-gray-900 leading-tight mb-2 tracking-tighter">{product.nama_barang}</h1>
-                                    <div className="flex items-center gap-2 text-[11px] text-gray-400 font-bold uppercase tracking-widest">
-                                        <Clock className="w-4 h-4" />
+                                <div className="mb-4">
+                                    <span className="text-blue-600 font-black text-[11px] tracking-[0.2em] uppercase mb-1 block">{product.merk_mobil || 'Premium'} {product.tipe_mobil}</span>
+                                    <h1 className="text-xl md:text-2xl font-black text-gray-900 leading-tight mb-2 tracking-tighter">{product.nama_barang}</h1>
+                                    <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+                                        <Clock className="w-3.5 h-3.5" />
                                         <span>Lelang berakhir: {new Date(product.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                                     </div>
                                 </div>
 
-                                <div className="bg-[#0f172a] rounded-2xl p-6 mb-6 text-white overflow-hidden relative">
+                                <div className="bg-[#0f172a] rounded-2xl p-4 mb-4 text-white overflow-hidden relative">
                                     <div className="relative z-10">
-                                        <p className="text-[10px] font-black text-blue-400 uppercase mb-2 tracking-[0.2em]">Harga Saat Ini</p>
-                                        <div className="flex justify-between items-end">
-                                            <h2 className="text-4xl font-black tracking-tighter text-white">Rp {product.harga_awal.toLocaleString('id-ID')}</h2>
-                                            <div className="bg-white/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10">{product.bids.length} BID</div>
+                                        <p className="text-[9px] font-black text-blue-400 uppercase mb-1 tracking-[0.2em]">Harga Saat Ini</p>
+                                        <div className="flex justify-between items-center">
+                                            <h2 className="text-xl md:text-2xl font-black tracking-tighter text-white">Rp {product.harga_awal.toLocaleString('id-ID')}</h2>
+                                            <div className="bg-white/10 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/10">{product.bids.length} BID</div>
                                         </div>
                                     </div>
                                 </div>
@@ -293,17 +293,17 @@ export default function DetailProdukPage() {
                                         <button onClick={handlePayDeposit} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest transition-all">BAYAR SEKARANG</button>
                                     </div>
                                 ) : (
-                                    <form onSubmit={handleBid} className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Minimal Bid: Rp {(product.harga_awal + 500000).toLocaleString('id-ID')}</label>
+                                    <form onSubmit={handleBid} className="space-y-3">
+                                        <div className="space-y-1.5">
+                                            <label className="text-[9px] font-black text-gray-400 uppercase tracking-widest ml-1">Minimal Bid: Rp {(product.harga_awal + 500000).toLocaleString('id-ID')}</label>
                                             <div className="relative">
-                                                <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-gray-400 text-base">Rp</span>
-                                                <input type="number" value={bidAmount} onChange={(e) => setBidAmount(parseInt(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-4 pl-12 pr-6 font-black text-xl focus:ring-2 focus:ring-blue-600 outline-none transition-all shadow-inner" placeholder="Masukkan angka..." />
+                                                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-black text-gray-400 text-sm">Rp</span>
+                                                <input type="number" value={bidAmount} onChange={(e) => setBidAmount(parseInt(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 font-black text-base focus:ring-2 focus:ring-blue-600 outline-none transition-all shadow-inner" placeholder="Masukkan angka..." />
                                             </div>
                                         </div>
-                                        <button type="submit" disabled={submitting} className="w-full bg-[#0138C9] hover:bg-blue-700 text-white font-black py-5 rounded-2xl transition-all shadow-xl shadow-blue-200 active:scale-95 disabled:opacity-50 text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3">
+                                        <button type="submit" disabled={submitting} className="w-full bg-[#0138C9] hover:bg-blue-700 text-white font-black py-3.5 rounded-xl transition-all shadow-lg shadow-blue-200 active:scale-95 disabled:opacity-50 text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2">
                                             {submitting ? 'MEMPROSES...' : 'AJUKAN PENAWARAN'}
-                                            {!submitting && <ChevronRight className="w-5 h-5" />}
+                                            {!submitting && <ChevronRight className="w-4 h-4" />}
                                         </button>
                                     </form>
                                 )}
