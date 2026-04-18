@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import type { ReactNode } from "react";
 import { Poppins, Slackey } from "next/font/google";
+import { Providers } from "./providers/AuthProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${slackey.variable} bg-gray-50 text-gray-900`}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

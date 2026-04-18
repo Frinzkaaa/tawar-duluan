@@ -4,18 +4,35 @@ export const runtime = "nodejs";
 
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
+  let userId: string | null = null;
   const token = req.cookies.get("token")?.value;
-  if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  if (token) {
+    try {
+      const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
+      userId = payload.uid;
+    } catch (err) {
+      console.error("Invalid token cookie");
+    }
+  }
+
+  // Fallback to NextAuth session
+  if (!userId) {
+    const session = await getServerSession(authOptions);
+    if (session?.user) {
+      userId = (session.user as any).id;
+    }
+  }
+
+  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
-
-    if (!payload.uid) return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-
     const user = await prisma.user.findUnique({
-      where: { id: payload.uid },
+      where: { id: userId },
       select: {
         id: true,
         name: true,

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,47 +24,44 @@ export default function LoginPage() {
         return;
       }
 
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      // Gunakan NextAuth untuk login credentials
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
 
-      // Cek apakah response adalah JSON
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await res.text();
-        console.error("Non-JSON response:", text);
-        throw new Error("Server error: Invalid response format");
+      if (res?.error) {
+        throw new Error("Email atau password salah");
       }
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Login gagal");
-
-      // jika admin, arahkan ke dashboard admin
-      if (data.role === "admin") {
+      // Ambil data user/role dari session setelah login berhasil
+      const sessionRes = await fetch("/api/me");
+      const user = await sessionRes.json();
+      
+      if (user.role === "admin") {
         router.push("/admin/laporan");
-      } else if (data.role === "petugas") {
+      } else if (user.role === "petugas") {
         router.push("/petugas/dashboard");
       } else {
-        router.push("/"); // masyarakat
+        router.push("/"); 
       }
-      console.log("RESPON LOGIN:", data);
-      console.log("ROLE:", data.role);
-
     } catch (err: any) {
-      console.error("LOGIN ERROR:", err);
       setErrorMsg(err.message || "Gagal login");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/" });
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[conic-gradient(at_top_left,#0138C9,40%,#001f7a,70%,#D8FF4B)] p-6">
       <div className="w-full max-w-md p-8 rounded-3xl backdrop-blur-2xl border border-white/20 shadow-[0_0_45px_rgba(1,56,201,0.35)] bg-white/10">
         <h1 className="text-4xl font-extrabold text-center mb-8 text-white">
-          Login ke Akun Anda
+          Tawar Duluan
         </h1>
 
         {errorMsg && (
@@ -72,7 +70,7 @@ export default function LoginPage() {
           </p>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="email"
             required
@@ -103,18 +101,35 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-xl font-semibold transition text-white ${
+            className={`w-full py-3 rounded-xl font-bold transition text-white uppercase tracking-widest text-xs ${
               loading ? "bg-blue-400 cursor-not-allowed" : "bg-[#0138C9] hover:bg-[#012fa3]"
             }`}
           >
-            {loading ? "Memproses..." : "Login Sekarang"}
+            {loading ? "Memproses..." : "Masuk"}
           </button>
         </form>
 
-        <p className="text-center mt-6 text-white/90 text-sm">
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-white/20"></span>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-transparent px-2 text-white/50">Atau masuk dengan</span>
+          </div>
+        </div>
+
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full py-3 rounded-xl font-bold transition bg-white text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-100 uppercase tracking-widest text-xs shadow-lg"
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
+          Google
+        </button>
+
+        <p className="text-center mt-8 text-white/90 text-[11px] uppercase tracking-widest font-bold">
           Belum punya akun?{" "}
-          <a href="/register" className="text-[#D8FF4B] font-semibold">
-            Daftar di sini
+          <a href="/register" className="text-[#D8FF4B] hover:underline">
+            Daftar Gratis
           </a>
         </p>
       </div>
