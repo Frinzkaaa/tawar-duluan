@@ -56,6 +56,7 @@ export const authOptions: NextAuthOptions = {
                 name: user.name || "",
                 image: user.image || "",
                 role: "masyarakat",
+                password: "", // Dummy password fallback
               }
             });
             console.log("[signIn] Successfully created new Google user");
@@ -88,6 +89,7 @@ export const authOptions: NextAuthOptions = {
                 name: user?.name || token?.name || "",
                 image: user?.image || token?.picture || "",
                 role: "masyarakat",
+                password: "", // Dummy password fallback
               }
             });
             console.log("[jwt] Berhasil membuat user darurat:", dbUser.id);
