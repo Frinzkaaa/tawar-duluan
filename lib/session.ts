@@ -16,11 +16,26 @@ export async function getCurrentUser(request?: NextRequest) {
   }
 
   // 1B. Fallback to direct token decryption (NextRequest based)
+  let nextAuthToken = null;
   if (!userId && request) {
-    const nextAuthToken = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+    nextAuthToken = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
     console.log("[getCurrentUser] getToken fallback:", nextAuthToken?.email);
     if (nextAuthToken?.id) {
       userId = nextAuthToken.id as string;
+    }
+  }
+
+  // 1C. SELF-HEAL: If still no ID but we have an email, find it in DB directly!
+  // This saves users who have a corrupted NextAuth cookie from a previous error
+  if (!userId) {
+    const backupEmail = session?.user?.email || nextAuthToken?.email;
+    if (backupEmail) {
+       console.log("[getCurrentUser] Self-healing session using email lookup:", backupEmail);
+       const dbRecover = await prisma.user.findUnique({ where: { email: backupEmail } });
+       if (dbRecover) {
+         userId = dbRecover.id;
+         console.log("[getCurrentUser] Self-healed userId:", userId);
+       }
     }
   }
 

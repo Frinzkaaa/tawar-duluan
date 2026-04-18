@@ -4,37 +4,15 @@ export const runtime = "nodejs";
 
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getToken } from "next-auth/jwt";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/session";
 
 export async function GET(req: NextRequest) {
   let userId: string | null = null;
-  const token = req.cookies.get("token")?.value;
+  console.log("== API /me Called ==");
 
-  if (token) {
-    try {
-      const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
-      userId = payload.uid;
-    } catch (err) {
-      console.error("Invalid token cookie");
-    }
-  }
-
-  // Fallback to NextAuth session
-  if (!userId) {
-    const session = await getServerSession(authOptions);
-    if (session?.user) {
-      userId = (session.user as any).id;
-    }
-  }
-
-  // 3rd Fallback
-  if (!userId) {
-    const nextAuthToken = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    if (nextAuthToken?.id) {
-      userId = nextAuthToken.id as string;
-    }
+  const currentUser = await getCurrentUser(req);
+  if (currentUser) {
+    userId = currentUser.id;
   }
 
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
