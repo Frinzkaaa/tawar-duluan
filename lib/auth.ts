@@ -52,12 +52,11 @@ export const authOptions: NextAuthOptions = {
             console.log("[signIn] Creating new Google user in DB...");
             await prisma.user.create({
               data: {
-                email: user.email!,
-                name: user.name || "",
-                image: user.image || "",
-                role: "masyarakat",
-                password: "", // Dummy password fallback
-              }
+  email: user.email!,
+  name: user.name || "",
+  role: "masyarakat",
+  password: "",
+}
             });
             console.log("[signIn] Successfully created new Google user");
           }
