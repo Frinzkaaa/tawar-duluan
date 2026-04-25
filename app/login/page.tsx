@@ -53,9 +53,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: "/" });
-  };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[conic-gradient(at_top_left,#0138C9,40%,#001f7a,70%,#D8FF4B)] p-6">
@@ -109,22 +107,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-white/20"></span>
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-transparent px-2 text-white/50">Atau masuk dengan</span>
-          </div>
-        </div>
 
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full py-3 rounded-xl font-bold transition bg-white text-gray-900 flex items-center justify-center gap-3 hover:bg-gray-100 uppercase tracking-widest text-xs shadow-lg"
-        >
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
-          Google
-        </button>
 
         <p className="text-center mt-8 text-white/90 text-[11px] uppercase tracking-widest font-bold">
           Belum punya akun?{" "}

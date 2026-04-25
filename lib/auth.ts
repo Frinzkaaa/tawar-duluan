@@ -1,17 +1,13 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   // adapter: PrismaAdapter(prisma) as any,
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      allowDangerousEmailAccountLinking: true,
-    }),
+
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -42,25 +38,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       console.log("[signIn] Callback triggered for:", user.email);
       try {
-        if (account?.provider === "google") {
-          const existingUser = await prisma.user.findUnique({
-            where: { email: user.email! }
-          });
-          console.log("[signIn] existingUser found:", !!existingUser);
 
-          if (!existingUser) {
-            console.log("[signIn] Creating new Google user in DB...");
-            await prisma.user.create({
-              data: {
-  email: user.email!,
-  name: user.name || "",
-  role: "masyarakat",
-  password: "",
-}
-            });
-            console.log("[signIn] Successfully created new Google user");
-          }
-        }
       } catch (error) {
         console.error("[signIn] Error:", error);
       }
@@ -79,20 +57,7 @@ export const authOptions: NextAuthOptions = {
           });
           console.log("[jwt] dbUser found:", !!dbUser);
 
-          // Jika dbUser tetap tidak ada, ini adalah fallback darurat untuk langsung bikin di DB
-          if (!dbUser && (user || token.name)) {
-            console.log("[jwt] WARNING: dbUser tidak ada! Membuat user baru dari dalam JWT...");
-            dbUser = await prisma.user.create({
-              data: {
-                email: emailToFind,
-                name: user?.name || token?.name || "",
-                image: user?.image || token?.picture || "",
-                role: "masyarakat",
-                password: "", // Dummy password fallback
-              }
-            });
-            console.log("[jwt] Berhasil membuat user darurat:", dbUser.id);
-          }
+
 
           if (dbUser) {
             token.id = dbUser.id;

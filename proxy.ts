@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { getToken } from "next-auth/jwt";
 
-export async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   const customAdminToken = req.cookies.get("admin_token")?.value;
   const nextAuthToken = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
