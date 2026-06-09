@@ -10,7 +10,7 @@ interface AdminData {
     email: string;
 }
 
-interface HeaderProps {
+interface HeaderProps { 
     toggleSidebar: () => void;
     adminData: AdminData | null;
     loading: boolean;

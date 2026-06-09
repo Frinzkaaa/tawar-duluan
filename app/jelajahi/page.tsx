@@ -28,7 +28,7 @@ function LelangStatusBanner() {
 import { useSearchParams, useRouter } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Car as CarIcon, Users, Settings, Calendar, Gauge, Search, Filter, TrendingUp, Clock, DollarSign, Sparkles, Heart } from 'lucide-react';
+import { Car as CarIcon, Users, Settings, Calendar, Gauge, Search, Filter, TrendingUp, Clock, DollarSign, Sparkles, Heart, CheckCircle2, AlertCircle, XCircle, X } from 'lucide-react';
 
 interface Product {
   id: string;
@@ -97,11 +97,12 @@ export function formatKategori(input?: string): string {
 }
 
 
-function ProductCard({ product, onBid, isLoved, onToggleLove }: {
+function ProductCard({ product, onBid, isLoved, onToggleLove, showAlert }: {
   product: Product;
   onBid: (productId: string, bidAmount: number) => void;
   isLoved: boolean;
   onToggleLove: (produkId: string) => void;
+  showAlert: (title: string, message: string, type: 'success' | 'error' | 'warning' | 'info') => void;
 }) {
   const router = useRouter();
   const [bidAmount, setBidAmount] = useState(product.harga_awal + 1000000);
@@ -110,7 +111,7 @@ function ProductCard({ product, onBid, isLoved, onToggleLove }: {
 
   const handleBid = async () => {
     if (bidAmount <= product.harga_awal) {
-      alert('Jumlah tawaran harus lebih tinggi dari harga awal!');
+      showAlert('Validasi Bid', 'Jumlah tawaran harus lebih tinggi dari harga awal!', 'warning');
       return;
     }
 
@@ -257,6 +258,29 @@ function ProductCard({ product, onBid, isLoved, onToggleLove }: {
 function JelajahiContent() {
   // Watchlist state
   const [watchlist, setWatchlist] = useState<string[]>([]);
+  const [alertModal, setAlertModal] = useState<{
+      isOpen: boolean;
+      title: string;
+      message: string;
+      type: 'success' | 'error' | 'warning' | 'info';
+      actionText?: string;
+      onAction?: () => void;
+  }>({
+      isOpen: false,
+      title: '',
+      message: '',
+      type: 'info'
+  });
+
+  const showAlert = (
+      title: string, 
+      message: string, 
+      type: 'success' | 'error' | 'warning' | 'info' = 'info', 
+      actionText?: string, 
+      onAction?: () => void
+  ) => {
+      setAlertModal({ isOpen: true, title, message, type, actionText, onAction });
+  };
 
   // Fetch watchlist produkId[]
   useEffect(() => {
@@ -430,22 +454,36 @@ function JelajahiContent() {
       });
 
       if (response.ok) {
-        alert('Bid berhasil diajukan!');
-        // You might want to refresh the page or update the UI
+        showAlert('Berhasil', 'Tawaran Anda berhasil diajukan!', 'success', 'OK', () => window.location.reload());
       } else if (response.status === 401) {
-        alert('Silakan login terlebih dahulu untuk mengajukan tawaran');
-        window.location.href = '/login';
+        showAlert(
+          'Perlu Login', 
+          'Silakan login terlebih dahulu untuk mengajukan tawaran lelang.', 
+          'warning', 
+          'Login Sekarang', 
+          () => { window.location.href = '/login'; }
+        );
       } else {
         try {
           const error = await response.json();
-          alert(`Error: ${error.error || 'Gagal mengajukan bid'}`);
+          if (error.requireDeposit) {
+            showAlert(
+              'Uang Jaminan Dibutuhkan',
+              error.message || 'Anda perlu melakukan deposit uang jaminan sebesar Rp 5.000.000 untuk bidding unit ini.',
+              'warning',
+              'Bayar Jaminan',
+              () => { window.location.href = `/jelajahi/${productId}`; }
+            );
+          } else {
+            showAlert('Gagal Menawar', error.error || 'Gagal mengajukan tawaran.', 'error');
+          }
         } catch (parseError) {
-          alert('Terjadi kesalahan saat mengajukan bid');
+          showAlert('Terjadi Kesalahan', 'Gagal mengajukan tawaran. Silakan coba lagi.', 'error');
         }
       }
     } catch (error) {
       console.error('Error submitting bid:', error);
-      alert('Terjadi kesalahan saat mengajukan bid');
+      showAlert('Koneksi Error', 'Terjadi kesalahan sistem. Silakan periksa jaringan internet Anda.', 'error');
     }
   };
 
@@ -589,6 +627,7 @@ function JelajahiContent() {
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
+                    showAlert={showAlert}
                   />
                 </div>
               ))}
@@ -634,6 +673,7 @@ function JelajahiContent() {
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
+                    showAlert={showAlert}
                   />
                 ))}
               </div>
@@ -676,6 +716,7 @@ function JelajahiContent() {
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
+                    showAlert={showAlert}
                   />
                 ))}
               </div>
@@ -718,6 +759,7 @@ function JelajahiContent() {
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
+                    showAlert={showAlert}
                   />
                 ))}
               </div>
@@ -760,6 +802,7 @@ function JelajahiContent() {
                     onBid={submitBid}
                     isLoved={watchlist.includes(product.id)}
                     onToggleLove={handleToggleLove}
+                    showAlert={showAlert}
                   />
                 ))}
               </div>
@@ -768,6 +811,85 @@ function JelajahiContent() {
         </div>
       </main >
       <Footer />
+
+      {/* CUSTOM ALERT MODAL */}
+      {alertModal.isOpen && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+              <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}></div>
+              <div className="relative bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-gray-100 p-6 flex flex-col items-center text-center">
+                  <button onClick={() => setAlertModal(prev => ({ ...prev, isOpen: false }))} className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors">
+                      <X className="w-5 h-5 text-gray-400" />
+                  </button>
+                  
+                  <div className="mt-4 mb-4">
+                      {alertModal.type === 'success' && (
+                          <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
+                              <CheckCircle2 className="w-10 h-10" />
+                          </div>
+                      )}
+                      {alertModal.type === 'error' && (
+                          <div className="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center text-rose-600">
+                              <XCircle className="w-10 h-10" />
+                          </div>
+                      )}
+                      {alertModal.type === 'warning' && (
+                          <div className="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center text-amber-600">
+                              <AlertCircle className="w-10 h-10" />
+                          </div>
+                      )}
+                      {alertModal.type === 'info' && (
+                          <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
+                              <AlertCircle className="w-10 h-10" />
+                          </div>
+                      )}
+                  </div>
+
+                  <h3 className="text-base font-black text-gray-900 uppercase tracking-wide mb-2">
+                      {alertModal.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed mb-6 px-2">
+                      {alertModal.message}
+                  </p>
+
+                  <div className="w-full flex gap-3">
+                      {alertModal.actionText ? (
+                          <>
+                              <button 
+                                  onClick={() => setAlertModal(prev => ({ ...prev, isOpen: false }))} 
+                                  className="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-700 font-black py-3 rounded-xl text-xs uppercase tracking-widest transition-all"
+                              >
+                                  Batal
+                              </button>
+                              <button 
+                                  onClick={() => {
+                                      setAlertModal(prev => ({ ...prev, isOpen: false }));
+                                      if (alertModal.onAction) alertModal.onAction();
+                                  }} 
+                                  className={`flex-1 font-black py-3 rounded-xl text-xs uppercase tracking-widest transition-all text-white ${
+                                      alertModal.type === 'success' ? 'bg-emerald-600 hover:bg-emerald-700' :
+                                      alertModal.type === 'error' ? 'bg-rose-600 hover:bg-rose-700' :
+                                      alertModal.type === 'warning' ? 'bg-[#0138C9] hover:bg-blue-700' :
+                                      'bg-blue-600 hover:bg-blue-700'
+                                  }`}
+                              >
+                                  {alertModal.actionText}
+                              </button>
+                          </>
+                      ) : (
+                          <button 
+                              onClick={() => {
+                                  setAlertModal(prev => ({ ...prev, isOpen: false }));
+                                  if (alertModal.onAction) alertModal.onAction();
+                              }} 
+                              className="w-full bg-[#0138C9] hover:bg-blue-700 text-white font-black py-3 rounded-xl text-xs uppercase tracking-widest transition-all"
+                          >
+                              Tutup
+                          </button>
+                      )}
+                  </div>
+              </div>
+          </div>
+      )}
     </>
   );
 }

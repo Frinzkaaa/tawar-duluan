@@ -27,17 +27,17 @@ model User {
   id            String         @id @default(cuid())
   name          String?
   email         String?        @unique
-  emailVerified DateTime?
-  image         String?
   password      String?
   role          String         @default("masyarakat")
   createdAt     DateTime       @default(now())
   address       String?
   phone         String?
+  emailVerified DateTime?
+  image         String?
   accounts      Account[]
-  sessions      Session[]
   bids          Bid[]
   notifications Notification[]
+  sessions      Session[]
   transactions  Transaction[]
   watchlists    Watchlist[]
 }
@@ -48,15 +48,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -103,27 +102,33 @@ model Notification {
 }
 
 model Produk {
-  id             String      @id @default(cuid())
-  nama_barang    String
-  tanggal        DateTime
-  harga_awal     Int
-  deskripsi      String
-  createdAt      DateTime    @default(now())
-  image_url      String?
-  jumlah_seat    Int?
-  kilometer      Int?
-  merk_mobil     String?
-  tahun          Int?
-  tipe_mobil     String?
-  transmisi      String?
-  images         String[]
-  interior       String?
-  mesin          String?
-  riwayat_servis String?
-  kategori       Kategori    @default(SEMUA)
-  lokasi_mobil   String?
-  bids           Bid[]
-  watchlists     Watchlist[]
+  id              String      @id @default(cuid())
+  nama_barang     String
+  tanggal         DateTime
+  harga_awal      Int
+  deskripsi       String
+  createdAt       DateTime    @default(now())
+  image_url       String?
+  jumlah_seat     Int?
+  kilometer       Int?
+  merk_mobil      String?
+  tahun           Int?
+  tipe_mobil      String?
+  transmisi       String?
+  images          String[]
+  interior        String?
+  mesin           String?
+  riwayat_servis  String?
+  kategori        Kategori    @default(SEMUA)
+  nomor_polisi    String?
+  warna           String?
+  bahan_bakar     String?
+  kapasitas_mesin String?
+  status_dokumen  String?
+  kondisi         String?
+  lokasi_mobil    String?
+  bids            Bid[]
+  watchlists      Watchlist[]
 }
 
 model Bid {

@@ -61,6 +61,12 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
     const interior = formData.get("interior") as string | null;
     const riwayat_servis = formData.get("riwayat_servis") as string | null;
     const lokasi_mobil = formData.get("lokasi_mobil") as string | null;
+    const nomor_polisi = formData.get("nomor_polisi") as string | null;
+    const warna = formData.get("warna") as string | null;
+    const bahan_bakar = formData.get("bahan_bakar") as string | null;
+    const kapasitas_mesin = formData.get("kapasitas_mesin") as string | null;
+    const status_dokumen = formData.get("status_dokumen") as string | null;
+    const kondisi = formData.get("kondisi") as string | null;
 
     const imagesFiles = formData.getAll("images") as File[];
 
@@ -116,6 +122,12 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
       mesin: mesin || null,
       interior: interior || null,
       riwayat_servis: riwayat_servis || null,
+      nomor_polisi: nomor_polisi && nomor_polisi.trim() ? nomor_polisi : null,
+      warna: warna && warna.trim() ? warna : null,
+      bahan_bakar: bahan_bakar && bahan_bakar.trim() ? bahan_bakar : null,
+      kapasitas_mesin: kapasitas_mesin && kapasitas_mesin.trim() ? kapasitas_mesin : null,
+      status_dokumen: status_dokumen && status_dokumen.trim() ? status_dokumen : null,
+      kondisi: kondisi && kondisi.trim() ? kondisi : null,
     };
 
     if (image_url !== undefined) {

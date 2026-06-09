@@ -32,6 +32,13 @@ interface Produk {
     tahun?: number | null;
     kilometer?: number | null;
     kategori?: string | null;
+    nomor_polisi?: string | null;
+    warna?: string | null;
+    bahan_bakar?: string | null;
+    kapasitas_mesin?: string | null;
+    status_dokumen?: string | null;
+    lokasi_mobil?: string | null;
+    kondisi?: string | null;
 }
 
 // ==== Helper untuk format kategori ====
@@ -70,8 +77,18 @@ export default function ProdukPage() {
         jumlah_seat: null,
         tahun: null,
         kilometer: null,
+        nomor_polisi: null,
+        warna: null,
+        bahan_bakar: null,
+        kapasitas_mesin: null,
+        status_dokumen: null,
+        lokasi_mobil: null,
+        kondisi: null,
     });
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedGalleryFiles, setSelectedGalleryFiles] = useState<File[]>([]);
+    const [coverPreview, setCoverPreview] = useState<string | null>(null);
+    const [galleryPreviews, setGalleryPreviews] = useState<string[]>([]);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -132,7 +149,15 @@ export default function ProdukPage() {
             if (typeof form.jumlah_seat === 'number') formData.append("jumlah_seat", form.jumlah_seat.toString());
             if (typeof form.tahun === 'number') formData.append("tahun", form.tahun.toString());
             if (typeof form.kilometer === 'number') formData.append("kilometer", form.kilometer.toString());
+            if (form.nomor_polisi) formData.append("nomor_polisi", form.nomor_polisi);
+            if (form.warna) formData.append("warna", form.warna);
+            if (form.bahan_bakar) formData.append("bahan_bakar", form.bahan_bakar);
+            if (form.kapasitas_mesin) formData.append("kapasitas_mesin", form.kapasitas_mesin);
+            if (form.status_dokumen) formData.append("status_dokumen", form.status_dokumen);
+            if (form.lokasi_mobil) formData.append("lokasi_mobil", form.lokasi_mobil);
+            if (form.kondisi) formData.append("kondisi", form.kondisi);
             if (selectedFile) formData.append("image", selectedFile);
+            selectedGalleryFiles.forEach(f => formData.append("images", f));
 
             let res;
             if (editingId) {
@@ -184,6 +209,13 @@ export default function ProdukPage() {
             jumlah_seat: produk.jumlah_seat ?? null,
             tahun: produk.tahun ?? null,
             kilometer: produk.kilometer ?? null,
+            nomor_polisi: produk.nomor_polisi || null,
+            warna: produk.warna || null,
+            bahan_bakar: produk.bahan_bakar || null,
+            kapasitas_mesin: produk.kapasitas_mesin || null,
+            status_dokumen: produk.status_dokumen || null,
+            lokasi_mobil: produk.lokasi_mobil || null,
+            kondisi: produk.kondisi || null,
         });
         setEditingId(produk.id);
         setModalOpen(true);
@@ -205,8 +237,18 @@ export default function ProdukPage() {
             jumlah_seat: null,
             tahun: null,
             kilometer: null,
+            nomor_polisi: null,
+            warna: null,
+            bahan_bakar: null,
+            kapasitas_mesin: null,
+            status_dokumen: null,
+            lokasi_mobil: null,
+            kondisi: null,
         });
         setSelectedFile(null);
+        setSelectedGalleryFiles([]);
+        setCoverPreview(null);
+        setGalleryPreviews([]);
     };
 
     const formatRupiah = (amount: number) => {
@@ -221,6 +263,14 @@ export default function ProdukPage() {
         const newErrors: { [key: string]: string } = {};
         if (!form.nama_barang.trim()) newErrors.nama_barang = "Wajib diisi";
         if (!form.tanggal) newErrors.tanggal = "Wajib diisi";
+        else {
+            const selectedDate = new Date(form.tanggal);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (selectedDate < today) {
+                newErrors.tanggal = "Tanggal selesai tidak boleh hari kemarin";
+            }
+        }
         if (!form.harga_awal || form.harga_awal < 100000) newErrors.harga_awal = "Minimal Rp 100.000";
         if (!form.deskripsi.trim()) newErrors.deskripsi = "Wajib diisi";
         setErrors(newErrors);
@@ -339,7 +389,17 @@ export default function ProdukPage() {
                                     </div>
                                     <div className="space-y-1">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Tanggal Selesai</label>
-                                        <input type="date" value={form.tanggal} onChange={e => handleInputChange('tanggal', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all" required />
+                                        <input 
+                                            type="date" 
+                                            value={form.tanggal} 
+                                            min={new Date().toLocaleDateString('en-CA')}
+                                            onChange={e => handleInputChange('tanggal', e.target.value)} 
+                                            className={`w-full bg-white/5 border ${errors.tanggal ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-blue-500'} rounded-xl px-4 py-2.5 text-xs font-bold outline-none transition-all`} 
+                                            required 
+                                        />
+                                        {errors.tanggal && (
+                                            <p className="text-[10px] text-red-500 font-bold mt-1 tracking-wide">{errors.tanggal}</p>
+                                        )}
                                     </div>
                                     <div className="space-y-1">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Kategori</label>
@@ -378,20 +438,162 @@ export default function ProdukPage() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Tahun</label>
-                                        <input type="number" placeholder="Contoh: 2021" value={form.tahun || ""} onChange={e => handleInputChange('tahun', Number(e.target.value))} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold" />
+                                        <input type="number" placeholder="Contoh: 2021" value={form.tahun || ""} onChange={e => handleInputChange('tahun', Number(e.target.value))} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold focus:border-blue-500 outline-none transition-all" />
                                     </div>
                                     <div className="space-y-1">
                                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Kilometer</label>
-                                        <input type="number" placeholder="Contoh: 45000" value={form.kilometer || ""} onChange={e => handleInputChange('kilometer', Number(e.target.value))} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold" />
+                                        <input type="number" placeholder="Contoh: 45000" value={form.kilometer || ""} onChange={e => handleInputChange('kilometer', Number(e.target.value))} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs font-bold focus:border-blue-500 outline-none transition-all" />
                                     </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Nomor Polisi</label>
+                                        <input type="text" placeholder="Contoh: B 1234 CD" value={form.nomor_polisi || ""} onChange={e => handleInputChange('nomor_polisi', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Warna</label>
+                                        <input type="text" placeholder="Contoh: Hitam Metalik" value={form.warna || ""} onChange={e => handleInputChange('warna', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all" />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Bahan Bakar</label>
+                                        <input type="text" placeholder="Contoh: Bensin / Diesel" value={form.bahan_bakar || ""} onChange={e => handleInputChange('bahan_bakar', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Kapasitas Mesin</label>
+                                        <input type="text" placeholder="Contoh: 2.2L Diesel" value={form.kapasitas_mesin || ""} onChange={e => handleInputChange('kapasitas_mesin', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all" />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Status Dokumen (STNK/BPKB)</label>
+                                        <select value={form.status_dokumen || ""} onChange={e => handleInputChange('status_dokumen', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all">
+                                            <option value="" className="bg-slate-900">Pilih Status Dokumen</option>
+                                            <option value="STNK" className="bg-slate-900">STNK</option>
+                                            <option value="BPKB" className="bg-slate-900">BPKB</option>
+                                            <option value="STNK & BPKB" className="bg-slate-900">STNK & BPKB</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Kondisi</label>
+                                        <select value={form.kondisi || ""} onChange={e => handleInputChange('kondisi', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all">
+                                            <option value="" className="bg-slate-900">Pilih Kondisi</option>
+                                            <option value="Baik" className="bg-slate-900">Baik</option>
+                                            <option value="Sedang" className="bg-slate-900">Sedang</option>
+                                            <option value="Perlu Perbaikan" className="bg-slate-900">Perlu Perbaikan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Lokasi Unit</label>
+                                    <input type="text" placeholder="Contoh: Jakarta Utara" value={form.lokasi_mobil || ""} onChange={e => handleInputChange('lokasi_mobil', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs font-bold focus:border-blue-500 outline-none transition-all" />
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Deskripsi</label>
                                     <textarea value={form.deskripsi} onChange={e => handleInputChange('deskripsi', e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-medium h-32 focus:border-blue-500 outline-none transition-all resize-none" required />
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Foto Unit</label>
-                                    <input type="file" accept="image/*" onChange={e => setSelectedFile(e.target.files?.[0] || null)} className="w-full text-xs text-gray-400 file:bg-blue-600 file:border-none file:text-white file:px-4 file:py-2 file:rounded-lg file:text-[10px] file:font-black file:uppercase file:mr-4 file:cursor-pointer" />
+                                {/* ─── FOTO COVER ─── */}
+                                <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Foto Cover</label>
+                                        <span className="text-[9px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">Rasio 16:9 · Landscape</span>
+                                    </div>
+                                    <p className="text-[9px] text-gray-500 font-medium">Foto utama yang tampil sebagai thumbnail di halaman jelajahi. Gunakan foto eksterior terbaik.</p>
+                                    <label className="relative flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-white/20 rounded-xl cursor-pointer hover:border-blue-500/50 hover:bg-blue-500/5 transition-all overflow-hidden group">
+                                        {coverPreview ? (
+                                            <>
+                                                <img src={coverPreview} alt="Cover preview" className="absolute inset-0 w-full h-full object-cover" />
+                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <span className="text-[10px] text-white font-black uppercase tracking-widest">Ganti Foto</span>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="flex flex-col items-center gap-2 text-gray-500">
+                                                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                </div>
+                                                <span className="text-[10px] font-black uppercase tracking-widest">Pilih Foto Cover</span>
+                                                <span className="text-[9px]">JPG, PNG, WEBP · Maks 5MB</span>
+                                            </div>
+                                        )}
+                                        <input type="file" accept="image/*" className="hidden" onChange={e => {
+                                            const file = e.target.files?.[0] || null;
+                                            setSelectedFile(file);
+                                            if (file) setCoverPreview(URL.createObjectURL(file));
+                                            else setCoverPreview(null);
+                                        }} />
+                                    </label>
+                                    {form.image_url && !coverPreview && (
+                                        <div className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/10">
+                                            <img src={form.image_url} alt="Current cover" className="w-10 h-7 object-cover rounded" />
+                                            <span className="text-[9px] text-gray-400 font-medium">Foto cover saat ini (akan diganti jika pilih foto baru)</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* ─── FOTO GALERI (INTERIOR) ─── */}
+                                <div className="space-y-2">
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Foto Galeri Interior</label>
+                                        <span className="text-[9px] font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20">Rasio 16:9 · Maks 5 Foto</span>
+                                    </div>
+                                    <p className="text-[9px] text-gray-500 font-medium">Foto tambahan (dashboard, jok, bagasi, dll). Gunakan rasio 16:9 agar seragam dengan foto cover.</p>
+                                    {galleryPreviews.length > 0 && (
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {galleryPreviews.map((src, idx) => (
+                                                <div key={idx} className="relative aspect-video rounded-lg overflow-hidden border border-white/10 group">
+                                                    <img src={src} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newFiles = selectedGalleryFiles.filter((_, i) => i !== idx);
+                                                            const newPreviews = galleryPreviews.filter((_, i) => i !== idx);
+                                                            setSelectedGalleryFiles(newFiles);
+                                                            setGalleryPreviews(newPreviews);
+                                                        }}
+                                                        className="absolute top-1 right-1 w-5 h-5 bg-rose-600 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >
+                                                        <X className="w-3 h-3 text-white" />
+                                                    </button>
+                                                    <div className="absolute bottom-1 left-1 bg-black/50 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wide">
+                                                        {idx === 0 ? 'Foto 1' : `Foto ${idx + 1}`}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {galleryPreviews.length < 5 && (
+                                                <label className="relative aspect-video rounded-lg border-2 border-dashed border-white/15 flex items-center justify-center cursor-pointer hover:border-purple-500/50 hover:bg-purple-500/5 transition-all">
+                                                    <div className="flex flex-col items-center gap-1 text-gray-600">
+                                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" /></svg>
+                                                        <span className="text-[8px] font-black uppercase">Tambah</span>
+                                                    </div>
+                                                    <input type="file" accept="image/*" multiple className="hidden" onChange={e => {
+                                                        const files = Array.from(e.target.files || []);
+                                                        const remaining = 5 - selectedGalleryFiles.length;
+                                                        const toAdd = files.slice(0, remaining);
+                                                        setSelectedGalleryFiles(prev => [...prev, ...toAdd]);
+                                                        setGalleryPreviews(prev => [...prev, ...toAdd.map(f => URL.createObjectURL(f))]);
+                                                    }} />
+                                                </label>
+                                            )}
+                                        </div>
+                                    )}
+                                    {galleryPreviews.length === 0 && (
+                                        <label className="relative flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-white/15 rounded-xl cursor-pointer hover:border-purple-500/50 hover:bg-purple-500/5 transition-all group">
+                                            <div className="flex flex-col items-center gap-2 text-gray-500">
+                                                <div className="flex gap-1.5">
+                                                    {[0,1,2].map(i => <div key={i} className="w-8 h-5 rounded bg-white/5 border border-white/10" />)}
+                                                </div>
+                                                <span className="text-[10px] font-black uppercase tracking-widest">Pilih Foto Galeri</span>
+                                                <span className="text-[9px]">Pilih beberapa sekaligus · Maks 5 foto</span>
+                                            </div>
+                                            <input type="file" accept="image/*" multiple className="hidden" onChange={e => {
+                                                const files = Array.from(e.target.files || []).slice(0, 5);
+                                                setSelectedGalleryFiles(files);
+                                                setGalleryPreviews(files.map(f => URL.createObjectURL(f)));
+                                            }} />
+                                        </label>
+                                    )}
                                 </div>
                                 <div className="flex gap-3 pt-4 border-t border-white/5">
                                     <button type="submit" disabled={isSubmitting} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 disabled:opacity-50">

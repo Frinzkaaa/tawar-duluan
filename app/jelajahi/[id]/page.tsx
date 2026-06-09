@@ -23,6 +23,7 @@ import {
     FileText,
     Wrench,
     Armchair,
+    XCircle,
 } from 'lucide-react';
 
 interface Bid {
@@ -49,6 +50,13 @@ interface Product {
     mesin?: string;
     interior?: string;
     riwayat_servis?: string;
+    nomor_polisi?: string;
+    warna?: string;
+    bahan_bakar?: string;
+    kapasitas_mesin?: string;
+    status_dokumen?: string;
+    lokasi_mobil?: string;
+    kondisi?: string;
     bids: Bid[];
 }
 
@@ -67,6 +75,29 @@ export default function DetailProdukPage() {
     const [paymentStep, setPaymentStep] = useState<'methods' | 'details' | 'success'>('methods');
     const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
     const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
+    const [alertModal, setAlertModal] = useState<{
+        isOpen: boolean;
+        title: string;
+        message: string;
+        type: 'success' | 'error' | 'warning' | 'info';
+        actionText?: string;
+        onAction?: () => void;
+    }>({
+        isOpen: false,
+        title: '',
+        message: '',
+        type: 'info'
+    });
+
+    const showAlert = (
+        title: string, 
+        message: string, 
+        type: 'success' | 'error' | 'warning' | 'info' = 'info', 
+        actionText?: string, 
+        onAction?: () => void
+    ) => {
+        setAlertModal({ isOpen: true, title, message, type, actionText, onAction });
+    };
 
     useEffect(() => {
         const fetchDetail = async () => {
@@ -108,7 +139,9 @@ export default function DetailProdukPage() {
             });
             const data = await res.json();
             if (data.success) { setCurrentOrderId(data.orderId); setPaymentStep('details'); }
-        } catch { alert("Gagal memulai pembayaran"); }
+        } catch {
+            showAlert('Gagal Pembayaran', 'Gagal memulai pembayaran jaminan. Silakan coba kembali.', 'error');
+        }
         finally { setIsPaying(false); }
     };
 
@@ -124,14 +157,19 @@ export default function DetailProdukPage() {
                 setPaymentStep('success');
                 setTimeout(() => { setHasDeposit(true); setShowPaymentModal(false); }, 2000);
             }
-        } catch { alert("Gagal konfirmasi"); }
+        } catch {
+            showAlert('Gagal Konfirmasi', 'Gagal verifikasi pembayaran. Pastikan dana sudah dikirim.', 'error');
+        }
         finally { setIsPaying(false); }
     };
 
     const handleBid = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!product) return;
-        if (bidAmount <= product.harga_awal) { alert('Tawaran harus lebih tinggi dari harga awal!'); return; }
+        if (bidAmount <= product.harga_awal) {
+            showAlert('Validasi Tawaran', 'Harga penawaran harus lebih tinggi dari harga awal!', 'warning');
+            return;
+        }
         setSubmitting(true);
         try {
             const res = await fetch('/api/bids', {
@@ -139,13 +177,27 @@ export default function DetailProdukPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ produkId: product.id, bidAmount })
             });
-            if (res.ok) { alert('Tawaran berhasil diajukan!'); window.location.reload(); }
+            if (res.ok) {
+                showAlert('Berhasil', 'Tawaran Anda berhasil diajukan!', 'success', 'OK', () => window.location.reload());
+            }
             else {
                 const err = await res.json();
-                if (err.requireDeposit) { if (confirm(err.message)) handlePayDeposit(); }
-                else alert(err.error || 'Gagal mengajukan tawaran');
+                if (err.requireDeposit) {
+                    showAlert(
+                        'Aktivasi Jaminan',
+                        err.message || 'Anda perlu membayar jaminan Rp 5.000.000 terlebih dahulu untuk menawar unit ini.',
+                        'warning',
+                        'Bayar Jaminan',
+                        () => handlePayDeposit()
+                    );
+                }
+                else {
+                    showAlert('Gagal Menawar', err.error || 'Gagal mengajukan tawaran.', 'error');
+                }
             }
-        } catch { alert('Terjadi kesalahan'); }
+        } catch {
+            showAlert('Koneksi Error', 'Terjadi kesalahan sistem. Silakan periksa jaringan internet Anda.', 'error');
+        }
         finally { setSubmitting(false); }
     };
 
@@ -285,9 +337,13 @@ export default function DetailProdukPage() {
                                             {[
                                                 { label: 'Merk', value: product.merk_mobil },
                                                 { label: 'Model', value: product.tipe_mobil },
-                                                { label: 'Mesin', value: product.mesin },
                                                 { label: 'Transmisi', value: product.transmisi },
-                                                { label: 'KM', value: product.kilometer ? `${product.kilometer.toLocaleString()} km` : null }
+                                                { label: 'KM', value: product.kilometer ? `${product.kilometer.toLocaleString()} km` : null },
+                                                { label: 'Nomor Polisi', value: product.nomor_polisi },
+                                                { label: 'Warna', value: product.warna },
+                                                { label: 'Bahan Bakar', value: product.bahan_bakar },
+                                                { label: 'Kapasitas Mesin', value: product.kapasitas_mesin || product.mesin },
+                                                { label: 'Lokasi Unit', value: product.lokasi_mobil }
                                             ].map((item, i) => (
                                                 <div key={i} className="flex justify-between py-3 border-b border-gray-50 text-sm">
                                                     <span className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">{item.label}</span>
@@ -297,17 +353,17 @@ export default function DetailProdukPage() {
                                         </div>
                                     </div>
                                     <div className="space-y-6">
-                                        <h3 className="text-lg font-black text-gray-900 border-l-4 border-indigo-600 pl-4 uppercase tracking-tighter">KONDISI</h3>
+                                        <h3 className="text-lg font-black text-gray-900 border-l-4 border-indigo-600 pl-4 uppercase tracking-tighter">KONDISI & DOKUMEN</h3>
                                         <div className="space-y-3">
                                             {[
+                                                { label: 'Kondisi Unit', value: product.kondisi },
+                                                { label: 'Status Dokumen', value: product.status_dokumen },
                                                 { label: 'Interior', value: product.interior || 'Grade A (Mulus)' },
-                                                { label: 'Servis', value: product.riwayat_servis || 'Rutinitas Dealer' },
-                                                { label: 'Plat', value: 'B (Jakarta)' },
-                                                { label: 'Pajak', value: 'Aktif' }
+                                                { label: 'Servis', value: product.riwayat_servis || 'Rutinitas Dealer' }
                                             ].map((item, i) => (
                                                 <div key={i} className="flex justify-between py-3 border-b border-gray-50 text-sm">
                                                     <span className="text-gray-400 font-bold uppercase text-[10px] tracking-widest">{item.label}</span>
-                                                    <span className="font-black text-gray-900 uppercase tracking-tight">{item.value}</span>
+                                                    <span className="font-black text-gray-900 uppercase tracking-tight">{item.value || '-'}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -400,6 +456,85 @@ export default function DetailProdukPage() {
                                     <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-600"><CheckCircle2 className="w-12 h-12" /></div>
                                     <div><h3 className="text-2xl font-black text-gray-900 tracking-tighter uppercase">SUKSES!</h3><p className="text-[11px] text-gray-400 font-bold uppercase tracking-tight mt-2 px-6 leading-relaxed">Akun Anda telah teraktivasi. Jaminan tersimpan aman dalam sistem.</p></div>
                                 </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* CUSTOM ALERT MODAL */}
+            {alertModal.isOpen && (
+                <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={() => setAlertModal(prev => ({ ...prev, isOpen: false }))}></div>
+                    <div className="relative bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-gray-100 p-6 flex flex-col items-center text-center">
+                        <button onClick={() => setAlertModal(prev => ({ ...prev, isOpen: false }))} className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors">
+                            <X className="w-5 h-5 text-gray-400" />
+                        </button>
+                        
+                        <div className="mt-4 mb-4">
+                            {alertModal.type === 'success' && (
+                                <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
+                                    <CheckCircle2 className="w-10 h-10" />
+                                </div>
+                            )}
+                            {alertModal.type === 'error' && (
+                                <div className="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center text-rose-600">
+                                    <XCircle className="w-10 h-10" />
+                                </div>
+                            )}
+                            {alertModal.type === 'warning' && (
+                                <div className="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center text-amber-600">
+                                    <AlertCircle className="w-10 h-10" />
+                                </div>
+                            )}
+                            {alertModal.type === 'info' && (
+                                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
+                                    <AlertCircle className="w-10 h-10" />
+                                </div>
+                            )}
+                        </div>
+
+                        <h3 className="text-base font-black text-gray-900 uppercase tracking-wide mb-2">
+                            {alertModal.title}
+                        </h3>
+                        <p className="text-xs text-gray-500 font-medium leading-relaxed mb-6 px-2">
+                            {alertModal.message}
+                        </p>
+
+                        <div className="w-full flex gap-3">
+                            {alertModal.actionText ? (
+                                <>
+                                    <button 
+                                        onClick={() => setAlertModal(prev => ({ ...prev, isOpen: false }))} 
+                                        className="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-700 font-black py-3 rounded-xl text-xs uppercase tracking-widest transition-all"
+                                    >
+                                        Batal
+                                    </button>
+                                    <button 
+                                        onClick={() => {
+                                            setAlertModal(prev => ({ ...prev, isOpen: false }));
+                                            if (alertModal.onAction) alertModal.onAction();
+                                        }} 
+                                        className={`flex-1 font-black py-3 rounded-xl text-xs uppercase tracking-widest transition-all text-white ${
+                                            alertModal.type === 'success' ? 'bg-emerald-600 hover:bg-emerald-700' :
+                                            alertModal.type === 'error' ? 'bg-rose-600 hover:bg-rose-700' :
+                                            alertModal.type === 'warning' ? 'bg-[#0138C9] hover:bg-blue-700' :
+                                            'bg-blue-600 hover:bg-blue-700'
+                                        }`}
+                                    >
+                                        {alertModal.actionText}
+                                    </button>
+                                </>
+                            ) : (
+                                <button 
+                                    onClick={() => {
+                                        setAlertModal(prev => ({ ...prev, isOpen: false }));
+                                        if (alertModal.onAction) alertModal.onAction();
+                                    }} 
+                                    className="w-full bg-[#0138C9] hover:bg-blue-700 text-white font-black py-3 rounded-xl text-xs uppercase tracking-widest transition-all"
+                                >
+                                    Tutup
+                                </button>
                             )}
                         </div>
                     </div>

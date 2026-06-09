@@ -1702,18 +1702,18 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     accounts: number
-    sessions: number
     bids: number
     notifications: number
+    sessions: number
     transactions: number
     watchlists: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     bids?: boolean | UserCountOutputTypeCountBidsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
     watchlists?: boolean | UserCountOutputTypeCountWatchlistsArgs
   }
@@ -1739,13 +1739,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SessionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountBidsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BidWhereInput
   }
@@ -1755,6 +1748,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
   }
 
   /**
@@ -3839,39 +3839,39 @@ export namespace Prisma {
     id: string | null
     name: string | null
     email: string | null
-    emailVerified: Date | null
-    image: string | null
     password: string | null
     role: string | null
     createdAt: Date | null
     address: string | null
     phone: string | null
+    emailVerified: Date | null
+    image: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
     name: string | null
     email: string | null
-    emailVerified: Date | null
-    image: string | null
     password: string | null
     role: string | null
     createdAt: Date | null
     address: string | null
     phone: string | null
+    emailVerified: Date | null
+    image: string | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
     name: number
     email: number
-    emailVerified: number
-    image: number
     password: number
     role: number
     createdAt: number
     address: number
     phone: number
+    emailVerified: number
+    image: number
     _all: number
   }
 
@@ -3880,39 +3880,39 @@ export namespace Prisma {
     id?: true
     name?: true
     email?: true
-    emailVerified?: true
-    image?: true
     password?: true
     role?: true
     createdAt?: true
     address?: true
     phone?: true
+    emailVerified?: true
+    image?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
     name?: true
     email?: true
-    emailVerified?: true
-    image?: true
     password?: true
     role?: true
     createdAt?: true
     address?: true
     phone?: true
+    emailVerified?: true
+    image?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
     name?: true
     email?: true
-    emailVerified?: true
-    image?: true
     password?: true
     role?: true
     createdAt?: true
     address?: true
     phone?: true
+    emailVerified?: true
+    image?: true
     _all?: true
   }
 
@@ -3992,13 +3992,13 @@ export namespace Prisma {
     id: string
     name: string | null
     email: string | null
-    emailVerified: Date | null
-    image: string | null
     password: string | null
     role: string
     createdAt: Date
     address: string | null
     phone: string | null
+    emailVerified: Date | null
+    image: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -4022,17 +4022,17 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
-    emailVerified?: boolean
-    image?: boolean
     password?: boolean
     role?: boolean
     createdAt?: boolean
     address?: boolean
     phone?: boolean
+    emailVerified?: boolean
+    image?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     bids?: boolean | User$bidsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     watchlists?: boolean | User$watchlistsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -4042,47 +4042,47 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     email?: boolean
-    emailVerified?: boolean
-    image?: boolean
     password?: boolean
     role?: boolean
     createdAt?: boolean
     address?: boolean
     phone?: boolean
+    emailVerified?: boolean
+    image?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     email?: boolean
-    emailVerified?: boolean
-    image?: boolean
     password?: boolean
     role?: boolean
     createdAt?: boolean
     address?: boolean
     phone?: boolean
+    emailVerified?: boolean
+    image?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
     id?: boolean
     name?: boolean
     email?: boolean
-    emailVerified?: boolean
-    image?: boolean
     password?: boolean
     role?: boolean
     createdAt?: boolean
     address?: boolean
     phone?: boolean
+    emailVerified?: boolean
+    image?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "password" | "role" | "createdAt" | "address" | "phone", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "address" | "phone" | "emailVerified" | "image", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
     bids?: boolean | User$bidsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     watchlists?: boolean | User$watchlistsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -4094,9 +4094,9 @@ export namespace Prisma {
     name: "User"
     objects: {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
-      sessions: Prisma.$SessionPayload<ExtArgs>[]
       bids: Prisma.$BidPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       watchlists: Prisma.$WatchlistPayload<ExtArgs>[]
     }
@@ -4104,13 +4104,13 @@ export namespace Prisma {
       id: string
       name: string | null
       email: string | null
-      emailVerified: Date | null
-      image: string | null
       password: string | null
       role: string
       createdAt: Date
       address: string | null
       phone: string | null
+      emailVerified: Date | null
+      image: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4506,9 +4506,9 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bids<T extends User$bidsArgs<ExtArgs> = {}>(args?: Subset<T, User$bidsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BidPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     watchlists<T extends User$watchlistsArgs<ExtArgs> = {}>(args?: Subset<T, User$watchlistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WatchlistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -4543,13 +4543,13 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
-    readonly emailVerified: FieldRef<"User", 'DateTime'>
-    readonly image: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly address: FieldRef<"User", 'String'>
     readonly phone: FieldRef<"User", 'String'>
+    readonly emailVerified: FieldRef<"User", 'DateTime'>
+    readonly image: FieldRef<"User", 'String'>
   }
     
 
@@ -4962,30 +4962,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.sessions
-   */
-  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Session
-     */
-    select?: SessionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Session
-     */
-    omit?: SessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SessionInclude<ExtArgs> | null
-    where?: SessionWhereInput
-    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
-    cursor?: SessionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
-  }
-
-  /**
    * User.bids
    */
   export type User$bidsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5031,6 +5007,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.sessions
+   */
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
   /**
@@ -10582,6 +10582,12 @@ export namespace Prisma {
     mesin: string | null
     riwayat_servis: string | null
     kategori: $Enums.Kategori | null
+    nomor_polisi: string | null
+    warna: string | null
+    bahan_bakar: string | null
+    kapasitas_mesin: string | null
+    status_dokumen: string | null
+    kondisi: string | null
     lokasi_mobil: string | null
   }
 
@@ -10603,6 +10609,12 @@ export namespace Prisma {
     mesin: string | null
     riwayat_servis: string | null
     kategori: $Enums.Kategori | null
+    nomor_polisi: string | null
+    warna: string | null
+    bahan_bakar: string | null
+    kapasitas_mesin: string | null
+    status_dokumen: string | null
+    kondisi: string | null
     lokasi_mobil: string | null
   }
 
@@ -10625,6 +10637,12 @@ export namespace Prisma {
     mesin: number
     riwayat_servis: number
     kategori: number
+    nomor_polisi: number
+    warna: number
+    bahan_bakar: number
+    kapasitas_mesin: number
+    status_dokumen: number
+    kondisi: number
     lokasi_mobil: number
     _all: number
   }
@@ -10662,6 +10680,12 @@ export namespace Prisma {
     mesin?: true
     riwayat_servis?: true
     kategori?: true
+    nomor_polisi?: true
+    warna?: true
+    bahan_bakar?: true
+    kapasitas_mesin?: true
+    status_dokumen?: true
+    kondisi?: true
     lokasi_mobil?: true
   }
 
@@ -10683,6 +10707,12 @@ export namespace Prisma {
     mesin?: true
     riwayat_servis?: true
     kategori?: true
+    nomor_polisi?: true
+    warna?: true
+    bahan_bakar?: true
+    kapasitas_mesin?: true
+    status_dokumen?: true
+    kondisi?: true
     lokasi_mobil?: true
   }
 
@@ -10705,6 +10735,12 @@ export namespace Prisma {
     mesin?: true
     riwayat_servis?: true
     kategori?: true
+    nomor_polisi?: true
+    warna?: true
+    bahan_bakar?: true
+    kapasitas_mesin?: true
+    status_dokumen?: true
+    kondisi?: true
     lokasi_mobil?: true
     _all?: true
   }
@@ -10814,6 +10850,12 @@ export namespace Prisma {
     mesin: string | null
     riwayat_servis: string | null
     kategori: $Enums.Kategori
+    nomor_polisi: string | null
+    warna: string | null
+    bahan_bakar: string | null
+    kapasitas_mesin: string | null
+    status_dokumen: string | null
+    kondisi: string | null
     lokasi_mobil: string | null
     _count: ProdukCountAggregateOutputType | null
     _avg: ProdukAvgAggregateOutputType | null
@@ -10855,6 +10897,12 @@ export namespace Prisma {
     mesin?: boolean
     riwayat_servis?: boolean
     kategori?: boolean
+    nomor_polisi?: boolean
+    warna?: boolean
+    bahan_bakar?: boolean
+    kapasitas_mesin?: boolean
+    status_dokumen?: boolean
+    kondisi?: boolean
     lokasi_mobil?: boolean
     bids?: boolean | Produk$bidsArgs<ExtArgs>
     watchlists?: boolean | Produk$watchlistsArgs<ExtArgs>
@@ -10880,6 +10928,12 @@ export namespace Prisma {
     mesin?: boolean
     riwayat_servis?: boolean
     kategori?: boolean
+    nomor_polisi?: boolean
+    warna?: boolean
+    bahan_bakar?: boolean
+    kapasitas_mesin?: boolean
+    status_dokumen?: boolean
+    kondisi?: boolean
     lokasi_mobil?: boolean
   }, ExtArgs["result"]["produk"]>
 
@@ -10902,6 +10956,12 @@ export namespace Prisma {
     mesin?: boolean
     riwayat_servis?: boolean
     kategori?: boolean
+    nomor_polisi?: boolean
+    warna?: boolean
+    bahan_bakar?: boolean
+    kapasitas_mesin?: boolean
+    status_dokumen?: boolean
+    kondisi?: boolean
     lokasi_mobil?: boolean
   }, ExtArgs["result"]["produk"]>
 
@@ -10924,10 +10984,16 @@ export namespace Prisma {
     mesin?: boolean
     riwayat_servis?: boolean
     kategori?: boolean
+    nomor_polisi?: boolean
+    warna?: boolean
+    bahan_bakar?: boolean
+    kapasitas_mesin?: boolean
+    status_dokumen?: boolean
+    kondisi?: boolean
     lokasi_mobil?: boolean
   }
 
-  export type ProdukOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nama_barang" | "tanggal" | "harga_awal" | "deskripsi" | "createdAt" | "image_url" | "jumlah_seat" | "kilometer" | "merk_mobil" | "tahun" | "tipe_mobil" | "transmisi" | "images" | "interior" | "mesin" | "riwayat_servis" | "kategori" | "lokasi_mobil", ExtArgs["result"]["produk"]>
+  export type ProdukOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nama_barang" | "tanggal" | "harga_awal" | "deskripsi" | "createdAt" | "image_url" | "jumlah_seat" | "kilometer" | "merk_mobil" | "tahun" | "tipe_mobil" | "transmisi" | "images" | "interior" | "mesin" | "riwayat_servis" | "kategori" | "nomor_polisi" | "warna" | "bahan_bakar" | "kapasitas_mesin" | "status_dokumen" | "kondisi" | "lokasi_mobil", ExtArgs["result"]["produk"]>
   export type ProdukInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     bids?: boolean | Produk$bidsArgs<ExtArgs>
     watchlists?: boolean | Produk$watchlistsArgs<ExtArgs>
@@ -10961,6 +11027,12 @@ export namespace Prisma {
       mesin: string | null
       riwayat_servis: string | null
       kategori: $Enums.Kategori
+      nomor_polisi: string | null
+      warna: string | null
+      bahan_bakar: string | null
+      kapasitas_mesin: string | null
+      status_dokumen: string | null
+      kondisi: string | null
       lokasi_mobil: string | null
     }, ExtArgs["result"]["produk"]>
     composites: {}
@@ -11405,6 +11477,12 @@ export namespace Prisma {
     readonly mesin: FieldRef<"Produk", 'String'>
     readonly riwayat_servis: FieldRef<"Produk", 'String'>
     readonly kategori: FieldRef<"Produk", 'Kategori'>
+    readonly nomor_polisi: FieldRef<"Produk", 'String'>
+    readonly warna: FieldRef<"Produk", 'String'>
+    readonly bahan_bakar: FieldRef<"Produk", 'String'>
+    readonly kapasitas_mesin: FieldRef<"Produk", 'String'>
+    readonly status_dokumen: FieldRef<"Produk", 'String'>
+    readonly kondisi: FieldRef<"Produk", 'String'>
     readonly lokasi_mobil: FieldRef<"Produk", 'String'>
   }
     
@@ -13022,13 +13100,13 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     email: 'email',
-    emailVerified: 'emailVerified',
-    image: 'image',
     password: 'password',
     role: 'role',
     createdAt: 'createdAt',
     address: 'address',
-    phone: 'phone'
+    phone: 'phone',
+    emailVerified: 'emailVerified',
+    image: 'image'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -13119,6 +13197,12 @@ export namespace Prisma {
     mesin: 'mesin',
     riwayat_servis: 'riwayat_servis',
     kategori: 'kategori',
+    nomor_polisi: 'nomor_polisi',
+    warna: 'warna',
+    bahan_bakar: 'bahan_bakar',
+    kapasitas_mesin: 'kapasitas_mesin',
+    status_dokumen: 'status_dokumen',
+    kondisi: 'kondisi',
     lokasi_mobil: 'lokasi_mobil'
   };
 
@@ -13345,17 +13429,17 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     email?: StringNullableFilter<"User"> | string | null
-    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
-    image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
     role?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     address?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
+    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    image?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
-    sessions?: SessionListRelationFilter
     bids?: BidListRelationFilter
     notifications?: NotificationListRelationFilter
+    sessions?: SessionListRelationFilter
     transactions?: TransactionListRelationFilter
     watchlists?: WatchlistListRelationFilter
   }
@@ -13364,17 +13448,17 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
-    emailVerified?: SortOrderInput | SortOrder
-    image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     address?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
+    emailVerified?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
-    sessions?: SessionOrderByRelationAggregateInput
     bids?: BidOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     watchlists?: WatchlistOrderByRelationAggregateInput
   }
@@ -13386,17 +13470,17 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
-    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
-    image?: StringNullableFilter<"User"> | string | null
     password?: StringNullableFilter<"User"> | string | null
     role?: StringFilter<"User"> | string
     createdAt?: DateTimeFilter<"User"> | Date | string
     address?: StringNullableFilter<"User"> | string | null
     phone?: StringNullableFilter<"User"> | string | null
+    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    image?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
-    sessions?: SessionListRelationFilter
     bids?: BidListRelationFilter
     notifications?: NotificationListRelationFilter
+    sessions?: SessionListRelationFilter
     transactions?: TransactionListRelationFilter
     watchlists?: WatchlistListRelationFilter
   }, "id" | "email">
@@ -13405,13 +13489,13 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrderInput | SortOrder
     email?: SortOrderInput | SortOrder
-    emailVerified?: SortOrderInput | SortOrder
-    image?: SortOrderInput | SortOrder
     password?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     address?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
+    emailVerified?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -13424,13 +13508,13 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
-    emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    image?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: StringWithAggregatesFilter<"User"> | string
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
+    emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    image?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type AccountWhereInput = {
@@ -13788,6 +13872,12 @@ export namespace Prisma {
     mesin?: StringNullableFilter<"Produk"> | string | null
     riwayat_servis?: StringNullableFilter<"Produk"> | string | null
     kategori?: EnumKategoriFilter<"Produk"> | $Enums.Kategori
+    nomor_polisi?: StringNullableFilter<"Produk"> | string | null
+    warna?: StringNullableFilter<"Produk"> | string | null
+    bahan_bakar?: StringNullableFilter<"Produk"> | string | null
+    kapasitas_mesin?: StringNullableFilter<"Produk"> | string | null
+    status_dokumen?: StringNullableFilter<"Produk"> | string | null
+    kondisi?: StringNullableFilter<"Produk"> | string | null
     lokasi_mobil?: StringNullableFilter<"Produk"> | string | null
     bids?: BidListRelationFilter
     watchlists?: WatchlistListRelationFilter
@@ -13812,6 +13902,12 @@ export namespace Prisma {
     mesin?: SortOrderInput | SortOrder
     riwayat_servis?: SortOrderInput | SortOrder
     kategori?: SortOrder
+    nomor_polisi?: SortOrderInput | SortOrder
+    warna?: SortOrderInput | SortOrder
+    bahan_bakar?: SortOrderInput | SortOrder
+    kapasitas_mesin?: SortOrderInput | SortOrder
+    status_dokumen?: SortOrderInput | SortOrder
+    kondisi?: SortOrderInput | SortOrder
     lokasi_mobil?: SortOrderInput | SortOrder
     bids?: BidOrderByRelationAggregateInput
     watchlists?: WatchlistOrderByRelationAggregateInput
@@ -13839,6 +13935,12 @@ export namespace Prisma {
     mesin?: StringNullableFilter<"Produk"> | string | null
     riwayat_servis?: StringNullableFilter<"Produk"> | string | null
     kategori?: EnumKategoriFilter<"Produk"> | $Enums.Kategori
+    nomor_polisi?: StringNullableFilter<"Produk"> | string | null
+    warna?: StringNullableFilter<"Produk"> | string | null
+    bahan_bakar?: StringNullableFilter<"Produk"> | string | null
+    kapasitas_mesin?: StringNullableFilter<"Produk"> | string | null
+    status_dokumen?: StringNullableFilter<"Produk"> | string | null
+    kondisi?: StringNullableFilter<"Produk"> | string | null
     lokasi_mobil?: StringNullableFilter<"Produk"> | string | null
     bids?: BidListRelationFilter
     watchlists?: WatchlistListRelationFilter
@@ -13863,6 +13965,12 @@ export namespace Prisma {
     mesin?: SortOrderInput | SortOrder
     riwayat_servis?: SortOrderInput | SortOrder
     kategori?: SortOrder
+    nomor_polisi?: SortOrderInput | SortOrder
+    warna?: SortOrderInput | SortOrder
+    bahan_bakar?: SortOrderInput | SortOrder
+    kapasitas_mesin?: SortOrderInput | SortOrder
+    status_dokumen?: SortOrderInput | SortOrder
+    kondisi?: SortOrderInput | SortOrder
     lokasi_mobil?: SortOrderInput | SortOrder
     _count?: ProdukCountOrderByAggregateInput
     _avg?: ProdukAvgOrderByAggregateInput
@@ -13893,6 +14001,12 @@ export namespace Prisma {
     mesin?: StringNullableWithAggregatesFilter<"Produk"> | string | null
     riwayat_servis?: StringNullableWithAggregatesFilter<"Produk"> | string | null
     kategori?: EnumKategoriWithAggregatesFilter<"Produk"> | $Enums.Kategori
+    nomor_polisi?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    warna?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    bahan_bakar?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    kapasitas_mesin?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    status_dokumen?: StringNullableWithAggregatesFilter<"Produk"> | string | null
+    kondisi?: StringNullableWithAggregatesFilter<"Produk"> | string | null
     lokasi_mobil?: StringNullableWithAggregatesFilter<"Produk"> | string | null
   }
 
@@ -14052,17 +14166,17 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
     bids?: BidCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     watchlists?: WatchlistCreateNestedManyWithoutUserInput
   }
@@ -14071,17 +14185,17 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     bids?: BidUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
   }
@@ -14090,17 +14204,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     bids?: BidUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUpdateManyWithoutUserNestedInput
   }
@@ -14109,17 +14223,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -14128,39 +14242,39 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AccountCreateInput = {
@@ -14535,6 +14649,12 @@ export namespace Prisma {
     mesin?: string | null
     riwayat_servis?: string | null
     kategori?: $Enums.Kategori
+    nomor_polisi?: string | null
+    warna?: string | null
+    bahan_bakar?: string | null
+    kapasitas_mesin?: string | null
+    status_dokumen?: string | null
+    kondisi?: string | null
     lokasi_mobil?: string | null
     bids?: BidCreateNestedManyWithoutProdukInput
     watchlists?: WatchlistCreateNestedManyWithoutProdukInput
@@ -14559,6 +14679,12 @@ export namespace Prisma {
     mesin?: string | null
     riwayat_servis?: string | null
     kategori?: $Enums.Kategori
+    nomor_polisi?: string | null
+    warna?: string | null
+    bahan_bakar?: string | null
+    kapasitas_mesin?: string | null
+    status_dokumen?: string | null
+    kondisi?: string | null
     lokasi_mobil?: string | null
     bids?: BidUncheckedCreateNestedManyWithoutProdukInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutProdukInput
@@ -14583,6 +14709,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUpdateManyWithoutProdukNestedInput
     watchlists?: WatchlistUpdateManyWithoutProdukNestedInput
@@ -14607,6 +14739,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUncheckedUpdateManyWithoutProdukNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutProdukNestedInput
@@ -14631,6 +14769,12 @@ export namespace Prisma {
     mesin?: string | null
     riwayat_servis?: string | null
     kategori?: $Enums.Kategori
+    nomor_polisi?: string | null
+    warna?: string | null
+    bahan_bakar?: string | null
+    kapasitas_mesin?: string | null
+    status_dokumen?: string | null
+    kondisi?: string | null
     lokasi_mobil?: string | null
   }
 
@@ -14653,6 +14797,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -14675,6 +14825,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -14887,12 +15043,6 @@ export namespace Prisma {
     none?: AccountWhereInput
   }
 
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
-  }
-
   export type BidListRelationFilter = {
     every?: BidWhereInput
     some?: BidWhereInput
@@ -14903,6 +15053,12 @@ export namespace Prisma {
     every?: NotificationWhereInput
     some?: NotificationWhereInput
     none?: NotificationWhereInput
+  }
+
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
   }
 
   export type TransactionListRelationFilter = {
@@ -14926,15 +15082,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type SessionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type BidOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14950,39 +15106,39 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
     password?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     address?: SortOrder
     phone?: SortOrder
+    emailVerified?: SortOrder
+    image?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
     password?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     address?: SortOrder
     phone?: SortOrder
+    emailVerified?: SortOrder
+    image?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
     password?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     address?: SortOrder
     phone?: SortOrder
+    emailVerified?: SortOrder
+    image?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15297,6 +15453,12 @@ export namespace Prisma {
     mesin?: SortOrder
     riwayat_servis?: SortOrder
     kategori?: SortOrder
+    nomor_polisi?: SortOrder
+    warna?: SortOrder
+    bahan_bakar?: SortOrder
+    kapasitas_mesin?: SortOrder
+    status_dokumen?: SortOrder
+    kondisi?: SortOrder
     lokasi_mobil?: SortOrder
   }
 
@@ -15325,6 +15487,12 @@ export namespace Prisma {
     mesin?: SortOrder
     riwayat_servis?: SortOrder
     kategori?: SortOrder
+    nomor_polisi?: SortOrder
+    warna?: SortOrder
+    bahan_bakar?: SortOrder
+    kapasitas_mesin?: SortOrder
+    status_dokumen?: SortOrder
+    kondisi?: SortOrder
     lokasi_mobil?: SortOrder
   }
 
@@ -15346,6 +15514,12 @@ export namespace Prisma {
     mesin?: SortOrder
     riwayat_servis?: SortOrder
     kategori?: SortOrder
+    nomor_polisi?: SortOrder
+    warna?: SortOrder
+    bahan_bakar?: SortOrder
+    kapasitas_mesin?: SortOrder
+    status_dokumen?: SortOrder
+    kondisi?: SortOrder
     lokasi_mobil?: SortOrder
   }
 
@@ -15447,13 +15621,6 @@ export namespace Prisma {
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-  }
-
   export type BidCreateNestedManyWithoutUserInput = {
     create?: XOR<BidCreateWithoutUserInput, BidUncheckedCreateWithoutUserInput> | BidCreateWithoutUserInput[] | BidUncheckedCreateWithoutUserInput[]
     connectOrCreate?: BidCreateOrConnectWithoutUserInput | BidCreateOrConnectWithoutUserInput[]
@@ -15466,6 +15633,13 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type TransactionCreateNestedManyWithoutUserInput = {
@@ -15489,13 +15663,6 @@ export namespace Prisma {
     connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
   }
 
-  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-  }
-
   export type BidUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<BidCreateWithoutUserInput, BidUncheckedCreateWithoutUserInput> | BidCreateWithoutUserInput[] | BidUncheckedCreateWithoutUserInput[]
     connectOrCreate?: BidCreateOrConnectWithoutUserInput | BidCreateOrConnectWithoutUserInput[]
@@ -15508,6 +15675,13 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type TransactionUncheckedCreateNestedManyWithoutUserInput = {
@@ -15546,20 +15720,6 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
   export type BidUpdateManyWithoutUserNestedInput = {
     create?: XOR<BidCreateWithoutUserInput, BidUncheckedCreateWithoutUserInput> | BidCreateWithoutUserInput[] | BidUncheckedCreateWithoutUserInput[]
     connectOrCreate?: BidCreateOrConnectWithoutUserInput | BidCreateOrConnectWithoutUserInput[]
@@ -15586,6 +15746,20 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type TransactionUpdateManyWithoutUserNestedInput = {
@@ -15630,20 +15804,6 @@ export namespace Prisma {
     deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
   }
 
-  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
-    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
-    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
-  }
-
   export type BidUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<BidCreateWithoutUserInput, BidUncheckedCreateWithoutUserInput> | BidCreateWithoutUserInput[] | BidUncheckedCreateWithoutUserInput[]
     connectOrCreate?: BidCreateOrConnectWithoutUserInput | BidCreateOrConnectWithoutUserInput[]
@@ -15670,6 +15830,20 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type TransactionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -16138,6 +16312,12 @@ export namespace Prisma {
     mesin?: string | null
     riwayat_servis?: string | null
     kategori?: $Enums.Kategori
+    nomor_polisi?: string | null
+    warna?: string | null
+    bahan_bakar?: string | null
+    kapasitas_mesin?: string | null
+    status_dokumen?: string | null
+    kondisi?: string | null
     lokasi_mobil?: string | null
     bids?: BidCreateNestedManyWithoutProdukInput
   }
@@ -16161,6 +16341,12 @@ export namespace Prisma {
     mesin?: string | null
     riwayat_servis?: string | null
     kategori?: $Enums.Kategori
+    nomor_polisi?: string | null
+    warna?: string | null
+    bahan_bakar?: string | null
+    kapasitas_mesin?: string | null
+    status_dokumen?: string | null
+    kondisi?: string | null
     lokasi_mobil?: string | null
     bids?: BidUncheckedCreateNestedManyWithoutProdukInput
   }
@@ -16174,17 +16360,17 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
     bids?: BidCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
   }
 
@@ -16192,17 +16378,17 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     bids?: BidUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16241,6 +16427,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUpdateManyWithoutProdukNestedInput
   }
@@ -16264,6 +16456,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUncheckedUpdateManyWithoutProdukNestedInput
   }
@@ -16283,17 +16481,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     bids?: BidUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
   }
 
@@ -16301,17 +16499,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16350,28 +16548,6 @@ export namespace Prisma {
 
   export type AccountCreateManyUserInputEnvelope = {
     data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type SessionCreateWithoutUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -16430,6 +16606,28 @@ export namespace Prisma {
 
   export type NotificationCreateManyUserInputEnvelope = {
     data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SessionCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -16521,32 +16719,6 @@ export namespace Prisma {
     session_state?: StringNullableFilter<"Account"> | string | null
   }
 
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    OR?: SessionScalarWhereInput[]
-    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
-    id?: StringFilter<"Session"> | string
-    sessionToken?: StringFilter<"Session"> | string
-    userId?: StringFilter<"Session"> | string
-    expires?: DateTimeFilter<"Session"> | Date | string
-  }
-
   export type BidUpsertWithWhereUniqueWithoutUserInput = {
     where: BidWhereUniqueInput
     update: XOR<BidUpdateWithoutUserInput, BidUncheckedUpdateWithoutUserInput>
@@ -16604,6 +16776,32 @@ export namespace Prisma {
     isRead?: BoolFilter<"Notification"> | boolean
     link?: StringNullableFilter<"Notification"> | string | null
     createdAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    sessionToken?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    expires?: DateTimeFilter<"Session"> | Date | string
   }
 
   export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
@@ -16667,16 +16865,16 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
+    emailVerified?: Date | string | null
+    image?: string | null
     bids?: BidCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     watchlists?: WatchlistCreateNestedManyWithoutUserInput
   }
@@ -16685,16 +16883,16 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    emailVerified?: Date | string | null
+    image?: string | null
     bids?: BidUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
   }
@@ -16719,16 +16917,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUpdateManyWithoutUserNestedInput
   }
@@ -16737,16 +16935,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -16755,13 +16953,13 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     bids?: BidCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
@@ -16773,13 +16971,13 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     bids?: BidUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
@@ -16807,13 +17005,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     bids?: BidUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
@@ -16825,13 +17023,13 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
@@ -16843,17 +17041,17 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
     bids?: BidCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     watchlists?: WatchlistCreateNestedManyWithoutUserInput
   }
 
@@ -16861,17 +17059,17 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     bids?: BidUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16895,17 +17093,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     bids?: BidUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUpdateManyWithoutUserNestedInput
   }
 
@@ -16913,17 +17111,17 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16931,16 +17129,16 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
     bids?: BidCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     watchlists?: WatchlistCreateNestedManyWithoutUserInput
   }
@@ -16949,16 +17147,16 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     bids?: BidUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
   }
@@ -16983,16 +17181,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     bids?: BidUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUpdateManyWithoutUserNestedInput
   }
@@ -17001,16 +17199,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     bids?: BidUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -17116,6 +17314,12 @@ export namespace Prisma {
     mesin?: string | null
     riwayat_servis?: string | null
     kategori?: $Enums.Kategori
+    nomor_polisi?: string | null
+    warna?: string | null
+    bahan_bakar?: string | null
+    kapasitas_mesin?: string | null
+    status_dokumen?: string | null
+    kondisi?: string | null
     lokasi_mobil?: string | null
     watchlists?: WatchlistCreateNestedManyWithoutProdukInput
   }
@@ -17139,6 +17343,12 @@ export namespace Prisma {
     mesin?: string | null
     riwayat_servis?: string | null
     kategori?: $Enums.Kategori
+    nomor_polisi?: string | null
+    warna?: string | null
+    bahan_bakar?: string | null
+    kapasitas_mesin?: string | null
+    status_dokumen?: string | null
+    kondisi?: string | null
     lokasi_mobil?: string | null
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutProdukInput
   }
@@ -17152,16 +17362,16 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     watchlists?: WatchlistCreateNestedManyWithoutUserInput
   }
@@ -17170,16 +17380,16 @@ export namespace Prisma {
     id?: string
     name?: string | null
     email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
     password?: string | null
     role?: string
     createdAt?: Date | string
     address?: string | null
     phone?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     watchlists?: WatchlistUncheckedCreateNestedManyWithoutUserInput
   }
@@ -17219,6 +17429,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     watchlists?: WatchlistUpdateManyWithoutProdukNestedInput
   }
@@ -17242,6 +17458,12 @@ export namespace Prisma {
     mesin?: NullableStringFieldUpdateOperationsInput | string | null
     riwayat_servis?: NullableStringFieldUpdateOperationsInput | string | null
     kategori?: EnumKategoriFieldUpdateOperationsInput | $Enums.Kategori
+    nomor_polisi?: NullableStringFieldUpdateOperationsInput | string | null
+    warna?: NullableStringFieldUpdateOperationsInput | string | null
+    bahan_bakar?: NullableStringFieldUpdateOperationsInput | string | null
+    kapasitas_mesin?: NullableStringFieldUpdateOperationsInput | string | null
+    status_dokumen?: NullableStringFieldUpdateOperationsInput | string | null
+    kondisi?: NullableStringFieldUpdateOperationsInput | string | null
     lokasi_mobil?: NullableStringFieldUpdateOperationsInput | string | null
     watchlists?: WatchlistUncheckedUpdateManyWithoutProdukNestedInput
   }
@@ -17261,16 +17483,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUpdateManyWithoutUserNestedInput
   }
@@ -17279,16 +17501,16 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
     password?: NullableStringFieldUpdateOperationsInput | string | null
     role?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     watchlists?: WatchlistUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -17305,12 +17527,6 @@ export namespace Prisma {
     scope?: string | null
     id_token?: string | null
     session_state?: string | null
-  }
-
-  export type SessionCreateManyUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
   }
 
   export type BidCreateManyUserInput = {
@@ -17330,6 +17546,12 @@ export namespace Prisma {
     isRead?: boolean
     link?: string | null
     createdAt?: Date | string
+  }
+
+  export type SessionCreateManyUserInput = {
+    id?: string
+    sessionToken: string
+    expires: Date | string
   }
 
   export type TransactionCreateManyUserInput = {
@@ -17391,24 +17613,6 @@ export namespace Prisma {
     session_state?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type BidUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     bidAmount?: IntFieldUpdateOperationsInput | number
@@ -17464,6 +17668,24 @@ export namespace Prisma {
     isRead?: BoolFieldUpdateOperationsInput | boolean
     link?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionToken?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TransactionUpdateWithoutUserInput = {

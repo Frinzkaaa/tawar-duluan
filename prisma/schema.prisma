@@ -120,6 +120,12 @@ model Produk {
   mesin          String?
   riwayat_servis String?
   kategori       Kategori    @default(SEMUA)
+  nomor_polisi   String?
+  warna          String?
+  bahan_bakar    String?
+  kapasitas_mesin String?
+  status_dokumen String?
+  kondisi        String?
   lokasi_mobil   String?
   bids           Bid[]
   watchlists     Watchlist[]
