@@ -33,6 +33,19 @@ interface Bid {
     user: { name: string };
 }
 
+declare global {
+    interface Window {
+        snap?: {
+            pay: (token: string, options: {
+                onSuccess: (result: any) => void;
+                onPending: (result: any) => void;
+                onError: (result: any) => void;
+                onClose: () => void;
+            }) => void;
+        };
+    }
+}
+
 interface Product {
     id: string;
     nama_barang: string;
@@ -73,8 +86,8 @@ export default function DetailProdukPage() {
     const [isPaying, setIsPaying] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [paymentStep, setPaymentStep] = useState<'methods' | 'details' | 'success'>('methods');
-    const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
     const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
+    const [snapScriptLoaded, setSnapScriptLoaded] = useState(false);
     const [alertModal, setAlertModal] = useState<{
         isOpen: boolean;
         title: string;
@@ -98,6 +111,26 @@ export default function DetailProdukPage() {
     ) => {
         setAlertModal({ isOpen: true, title, message, type, actionText, onAction });
     };
+
+    // Load Midtrans Snap.js script once
+    useEffect(() => {
+        const isProduction = process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === 'true';
+        const snapUrl = isProduction
+            ? 'https://app.midtrans.com/snap/snap.js'
+            : 'https://app.sandbox.midtrans.com/snap/snap.js';
+
+        if (document.getElementById('midtrans-snap-script')) {
+            setSnapScriptLoaded(true);
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.id = 'midtrans-snap-script';
+        script.src = snapUrl;
+        script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '');
+        script.onload = () => setSnapScriptLoaded(true);
+        document.head.appendChild(script);
+    }, []);
 
     useEffect(() => {
         const fetchDetail = async () => {
@@ -129,36 +162,54 @@ export default function DetailProdukPage() {
 
     const handlePayDeposit = () => { setShowPaymentModal(true); setPaymentStep('methods'); };
 
-    const initiatePayment = async (method: string) => {
-        setIsPaying(true); setSelectedMethod(method);
+    const initiatePayment = async () => {
+        setIsPaying(true);
         try {
             const res = await fetch('/api/payment/deposit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ paymentMethod: method })
             });
             const data = await res.json();
-            if (data.success) { setCurrentOrderId(data.orderId); setPaymentStep('details'); }
-        } catch {
-            showAlert('Gagal Pembayaran', 'Gagal memulai pembayaran jaminan. Silakan coba kembali.', 'error');
-        }
-        finally { setIsPaying(false); }
-    };
+            
+            if (data.success && data.snapToken) {
+                setShowPaymentModal(false);
+                
+                if (!window.snap) {
+                    showAlert('Error', 'Sistem pembayaran belum siap. Coba muat ulang halaman.', 'error');
+                    return;
+                }
 
-    const confirmPaymentSuccess = async () => {
-        setIsPaying(true);
-        try {
-            const res = await fetch('/api/payment/deposit', {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ orderId: currentOrderId })
-            });
-            if (res.ok) {
-                setPaymentStep('success');
-                setTimeout(() => { setHasDeposit(true); setShowPaymentModal(false); }, 2000);
+                window.snap.pay(data.snapToken, {
+                    onSuccess: async (result) => {
+                        console.log('Deposit success:', result);
+                        // Confirm to our backend
+                        await fetch('/api/payment/deposit', {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ orderId: data.orderId })
+                        });
+                        setHasDeposit(true);
+                        setPaymentStep('success');
+                        setShowPaymentModal(true);
+                        setTimeout(() => setShowPaymentModal(false), 3000);
+                    },
+                    onPending: (result) => {
+                        console.log('Deposit pending:', result);
+                        showAlert('Menunggu Pembayaran', 'Selesaikan pembayaran deposit Anda melalui instruksi Midtrans.', 'info');
+                    },
+                    onError: (result) => {
+                        console.error('Deposit error:', result);
+                        showAlert('Gagal Pembayaran', 'Terjadi kesalahan saat memproses pembayaran deposit.', 'error');
+                    },
+                    onClose: () => {
+                        console.log('Snap closed');
+                    }
+                });
+            } else {
+                showAlert('Gagal Pembayaran', data.error || 'Gagal memulai pembayaran jaminan.', 'error');
             }
         } catch {
-            showAlert('Gagal Konfirmasi', 'Gagal verifikasi pembayaran. Pastikan dana sudah dikirim.', 'error');
+            showAlert('Gagal Pembayaran', 'Koneksi terputus. Silakan coba kembali.', 'error');
         }
         finally { setIsPaying(false); }
     };
@@ -413,41 +464,16 @@ export default function DetailProdukPage() {
                                 <div className="space-y-6">
                                     <div className="bg-blue-600 p-6 rounded-2xl flex flex-col items-center text-white"><span className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">Total Pembayaran</span><span className="text-3xl font-black tracking-tighter">Rp 5.000.000</span></div>
                                     <div className="space-y-3">
-                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Pilih Metode</p>
-                                        <button onClick={() => initiatePayment('QRIS')} className="w-full p-4 border border-gray-100 rounded-2xl flex items-center justify-between hover:border-blue-600 hover:bg-blue-50/50 transition-all group">
-                                            <div className="flex items-center gap-4"><div className="bg-purple-100 p-3 rounded-xl"><QrCode className="w-5 h-5 text-purple-600" /></div><div className="text-left"><p className="font-black text-gray-900 text-xs uppercase tracking-tight">QRIS / E-WALLET</p><p className="text-[10px] text-gray-400 font-bold uppercase">GoPay, ShopeePay, OVO</p></div></div><ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600" />
-                                        </button>
-                                        <button onClick={() => initiatePayment('VA_BCA')} className="w-full p-4 border border-gray-100 rounded-2xl flex items-center justify-between hover:border-blue-600 hover:bg-blue-50/50 transition-all group">
-                                            <div className="flex items-center gap-4"><div className="bg-blue-100 p-3 rounded-xl"><Building2 className="w-5 h-5 text-blue-600" /></div><div className="text-left"><p className="font-black text-gray-900 text-xs uppercase tracking-tight">VIRTUAL ACCOUNT</p><p className="text-[10px] text-gray-400 font-bold uppercase">ATM, M-Banking (BCA)</p></div></div><ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-blue-600" />
-                                        </button>
+                                        <p className="text-xs text-gray-500 font-medium text-center px-4 leading-relaxed">
+                                            Lanjutkan ke sistem pembayaran aman Midtrans untuk menyelesaikan pembayaran jaminan Anda. Berbagai metode tersedia (QRIS, VA, E-Wallet, dll).
+                                        </p>
                                     </div>
-                                </div>
-                            )}
-                            {paymentStep === 'details' && (
-                                <div className="text-center space-y-8 py-4">
-                                    {selectedMethod === 'QRIS' ? (
-                                        <div className="space-y-6">
-                                            <div className="mx-auto w-44 h-44 bg-gray-50 rounded-2xl p-4 flex items-center justify-center border-2 border-dashed border-gray-200 font-bold text-gray-200">CODE QR</div>
-                                            <div><h4 className="font-black text-gray-900 uppercase text-xs tracking-widest">SCAN UNTUK BAYAR</h4><p className="text-[10px] text-gray-400 font-bold uppercase mt-1">Berlaku s/d 15 menit ke depan</p></div>
-                                        </div>
-                                    ) : (
-                                        <div className="space-y-6">
-                                            <div className="bg-slate-900 p-8 rounded-2xl text-white">
-                                                <p className="text-[9px] font-black uppercase tracking-[0.3em] opacity-50 mb-4">VIRTUAL ACCOUNT (BCA)</p>
-                                                <div className="flex items-center justify-center gap-3"><span className="text-3xl font-black tracking-widest">8831 0982 7716</span><button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Copy className="w-4 h-4 text-blue-400" /></button></div>
-                                            </div>
-                                            <div className="text-left bg-gray-50 p-6 rounded-2xl space-y-3 text-xs uppercase font-bold tracking-tight">
-                                                <p className="text-gray-900">Instruksi:</p>
-                                                <div className="text-gray-500 space-y-2 leading-relaxed">
-                                                    <p>1. Menu m-Transfer &gt; BCA Virtual Account</p>
-                                                    <p>2. Paste Nomor VA di atas</p>
-                                                    <p>3. Konfirmasi nama akun TDI</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                    <button onClick={confirmPaymentSuccess} disabled={isPaying} className="w-full bg-blue-600 hover:bg-black text-white font-black py-4 rounded-xl shadow-xl transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
-                                        {isPaying ? 'MEMVERIFIKASI...' : 'SAYA SUDAH BAYAR'}
+                                    <button 
+                                        onClick={() => initiatePayment()} 
+                                        disabled={isPaying || !snapScriptLoaded}
+                                        className="w-full bg-[#0138C9] hover:bg-black text-white font-black py-4 rounded-xl shadow-xl transition-all flex items-center justify-center gap-2 text-xs uppercase tracking-widest disabled:opacity-50"
+                                    >
+                                        {isPaying ? 'MEMPROSES...' : 'LANJUTKAN PEMBAYARAN'}
                                     </button>
                                 </div>
                             )}

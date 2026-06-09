@@ -1,18 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { jwtVerify } from 'jose';
+import { getToken } from 'next-auth/jwt';
 
-// Helper function to get current user from token
+// Helper function to get current user robustly
 async function getCurrentUser(request: NextRequest) {
-    const token = request.cookies.get("admin_token")?.value || request.cookies.get("token")?.value;
-    if (!token) return null;
-
-    try {
-        const payload = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
-        const user = await prisma.user.findUnique({ where: { id: payload.uid } });
-        return user;
-    } catch (error) {
-        return null;
+    // 1. Cek admin_token (custom JWT via jose)
+    const adminToken = request.cookies.get("admin_token")?.value;
+    if (adminToken) {
+        try {
+            const { payload } = await jwtVerify(
+                adminToken,
+                new TextEncoder().encode(process.env.JWT_SECRET!)
+            );
+            return await prisma.user.findUnique({ where: { id: payload.uid as string } });
+        } catch (err) {}
     }
+
+    // 2. Cek NextAuth token
+    try {
+        const nextAuthToken = await getToken({ req: request as any, secret: process.env.NEXTAUTH_SECRET });
+        if (nextAuthToken && nextAuthToken.email) {
+            return await prisma.user.findUnique({ where: { email: nextAuthToken.email } });
+        }
+    } catch (err) {}
+
+    return null;
 }
 
 // GET: Get all bids (admin only)
