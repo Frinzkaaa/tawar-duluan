@@ -18,18 +18,26 @@ import {
     CheckCircle2,
     QrCode,
     Building2,
-    X,
-    Copy,
     FileText,
     Wrench,
     Armchair,
     XCircle,
+    MapPin,
+    Truck,
+    MessageCircle,
+    CreditCard,
+    X,
+    Copy
 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { SITE_CONFIG } from '@/lib/constants';
 
 interface Bid {
     id: string;
     bidAmount: number;
     createdAt: string;
+    status: string;
+    paymentStatus: string;
     user: { name: string };
 }
 
@@ -88,6 +96,8 @@ export default function DetailProdukPage() {
     const [paymentStep, setPaymentStep] = useState<'methods' | 'details' | 'success'>('methods');
     const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
     const [snapScriptLoaded, setSnapScriptLoaded] = useState(false);
+    const [userBid, setUserBid] = useState<Bid | null>(null);
+    const [pickupOption, setPickupOption] = useState<string | null>(null);
     const [alertModal, setAlertModal] = useState<{
         isOpen: boolean;
         title: string;
@@ -141,6 +151,7 @@ export default function DetailProdukPage() {
                     setProduct(data);
                     setActiveImage(data.image_url || '');
                     setBidAmount(data.harga_awal + 1000000);
+                    setUserBid(data.userBid || null);
                 }
             } catch (err) {
                 console.error(err);
@@ -214,6 +225,54 @@ export default function DetailProdukPage() {
         finally { setIsPaying(false); }
     };
 
+    const handlePayAuction = async () => {
+        if (!userBid) return;
+        setIsPaying(true);
+        try {
+            const res = await fetch('/api/payment/auction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ bidId: userBid.id })
+            });
+            const data = await res.json();
+            
+            if (data.success && data.snapToken) {
+                if (!window.snap) {
+                    showAlert('Error', 'Sistem pembayaran belum siap.', 'error');
+                    return;
+                }
+
+                window.snap.pay(data.snapToken, {
+                    onSuccess: async (result) => {
+                        await fetch('/api/payment/auction', {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ orderId: data.orderId, bidId: userBid.id })
+                        });
+                        setUserBid({ ...userBid, paymentStatus: 'paid' });
+                        showAlert('Pembayaran Berhasil! 🎉', 'Pelunasan unit lelang telah berhasil dikonfirmasi.', 'success');
+                    },
+                    onPending: () => {
+                        showAlert('Menunggu Pembayaran', 'Selesaikan pembayaran Anda melalui Midtrans.', 'info');
+                    },
+                    onError: () => {
+                        showAlert('Gagal Pembayaran', 'Terjadi kesalahan saat memproses pembayaran.', 'error');
+                    },
+                    onClose: () => {
+                        setIsPaying(false);
+                        showAlert('Dibatalkan', 'Anda menutup layar pembayaran.', 'info');
+                    }
+                });
+            } else {
+                showAlert('Gagal', data.error || 'Gagal memulai pembayaran.', 'error');
+            }
+        } catch {
+            showAlert('Gagal Pembayaran', 'Koneksi terputus.', 'error');
+        } finally {
+            setIsPaying(false);
+        }
+    };
+
     const handleBid = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!product) return;
@@ -236,7 +295,7 @@ export default function DetailProdukPage() {
                 if (err.requireDeposit) {
                     showAlert(
                         'Aktivasi Jaminan',
-                        err.message || 'Anda perlu membayar jaminan Rp 5.000.000 terlebih dahulu untuk menawar unit ini.',
+                        err.message || 'Anda perlu membayar jaminan Rp 500.000 terlebih dahulu untuk menawar unit ini.',
                         'warning',
                         'Bayar Jaminan',
                         () => handlePayDeposit()
@@ -343,29 +402,156 @@ export default function DetailProdukPage() {
                                     </div>
                                 </div>
 
-                                {hasDeposit === false ? (
-                                    <div className="bg-orange-50 border border-orange-100 rounded-2xl p-6 text-center space-y-4">
-                                        <div className="bg-orange-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto"><AlertCircle className="w-6 h-6 text-orange-600" /></div>
-                                        <div>
-                                            <h4 className="font-black text-gray-900 text-sm uppercase tracking-tight">Butuh Aktivasi</h4>
-                                            <p className="text-[11px] text-gray-500 font-medium leading-relaxed">Bayar jaminan Rp 5.000.000 untuk bidding unit ini.</p>
-                                        </div>
-                                        <button onClick={handlePayDeposit} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest transition-all">BAYAR SEKARANG</button>
+                                {userBid ? (
+                                    <div className="space-y-6">
+                                        {userBid.status === 'approved' ? (
+                                            <div className="text-center relative overflow-hidden bg-gradient-to-br from-indigo-900 to-blue-800 p-6 rounded-3xl text-white shadow-2xl">
+                                                {/* Simple Confetti Effect using Framer Motion */}
+                                                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                                                    {[...Array(30)].map((_, i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            className="absolute w-2 h-2 rounded-full"
+                                                            style={{
+                                                                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'][Math.floor(Math.random() * 5)],
+                                                                left: `${Math.random() * 100}%`,
+                                                                top: '-10%',
+                                                            }}
+                                                            animate={{
+                                                                top: '110%',
+                                                                rotate: Math.random() * 360,
+                                                                left: `${Math.random() * 100}%`
+                                                            }}
+                                                            transition={{
+                                                                duration: 2 + Math.random() * 3,
+                                                                repeat: Infinity,
+                                                                ease: 'linear'
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </div>
+                                                
+                                                <div className="relative z-10">
+                                                    <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-4 border border-white/20 shadow-inner">
+                                                        <Trophy className="w-8 h-8 text-yellow-400" />
+                                                    </div>
+                                                    <h3 className="text-xl font-black mb-1 uppercase tracking-tighter text-white">SELAMAT! 🎉</h3>
+                                                    <p className="text-[11px] text-blue-100 font-medium leading-relaxed mb-5">
+                                                        Anda adalah pemenang lelang unit ini dengan tawaran <span className="font-black text-white">Rp {userBid.bidAmount.toLocaleString('id-ID')}</span>.
+                                                    </p>
+
+                                                    {userBid.paymentStatus === 'unpaid' ? (
+                                                        <div className="space-y-3">
+                                                            <div className="bg-white/10 p-3 rounded-xl flex justify-between items-center text-xs border border-white/5">
+                                                                <span className="text-blue-200">Total Pelunasan</span>
+                                                                <span className="font-black text-white">Rp {(userBid.bidAmount - 500000).toLocaleString('id-ID')}</span>
+                                                            </div>
+                                                            <button 
+                                                                onClick={handlePayAuction}
+                                                                disabled={isPaying || !snapScriptLoaded}
+                                                                className="w-full bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-2"
+                                                            >
+                                                                {isPaying ? 'MEMPROSES...' : 'LUNASI SEKARANG'}
+                                                                {!isPaying && <CreditCard className="w-4 h-4" />}
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 p-4 rounded-xl animate-in fade-in zoom-in duration-500">
+                                                            <div className="flex items-center justify-center gap-2 mb-3">
+                                                                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                                                                <span className="font-black text-[10px] uppercase tracking-widest text-emerald-300">Unit Telah Lunas</span>
+                                                            </div>
+                                                            
+                                                            {!pickupOption ? (
+                                                                <div className="grid grid-cols-2 gap-2 mt-2">
+                                                                    <button onClick={() => setPickupOption('self')} className="flex flex-col items-center justify-center p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all group/btn">
+                                                                        <MapPin className="w-4 h-4 text-white mb-1.5 group-hover/btn:scale-110 transition-transform" />
+                                                                        <span className="text-[8px] font-black uppercase tracking-widest">Ambil Sendiri</span>
+                                                                    </button>
+                                                                    <button onClick={() => setPickupOption('delivery')} className="flex flex-col items-center justify-center p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all group/btn">
+                                                                        <Truck className="w-4 h-4 text-emerald-300 mb-1.5 group-hover/btn:scale-110 transition-transform" />
+                                                                        <span className="text-[8px] font-black uppercase tracking-widest text-emerald-100">Kirim Logistik</span>
+                                                                    </button>
+                                                                </div>
+                                                            ) : pickupOption === 'self' ? (
+                                                                <div className="text-left bg-black/20 p-3 rounded-lg border border-white/5">
+                                                                    <div className="flex justify-between items-center mb-1.5">
+                                                                        <span className="text-[9px] font-black uppercase text-blue-200"><MapPin className="w-3 h-3 inline mr-1"/> Lokasi Showroom</span>
+                                                                        <button onClick={() => setPickupOption(null)} className="text-[8px] text-white/50 hover:text-white underline uppercase">Ubah</button>
+                                                                    </div>
+                                                                    <p className="text-[11px] font-medium text-white/90">{product?.lokasi_mobil || "Showroom TDI Central, Bekasi."}</p>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="text-left bg-black/20 p-3 rounded-lg border border-white/5">
+                                                                    <div className="flex justify-between items-center mb-2">
+                                                                        <span className="text-[9px] font-black uppercase text-emerald-200"><Truck className="w-3 h-3 inline mr-1"/> Kirim Logistik</span>
+                                                                        <button onClick={() => setPickupOption(null)} className="text-[8px] text-white/50 hover:text-white underline uppercase">Ubah</button>
+                                                                    </div>
+                                                                    <button 
+                                                                        onClick={() => {
+                                                                            const phone = SITE_CONFIG?.adminWhatsApp || "";
+                                                                            const msg = `Halo Admin, saya pemenang unit ${product?.nama_barang}. Saya ingin koordinasi pengiriman.`;
+                                                                            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+                                                                        }}
+                                                                        className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-black py-2 rounded-md flex items-center justify-center gap-1.5 text-[9px] uppercase tracking-widest transition-all"
+                                                                    >
+                                                                        <MessageCircle className="w-3.5 h-3.5" /> Hubungi Admin
+                                                                    </button>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ) : userBid.status === 'rejected' ? (
+                                            <div className="text-center p-6 bg-rose-50 border border-rose-100 rounded-2xl">
+                                                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-rose-500">
+                                                    <XCircle className="w-6 h-6" />
+                                                </div>
+                                                <h3 className="text-lg font-black mb-1 text-rose-900 tracking-tighter uppercase">Tawaran Ditolak</h3>
+                                                <p className="text-[11px] text-rose-600/80 font-medium leading-relaxed">
+                                                    Mohon maaf, tawaran Anda belum berhasil memenangkan unit ini. Jangan menyerah, ayo temukan mobil impian lainnya!
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div className="text-center p-6 bg-amber-50 border border-amber-100 rounded-2xl">
+                                                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-amber-500">
+                                                    <Clock className="w-6 h-6" />
+                                                </div>
+                                                <h3 className="text-lg font-black mb-1 text-amber-900 tracking-tighter uppercase">Sedang Diproses</h3>
+                                                <p className="text-[11px] text-amber-700/80 font-medium leading-relaxed">
+                                                    Tawaran Anda sebesar <strong>Rp {userBid.bidAmount.toLocaleString('id-ID')}</strong> telah kami terima dan sedang dievaluasi oleh Admin.
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
                                 ) : (
-                                    <form onSubmit={handleBid} className="space-y-3">
-                                        <div className="space-y-1.5">
-                                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Minimal Bid: Rp {(product.harga_awal + 500000).toLocaleString('id-ID')}</label>
-                                            <div className="relative">
-                                                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-black text-gray-400 text-base">Rp</span>
-                                                <input type="number" value={bidAmount} onChange={(e) => setBidAmount(parseInt(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 font-black text-lg focus:ring-2 focus:ring-blue-600 outline-none transition-all shadow-inner" placeholder="Masukkan angka..." />
+                                    <>
+                                        {hasDeposit === false ? (
+                                            <div className="bg-orange-50 border border-orange-100 rounded-2xl p-6 text-center space-y-4">
+                                                <div className="bg-orange-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto"><AlertCircle className="w-6 h-6 text-orange-600" /></div>
+                                                <div>
+                                                    <h4 className="font-black text-gray-900 text-sm uppercase tracking-tight">Butuh Aktivasi</h4>
+                                                    <p className="text-[11px] text-gray-500 font-medium leading-relaxed">Bayar jaminan Rp 500.000 untuk bidding unit ini.</p>
+                                                </div>
+                                                <button onClick={handlePayDeposit} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest transition-all">BAYAR SEKARANG</button>
                                             </div>
-                                        </div>
-                                        <button type="submit" disabled={submitting} className="w-full bg-[#0138C9] hover:bg-blue-700 text-white font-black py-4 rounded-xl transition-all shadow-xl shadow-blue-200 active:scale-95 disabled:opacity-50 text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2">
-                                            {submitting ? 'MEMPROSES...' : 'AJUKAN PENAWARAN'}
-                                            {!submitting && <ChevronRight className="w-5 h-5" />}
-                                        </button>
-                                    </form>
+                                        ) : (
+                                            <form onSubmit={handleBid} className="space-y-3">
+                                                <div className="space-y-1.5">
+                                                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Minimal Bid: Rp {(product.harga_awal + 500000).toLocaleString('id-ID')}</label>
+                                                    <div className="relative">
+                                                        <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-black text-gray-400 text-base">Rp</span>
+                                                        <input type="number" value={bidAmount} onChange={(e) => setBidAmount(parseInt(e.target.value))} className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 font-black text-lg focus:ring-2 focus:ring-blue-600 outline-none transition-all shadow-inner" placeholder="Masukkan angka..." />
+                                                    </div>
+                                                </div>
+                                                <button type="submit" disabled={submitting} className="w-full bg-[#0138C9] hover:bg-blue-700 text-white font-black py-4 rounded-xl transition-all shadow-xl shadow-blue-200 active:scale-95 disabled:opacity-50 text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2">
+                                                    {submitting ? 'MEMPROSES...' : 'AJUKAN PENAWARAN'}
+                                                    {!submitting && <ChevronRight className="w-5 h-5" />}
+                                                </button>
+                                            </form>
+                                        )}
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -462,7 +648,7 @@ export default function DetailProdukPage() {
                         <div className="p-8">
                             {paymentStep === 'methods' && (
                                 <div className="space-y-6">
-                                    <div className="bg-blue-600 p-6 rounded-2xl flex flex-col items-center text-white"><span className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">Total Pembayaran</span><span className="text-3xl font-black tracking-tighter">Rp 5.000.000</span></div>
+                                    <div className="bg-blue-600 p-6 rounded-2xl flex flex-col items-center text-white"><span className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">Total Pembayaran</span><span className="text-3xl font-black tracking-tighter">Rp 500.000</span></div>
                                     <div className="space-y-3">
                                         <p className="text-xs text-gray-500 font-medium text-center px-4 leading-relaxed">
                                             Lanjutkan ke sistem pembayaran aman Midtrans untuk menyelesaikan pembayaran jaminan Anda. Berbagai metode tersedia (QRIS, VA, E-Wallet, dll).

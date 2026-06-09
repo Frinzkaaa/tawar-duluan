@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         const orderId = `DEP-${user.id.slice(-8)}-${Date.now()}`;
-        const amount = 5_000_000;
+        const amount = 500_000;
 
         // Simpan transaksi ke DB dulu
         await prisma.transaction.create({
@@ -60,11 +60,6 @@ export async function PATCH(request: NextRequest) {
             data: { status: 'settlement' },
         });
 
-        // Tandai user sudah punya deposit aktif
-        await prisma.user.update({
-            where: { id: user.id },
-            data: { hasDeposit: true } as any,
-        });
 
         await prisma.notification.create({
             data: {

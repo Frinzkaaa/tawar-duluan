@@ -389,10 +389,14 @@ export default function MyBids() {
                       <p className="text-gray-400 font-black uppercase tracking-widest">Tawaran Menang</p>
                       <p className="text-gray-900 font-black">Rp {selectedBid.bidAmount.toLocaleString('id-ID')}</p>
                     </div>
+                    <div className="flex justify-between items-center text-xs">
+                      <p className="text-emerald-500 font-black uppercase tracking-widest">Potongan Jaminan (DP)</p>
+                      <p className="text-emerald-600 font-black">- Rp 500.000</p>
+                    </div>
                     <div className="h-px bg-gray-200" />
                     <div className="flex justify-between items-end">
-                      <p className="text-blue-600 font-black text-[10px] uppercase tracking-widest">Total Bayar</p>
-                      <p className="text-2xl font-black text-blue-700 tracking-tighter">Rp {selectedBid.bidAmount.toLocaleString('id-ID')}</p>
+                      <p className="text-blue-600 font-black text-[10px] uppercase tracking-widest">Total Pelunasan</p>
+                      <p className="text-2xl font-black text-blue-700 tracking-tighter">Rp {(selectedBid.bidAmount - 500000).toLocaleString('id-ID')}</p>
                     </div>
                   </div>
 

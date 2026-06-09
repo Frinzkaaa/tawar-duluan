@@ -1,12 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { uploadToCloudinary } from "@/lib/cloudinary";
+import { getCurrentUser } from "@/lib/session";
 
 export const runtime = "nodejs";
 
-export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
+    const user = await getCurrentUser(req);
+
     const produk = await prisma.produk.findUnique({
       where: { id },
       include: {
@@ -25,7 +28,12 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
       return NextResponse.json({ error: "Produk tidak ditemukan" }, { status: 404 });
     }
 
-    return NextResponse.json(produk);
+    let userBid = null;
+    if (user) {
+      userBid = produk.bids.find((b) => b.userId === user.id) || null;
+    }
+
+    return NextResponse.json({ ...produk, userBid });
   } catch (err: any) {
     console.error("GET /api/produk/[id] error:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });

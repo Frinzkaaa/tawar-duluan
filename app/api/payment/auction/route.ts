@@ -27,12 +27,13 @@ export async function POST(request: NextRequest) {
         }
 
         const orderId = `PAY-${bid.id.slice(-8)}-${Date.now()}`;
+        const finalAmount = bid.bidAmount - 500_000;
 
         // Simpan transaksi ke DB
         await prisma.transaction.create({
             data: {
                 userId: user.id,
-                amount: bid.bidAmount,
+                amount: finalAmount,
                 orderId,
                 type: 'PAYMENT',
                 status: 'pending',
@@ -42,10 +43,10 @@ export async function POST(request: NextRequest) {
         // Buat Snap token dari Midtrans
         const snap = await createSnapToken({
             orderId,
-            grossAmount: bid.bidAmount,
+            grossAmount: finalAmount,
             firstName: user.name || 'Penawar',
             email: user.email || '',
-            itemName: `Pelunasan: ${bid.produk.nama_barang}`,
+            itemName: `Pelunasan (Potong DP): ${bid.produk.nama_barang}`,
             itemId: bid.produk.id,
         });
 

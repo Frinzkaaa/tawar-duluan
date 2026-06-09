@@ -62,11 +62,7 @@ export async function POST(request: NextRequest) {
             });
 
             if (transaction.type === 'DEPOSIT') {
-                // Tandai user sudah deposit
-                await prisma.user.update({
-                    where: { id: transaction.userId },
-                    data: { hasDeposit: true } as any,
-                });
+
 
                 await prisma.notification.create({
                     data: {
