@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     if (!activeDeposit) {
       return NextResponse.json({
         error: 'Deposit Required',
-        message: 'Anda belum menyetor uang jaminan lelang (Rp 5.000.000). Silakan lakukan pembayaran terlebih dahulu.',
+        message: 'Anda belum menyetor uang jaminan lelang (Rp 500.000). Silakan lakukan pembayaran terlebih dahulu.',
         requireDeposit: true
       }, { status: 403 });
     }

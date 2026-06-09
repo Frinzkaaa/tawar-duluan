@@ -469,7 +469,7 @@ function JelajahiContent() {
           if (error.requireDeposit) {
             showAlert(
               'Uang Jaminan Dibutuhkan',
-              error.message || 'Anda perlu melakukan deposit uang jaminan sebesar Rp 5.000.000 untuk bidding unit ini.',
+              error.message || 'Anda perlu melakukan deposit uang jaminan sebesar Rp 500.000 untuk bidding unit ini.',
               'warning',
               'Bayar Jaminan',
               () => { window.location.href = `/jelajahi/${productId}`; }

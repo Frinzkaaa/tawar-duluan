@@ -25,7 +25,7 @@ export default function CaraKerjaLelang() {
     {
       icon: <Wallet className="w-8 h-8 text-emerald-600" />,
       title: "Setor Uang Jaminan",
-      desc: "Lakukan deposit sebesar Rp 5.000.000 sebagai tanda keseriusan. Saldo ini bersifat refundable (bisa ditarik kembali) jika Anda belum memenangkan lelang.",
+      desc: "Lakukan deposit sebesar Rp 500.000 sebagai tanda keseriusan. Saldo ini bersifat refundable (bisa ditarik kembali) jika Anda belum memenangkan lelang.",
       badge: "Langkah 02"
     },
     {
