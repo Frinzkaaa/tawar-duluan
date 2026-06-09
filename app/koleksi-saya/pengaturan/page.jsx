@@ -237,7 +237,7 @@ export default function SettingsPage() {
                       <div>
                         <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Status Jaminan</p>
                         <div className="flex items-baseline gap-2">
-                          <span className="text-4xl font-black">Rp 5.000.000</span>
+                          <span className="text-4xl font-black">Rp 500.000</span>
                           <span className="text-xs text-gray-400">/ Unit (Deposit)</span>
                         </div>
                         <div className="flex items-center gap-2 mt-4 text-emerald-400 font-bold bg-emerald-400/10 px-3 py-1.5 rounded-full w-fit text-xs">
@@ -263,7 +263,7 @@ export default function SettingsPage() {
                   ) : (
                     <div className="space-y-3">
                       {[
-                        { title: "Deposit Lelang", date: "28 Jan 2026", amount: "+Rp 5.000.000", status: "Berhasil" },
+                        { title: "Deposit Lelang", date: "28 Jan 2026", amount: "+Rp 500.000", status: "Berhasil" },
                         { title: "Registrasi Member", date: "20 Jan 2026", amount: "GRATIS", status: "Selesai" },
                       ].map((tx, idx) => (
                         <div key={idx} className="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border border-gray-100">
